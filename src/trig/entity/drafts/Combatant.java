@@ -50,13 +50,7 @@ class Trajectory{
    //Note: using a trajectory instead of just constantly updating current position may be useful for smoothing out lag?
    //there could be a standard rate of deceleration used so that remote clients can have your combatant moving between updates, possibly?
    
-   /*there are multiple ways to do this, but since this is only intended for quick use by the map to update positions the following configuration may be ideal:
-        rather than using degrees or radians for the angle, just express it as the ratio between the amount of movement of x and amount of movement of y,
-    
-        such that the new location of the combatant is simply: combatant.x+=speedStuff*angle, combatant.y=speedStuff*angle?
-    
-    
-    */
+   //haven't decided to express angle, but I'm thinking thinking it should be done in a way that most simplifies the proccessing of each screen frame? 
    private float angle;
    
    
