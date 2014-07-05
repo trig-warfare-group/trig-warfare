@@ -1,11 +1,11 @@
-package trig.controller.sub.frame;
+package trig.listener.frame;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 
-public class FrameListener implements WindowListener
+public class CloseListener implements WindowListener
 {
 
 	@Override
