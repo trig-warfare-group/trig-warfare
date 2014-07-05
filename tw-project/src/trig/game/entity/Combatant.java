@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package trig.entity.drafts;
+package trig.game.entity;
 
 /**
  * Base class for combatants, such as the player, AI or remote combatants
