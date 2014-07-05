@@ -1,5 +1,7 @@
 package trig.game.state;
 
+import trig.game.state.login.LoginMachine;
+
 /**
  * The StateManager will hold all the over-arching states.
  * 

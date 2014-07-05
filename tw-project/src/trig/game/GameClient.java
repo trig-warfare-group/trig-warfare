@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 
 import trig.game.input.InputHandler;
 import trig.game.state.BasicStateMachine;
-import trig.game.state.LoginMachine;
 import trig.game.state.StateManager;
+import trig.game.state.login.LoginMachine;
 import trig.utility.Constants;
 import trig.view.GameView;
 
