@@ -13,13 +13,13 @@ import java.awt.Color;
  * @author marcos
  */
 public abstract class Fighter extends Combatant{
-    public Fighter(int health, String name, int  id){
+    public Fighter(int life, String name, int  id){
         
         //the random values etc are temp for now;
         
         super
         (
-            health,
+            life,
             name,
             id,
             new Color((int) Math.random(), (int) Math.random(), (int) Math.random()), //color
@@ -66,31 +66,29 @@ public abstract class Fighter extends Combatant{
         //how will we deal with map edges, collisions, etc? should that be handled here and raise the collision event here, or what?
         
         //I think this math is correct? Google unit circles and stuff if you wanna know more?
-        int newX = x + (int) Math.round(distance*Math.cos(direction));
-        int newY = y + (int) Math.round(distance*Math.sin(direction));
-        
-        //TODO: DETERMINE IF THERE IS A COLLISION OR AN EDGE OR SOMETHING, ADJUST POSITION ACCORDINGLY AND RAISE A COLLISION EVENT
-        
-        //pseudocode;
-        /*
-        if(newX >= map.width-1)
-        {
-            
-            //we may need to determine or store the coords of the edges of the triangle, or just an algorithm to calculate it once we know shape and size etc.
-            //this wouldn't be too hard to work out how to do, but still, saving it for later.
-            newX = map.width-1 - however much we need to move so that our triangle stays on screen or something? Not just from a straight width or height, what with combatants being trianglular etc.
-        }
-        
-        if(newY >= map.height-1)
-        {
-
-           //we may need to determine or store the coords of the edges of the triangle, or just an algorithm to calculate it once we know shape and size etc.
-           //this wouldn't be too hard to work out how to do, but still, saving it for later.
-           newX = map.height-1 - however much we need to move so that our triangle stays on screen or something? Not just from a straight width or height, what with combatants being trianglular etc.
-        }
-        */
-        this.x = newX;
-        this.y = newY;
+//        int newX = x + (int) Math.round(distance*Math.cos(direction));
+//        int newY = y + (int) Math.round(distance*Math.sin(direction));
+//        
+//        //TODO: DETERMINE IF THERE IS A COLLISION OR AN EDGE OR SOMETHING, ADJUST POSITION ACCORDINGLY AND RAISE A COLLISION EVENT
+//        
+//        //pseudocode;
+//        if(newX >= map.width-1)
+//        {
+//            
+//            //we may need to determine or store the coords of the edges of the triangle, or just an algorithm to calculate it once we know shape and size etc.
+//            //this wouldn't be too hard to work out how to do, but still, saving it for later.
+//            newX = map.width-1 - however much we need to move so that our triangle stays on screen or something? Not just from a straight width or height, what with combatants being trianglular etc.
+//        }
+//        
+//        if(newY >= map.height-1)
+//        {
+//
+//           //we may need to determine or store the coords of the edges of the triangle, or just an algorithm to calculate it once we know shape and size etc.
+//           //this wouldn't be too hard to work out how to do, but still, saving it for later.
+//           newX = map.height-1 - however much we need to move so that our triangle stays on screen or something? Not just from a straight width or height, what with combatants being trianglular etc.
+//        }
+//        this.x = newX;
+//        this.y = newY;
         
          //TODO: maybe push a map update? but I think that the local map would just periodically perform this..
         //TODO: push data up to the server, etc? or just do it periodically? (in server version ofc)
