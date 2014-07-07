@@ -22,7 +22,7 @@ public abstract class Combatant
     //a standard amount by which to move at a time? not sure yet if will be expressed in px or something, but yeh. experimental value
     protected static final int STANDARD_DISTANCE = 5;
     
-    protected int life;
+    protected int hitPoints;
     
     //No need to update name, ID, or color within a single match, so may aswell make them final and publically accessible?
     
@@ -54,10 +54,20 @@ public abstract class Combatant
     
     /*getters and setter*/
     
-    public String getName(){
+    public String getName()
+    {
         return name;
     }
-    
+
+    public int getHitPoints()
+    {
+        return hitPoints;
+    }
+
+    public void setHitPoints(int hitPoints)
+    {
+        this.hitPoints = hitPoints;
+    }
     //NOTE: not sure that every combatant should be allowed to get a name change yet, leaving it for now?
     
     public int getX()
@@ -111,9 +121,9 @@ public abstract class Combatant
         this.agility = agility;
     }
     
-    public Combatant(int life, String name, int  id, Color color, int x, int y, float direction, float speed, float agility)
+    public Combatant(int hitPoints, String name, int  id, Color color, int x, int y, float direction, float speed, float agility)
     {
-        this.life = life;
+        this.hitPoints = hitPoints;
         this.name = name;
         this.id = id;
         this.color = color;
@@ -136,7 +146,7 @@ public abstract class Combatant
     
     public boolean isAlive()
     {
-        return life > 0;
+        return hitPoints > 0;
     }
     //NOTE: WHEN DOING LAGG MOVEMENT IT MIGHT BE USEFUL TO USE THE BASIC MOVE AND TURN FUNCTIONS FOR REMOTE ONES AS WELL, BUT IT MIGHT NOT, WE MIGHT JUST QUE EVENTS INSTEAD? WE'LL HAVE TO THINK ABOUT IT, TAKING THEM AWAY AND INTO THE FIGHTER CLASS FOR NOW THOUGH
 }

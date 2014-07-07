@@ -13,13 +13,13 @@ import java.awt.Color;
  * @author marcos
  */
 public abstract class Fighter extends Combatant{
-    public Fighter(int life, String name, int  id){
+    public Fighter(int hitPoints, String name, int  id){
         
         //the random values etc are temp for now;
         
         super
         (
-            life,
+            hitPoints,
             name,
             id,
             new Color((int) Math.random(), (int) Math.random(), (int) Math.random()), //color
