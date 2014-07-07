@@ -72,6 +72,7 @@ public abstract class Fighter extends Combatant{
         //TODO: DETERMINE IF THERE IS A COLLISION OR AN EDGE OR SOMETHING, ADJUST POSITION ACCORDINGLY AND RAISE A COLLISION EVENT
         
         //pseudocode;
+        /*
         if(newX >= map.width-1)
         {
             
@@ -87,6 +88,7 @@ public abstract class Fighter extends Combatant{
            //this wouldn't be too hard to work out how to do, but still, saving it for later.
            newX = map.height-1 - however much we need to move so that our triangle stays on screen or something? Not just from a straight width or height, what with combatants being trianglular etc.
         }
+        */
         this.x = newX;
         this.y = newY;
         
