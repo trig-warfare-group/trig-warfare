@@ -27,17 +27,18 @@ public abstract class Combatant
     //No need to update name, ID, or color within a single match, so may aswell make them final and publically accessible?
     
     protected String name;  
+
     //likely to correspond to the Combatant's position in some list?
     public final int id;
     
     //color of the combatant
     //no setter by default, subclasses can make one if needed, most shouldn't though?
     public Color color;
-    
+
     //cartesian coordinates
     protected int x;
     protected int y;
-    
+
     //the direction in which the combatant is facing. Double unneccassary?
     //expressed in radians
     //if memory serves, we will need to use atan2 most often, so the angle will work like atan2 needs it to: 0 is 3 o'clock, must be between [-1pi, 1pi], moves anticlockwise, 12 o'clock is pi/2, 6 o'clock is -pi/2.
@@ -121,7 +122,7 @@ public abstract class Combatant
         this.agility = agility;
     }
     
-    public Combatant(int hitPoints, String name, int  id, Color color, int x, int y, float direction, float speed, float agility)
+    public Combatant(int hitPoints, String name, int id, Color color, int x, int y, float direction, float speed, float agility)
     {
         this.hitPoints = hitPoints;
         this.name = name;
