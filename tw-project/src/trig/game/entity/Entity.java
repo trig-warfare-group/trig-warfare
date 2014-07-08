@@ -9,8 +9,6 @@ public interface Entity{
     public final int id = 0;
 
     //whether or not collisions can occur with the entity? We could have entities that swap in and out of this state, such as bosses?
-    //not public!
-    boolean tangible = true;
     public boolean isTangible();
 
 

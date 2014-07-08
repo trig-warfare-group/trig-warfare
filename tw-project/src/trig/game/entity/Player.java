@@ -12,7 +12,9 @@ import java.awt.Color;
  * Class for the Player, may later adjust it as a base for AI Combatants
  * @author marcos
  */
-public class Player extends Combatant{
+public class Player extends Combatant
+{
+
     public static final int DEFAULT_HP = 10;
     public Player(String name, int  id){
         
@@ -30,6 +32,36 @@ public class Player extends Combatant{
             1, //speed
             1 //agility
         );
+    }
+
+    /**
+     * determines if spawning with the specified stuff can be done without a collision occuring
+     * @return if the spawn would be possible
+     */
+    public boolean canSpawnAt(int x, int y)
+    {
+        return definitelycanSpawnsafely(x, y, direction); //pseudocode, replace with some ifs and stuff
+    }
+
+    /**
+     * safely spawns the combatant at a random location on the map, in a random facing direction, with the specified HP
+     * @param hitPoints
+     */
+    public void randomSpawn(int hitPoints){
+        int x;
+        int y;
+        float direction;
+        do
+        {
+            x = (int) Math.random() * 100; //REPLACE THIS VAL WITH BOUDARY RELEVANT STUFF
+            y = (int) Math.random() * 100;
+            direction = (float) Math.random() * 2 - 1; //between [-1,1], I think
+        }while(!canSpawnAt(x, y));
+
+        //NOTE: FOR SAFETY WE REALLY NEED TO LIMIT THE NUMBER OF LOOPS SOMEHOW!
+
+        //if the loop ends, we can spawn safely
+        spawn(x, y, direction, hitPoints);
     }
 
     public void spawnDefault(){

@@ -12,7 +12,7 @@ import java.awt.Color;
  * Base class for combatants, such as the player, AI.
  * @author marcos
  */
-public abstract class Combatant implements Entity
+public abstract class Combatant implements Entity, Visible, Movable
 {
     //constants
     //is there any reason for these to be public?
@@ -175,38 +175,6 @@ public abstract class Combatant implements Entity
         this.direction = direction;
         this.hitPoints = hitPoints;
     }
-
-    /**
-     * determines if spawning with the specified stuff can be done without a collision occuring
-     * @return if the spawn would be possible
-     */
-    public boolean canSpawnAt(int x, int y)
-    {
-        return definitelycanSpawnsafely(x, y, direction); //pseudocode, replace with some ifs and stuff
-    }
-
-    /**
-     * safely spawns the combatant at a random location on the map, in a random facing direction, with the specified HP
-     * @param hitPoints
-     */
-    public void randomSpawn(int hitPoints){
-        int x;
-        int y;
-        float direction;
-        do
-        {
-            x = (int) Math.random() * 100; //REPLACE THIS VAL WITH BOUDARY RELEVANT STUFF
-            y = (int) Math.random() * 100;
-            direction = (float) Math.random() * 2 - 1; //between [-1,1], I think
-        }while(!canSpawnAt(x, y));
-
-        //NOTE: FOR SAFETY WE REALLY NEED TO LIMIT THE NUMBER OF LOOPS SOMEHOW!
-
-        //if the loop ends, we can spawn safely
-        spawn(x, y, direction, hitPoints);
-    }
-
-
 }
 
 /*
