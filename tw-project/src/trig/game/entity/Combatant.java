@@ -12,7 +12,7 @@ import java.awt.Color;
  * Base class for combatants, such as the player, AI.
  * @author marcos
  */
-public abstract class Combatant
+public abstract class Combatant implements Entity
 {
     //constants
     //is there any reason for these to be public?
@@ -34,6 +34,8 @@ public abstract class Combatant
     //color of the combatant
     //no setter by default, subclasses can make one if needed, most shouldn't though?
     public Color color;
+
+    private boolean spawned;
 
     //cartesian coordinates
     protected int x;
@@ -149,7 +151,62 @@ public abstract class Combatant
     {
         return hitPoints > 0;
     }
+
     //NOTE: WHEN DOING LAGG MOVEMENT IT MIGHT BE USEFUL TO USE THE BASIC MOVE AND TURN FUNCTIONS FOR REMOTE ONES AS WELL, BUT IT MIGHT NOT, WE MIGHT JUST QUE EVENTS INSTEAD? WE'LL HAVE TO THINK ABOUT IT, TAKING THEM AWAY AND INTO THE FIGHTER CLASS FOR NOW THOUGH
+
+    //other methods
+
+    public boolean isMapped()
+    {
+        //using isAlive explicitly would mean that
+    }
+
+    /**
+     * Spawn with the data specifiec
+     * @param x
+     * @param y
+     * @param direction
+     * @param hitPoints
+     */
+    public void spawn(int x, int y, float direction, int hitPoints)
+    {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+        this.hitPoints = hitPoints;
+    }
+
+    /**
+     * determines if spawning with the specified stuff can be done without a collision occuring
+     * @return if the spawn would be possible
+     */
+    public boolean canSpawnAt(int x, int y)
+    {
+        return definitelycanSpawnsafely(x, y, direction); //pseudocode, replace with some ifs and stuff
+    }
+
+    /**
+     * safely spawns the combatant at a random location on the map, in a random facing direction, with the specified HP
+     * @param hitPoints
+     */
+    public void randomSpawn(int hitPoints){
+        int x;
+        int y;
+        float direction;
+        do
+        {
+            x = (int) Math.random() * 100; //REPLACE THIS VAL WITH BOUDARY RELEVANT STUFF
+            y = (int) Math.random() * 100;
+            direction = (float) Math.random() * 2 - 1; //between [-1,1], I think
+        }while(!canSpawnAt(x, y));
+
+        //NOTE: FOR SAFETY WE REALLY NEED TO LIMIT THE NUMBER OF LOOPS SOMEHOW!
+
+        //if the loop ends, we can spawn safely
+        spawn(x, y, direction, hitPoints);
+    }
+
+
 }
 
 /*
@@ -160,17 +217,17 @@ this is just some draftish notes right now?
  *
 class Trajectory
 {
-   
+
    //Note: using a trajectory instead of just constantly updating current position may be useful for smoothing out lag?
    //there could be a standard rate of deceleration used so that remote clients can have your combatant moving between updates, possibly?
-   
-   //haven't decided to express angle, but I'm thinking thinking it should be done in a way that most simplifies the proccessing of each screen frame? 
+
+   //haven't decided to express angle, but I'm thinking thinking it should be done in a way that most simplifies the proccessing of each screen frame?
    private float angle;
-   
-   
+
+
    //to be used a multiplier rather than a base px per second etc.
    //float/int not sure?
    private float speed;
-   
+
 }
 */

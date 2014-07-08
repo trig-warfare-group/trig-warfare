@@ -13,24 +13,28 @@ import java.awt.Color;
  * @author marcos
  */
 public class Player extends Combatant{
-    public Player(int hitPoints, String name, int  id){
+    public static final int DEFAULT_HP = 10;
+    public Player(String name, int  id){
         
         //the random values etc are temp for now;
         
         super
         (
-            hitPoints,
+            0, //no health until we spawn
             name,
             id,
             new Color((int) Math.random(), (int) Math.random(), (int) Math.random()), //color
-            (int) Math.random(), //x
-            (int) Math.random(), //y
-            (float) Math.random(), //direction
+            0, //x
+            0, //y
+            0, //direction
             1, //speed
             1 //agility
         );
     }
-    
+
+    public void spawnDefault(){
+        randomSpawn(DEFAULT_HP);
+    }
     /* movement functions for active combatants (e.g. player or AI, but not remote ones */
     /**
      * Rotates the combatant's facing direction.
