@@ -78,7 +78,7 @@ public abstract class Combatant implements Entity, Visible, Movable
         return x;
     }
     
-    //yes we want to be able to publically setX, so the server can forcedly update the position of enemies, possible teleportation, etc
+    //do we want all combatants, including players, so have their x set? the server can forcedly update the position of enemies, but does that apply to players?, possible teleportation, etc
     public void setX(int x)
     {
         this.x = x;

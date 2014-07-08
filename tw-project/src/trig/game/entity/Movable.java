@@ -37,8 +37,9 @@ public interface Movable //may not stay an interface, might though
 
     //since each object has their own draw method, which will draw the lines and stuff, do we actually need a direction for them all?
 
-    int setX();
-    int setY();
+    int setX(int x);
+    int setY(int y);
 
-    //movable needs some superclass, or other abstract class above it.
+    //movable needs some superclass, or other abstract class above it?
+
 }
