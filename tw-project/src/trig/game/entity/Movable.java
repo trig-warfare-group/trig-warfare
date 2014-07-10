@@ -17,13 +17,6 @@ public interface Movable //may not stay an interface, might though
     float speed = 1;
     */
 
-    //Bullets would have a velocity and direction, but not all entities will move in simple straight lines, and those that don't should definitely use their own internal functions for updating their location.
-    //In addition to this, it may be easier to implement collision events by having most objects responsible for their own movement?
-
-    //QUESTION: WOULD IT ACTUALLY BE EASIER TO IMPLEMENT COLLISIONS THAT WAY OR NOT?
-
-    //FURTHERMORE HOW SHOULD WE IMPLEMENT COLLISIONS? SHOULD THE GAME ENGINE DO IT OR ONLY MOVABLE ENTITIES?
-
     //NOTE: decided that it's unlikely that the Interface for movable objects would need direction, as it's unlikely that much else other than the actual entity itself will find the direction useful!
 
     //all movable entities have a collision event or handler? How should we construct this? //research
@@ -36,10 +29,16 @@ public interface Movable //may not stay an interface, might though
     //
 
     //since each object has their own draw method, which will draw the lines and stuff, do we actually need a direction for them all?
+    /*
+    is it neccasary for all of these objects to have coord set functions, though?
+
 
     int setX(int x);
     int setY(int y);
-
+    */
     //movable needs some superclass, or other abstract class above it?
+
+
+    //the interface is important though, and will be used if and when friction/momementum physics are added.
 
 }

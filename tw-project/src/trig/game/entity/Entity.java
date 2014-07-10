@@ -8,12 +8,14 @@ package trig.game.entity;
 public interface Entity{
     public final int id = 0;
 
-    //whether or not collisions can occur with the entity? We could have entities that swap in and out of this state, such as bosses?
-    public boolean isTangible();
-
-
-    //safety check to determine whether or not we can look at x or y, also, objects that aren't mapped shouldn't be drawn.
+    //safety check to determine whether or not we can look at the x or y of the object, also, objects that aren't mapped shouldn't be drawn, or collided with
     public boolean isMapped();
+
+    //QUESTION: Could be is-mapped be unneccasary since we will have a draw()-event like listener? Or would there be reasons other than visibility or collisions, where external objects may look at x or y?
+
+
+
+
 
     //cartesian coordinates
     int x = 0;

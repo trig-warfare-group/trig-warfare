@@ -2,3 +2,17 @@
 
 Use an array to check whether an entity has the ability to collide with another
 then use a listener to collide those entities.
+
+Use quad-trees to do the broad part of the search, seems fairly efficient.
+
+could also have a moving and non-moving collidable objects list for the event generator, such that the quad tree uses the moving ones to threshold creation of sub-nodes, might improve efficiency.
+
+http://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
+
+use either circle-hitboxes or, (mostly later?) Separating Axis Theorem for the narrow part of the search.
+
+
+
+
+
+
