@@ -1,4 +1,4 @@
 ||Dealing with Collisions||
 
 Use an array to check whether an entity has the ability to collide with another
-then use a listener to collide those entities
+then use a listener to collide those entities.
