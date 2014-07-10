@@ -4,7 +4,7 @@ package trig.game.entity;
  * Currently just a test class, for thinking about what immovable entities might need,
  * Created by marcos on 8/07/2014.
  */
-public class Wall implements Entity, Visible {
+public class extends BasicEntity implements Destructible, Visible {
     int x;
     int y;
 

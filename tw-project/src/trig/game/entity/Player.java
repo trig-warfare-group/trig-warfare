@@ -16,7 +16,8 @@ public class Player extends Combatant
 {
 
     public static final int DEFAULT_HP = 10;
-    public Player(String name, int  id){
+    public Player(String name, int  id)
+    {
         
         //the random values etc are temp for now;
         
@@ -47,7 +48,8 @@ public class Player extends Combatant
      * safely spawns the combatant at a random location on the map, in a random facing direction, with the specified HP
      * @param hitPoints
      */
-    public void randomSpawn(int hitPoints){
+    public void randomSpawn(int hitPoints)
+    {
         int x;
         int y;
         float direction;

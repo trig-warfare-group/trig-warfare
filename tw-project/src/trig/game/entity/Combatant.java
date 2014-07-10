@@ -77,23 +77,26 @@ public abstract class Combatant implements Entity, Visible, Movable
     {
         return x;
     }
-    
-    //do we want all combatants, including players, so have their x set? the server can forcedly update the position of enemies, but does that apply to players?, possible teleportation, etc
-    public void setX(int x)
-    {
-        this.x = x;
-    }
-    
+
     public int getY()
     {
         return y;
     }
-    
+
+    /*
+    //do we want all combatants, including players, so have their x set? the server can forcedly update the position of enemies, but does that apply to players?, possible teleportation, etc
+    //no?
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
     public void setY(int y)
     {
         this.y = y;
     }
-    
+    */
+
     public float getDirection()
     {
         return direction;

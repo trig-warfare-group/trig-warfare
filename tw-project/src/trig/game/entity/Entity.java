@@ -5,7 +5,8 @@ package trig.game.entity;
  * @author marcos
  * Created by marcos on 8/07/2014.
  */
-public interface Entity{
+public interface Entity
+{
     public final int id = 0;
 
     //safety check to determine whether or not we can look at the x or y of the object, also, objects that aren't mapped shouldn't be drawn, or collided with
