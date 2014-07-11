@@ -7,23 +7,28 @@ package trig.game.entity;
  */
 public interface Entity
 {
-    public final int id = 0;
+    final int id = 0;
+
+    //IDEA: TANGIBILITY CAN BE CONTROLLED BY HITBOX SIZE TO A DEGREE, 0 = NOT TANGLIBLE
+
+    abstract public float getHitRadius();
 
     //safety check to determine whether or not we can look at the x or y of the object, also, objects that aren't mapped shouldn't be drawn, or collided with
-    public boolean isMapped();
+    abstract public boolean isMapped();
 
     //QUESTION: Could be is-mapped be unneccasary since we will have a draw()-event like listener? Or would there be reasons other than visibility or collisions, where external objects may look at x or y?
 
 
 
 
-
+    /*
+    these would be made Public by the interface!, interfaces only define things that can be interfaced?
     //cartesian coordinates
     int x = 0;
     int y = 0;
-
-    public int getX();
-    public int getY();
+    */
+    abstract public int getX();
+    abstract public int getY();
 
     /*
 

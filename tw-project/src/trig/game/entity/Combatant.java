@@ -5,6 +5,7 @@
  */
 
 package trig.game.entity;
+import trig.utility.vector.PolarVector;
 
 import java.awt.Color;
 
@@ -12,193 +13,322 @@ import java.awt.Color;
  * Base class for combatants, such as the player, AI.
  * @author marcos
  */
-public abstract class Combatant implements Entity, Visible, Movable
+public abstract class Combatant extends GenericMoving implements Living, Visible
 {
-    //constants
-    //is there any reason for these to be public?
-    //a standard amount by which to turn a combatant by at a time? 1/36th of a circle at a time maybe? experimental value
-    protected static final float STANDARD_TURN = (float) (((float)1/18)*Math.PI);
-    
-    //a standard amount by which to move at a time? not sure yet if will be expressed in px or something, but yeh. experimental value
-    protected static final int STANDARD_DISTANCE = 5;
-    
-    protected int hitPoints;
-    
-    //No need to update name, ID, or color within a single match, so may aswell make them final and publically accessible?
-    
-    protected String name;  
+    //constants/semi defaults?
+    protected static final float ST_TURN = (float) (((float)1/18)*Math.PI);
+    protected static final int ST_DIST = 3;
 
-    //likely to correspond to the Combatant's position in some list?
-    public final int id;
-    
-    //color of the combatant
-    //no setter by default, subclasses can make one if needed, most shouldn't though?
-    public Color color;
+    //random defaults?
+    public static final int MAX_HP = 10;
+    public static final Color DEF_COLOR = Color.WHITE;
+    public static final float DEF_HIT_RADIUS = 25; //circle of diameter = 50
+    public static final float DEF_SPEED = 1; //no multiplicative effect
 
-    private boolean spawned;
+    //vars
+    protected String name;
+    protected int HP;
+    protected Color color;
 
-    //cartesian coordinates
-    protected int x;
-    protected int y;
-
-    //the direction in which the combatant is facing. Double unneccassary?
-    //expressed in radians
-    //if memory serves, we will need to use atan2 most often, so the angle will work like atan2 needs it to: 0 is 3 o'clock, must be between [-1pi, 1pi], moves anticlockwise, 12 o'clock is pi/2, 6 o'clock is -pi/2.
-    protected float direction;
-    
-    //movement speed multiplier factor?
+    //movement speed multiplier factor? (not actual velocity)
     protected float speed;
-    
+
     //turn speed multiplier?
     //Note: possibly not using the agility factor, at least not for turning, we'll see, may be too annoying for mouse users etc.
     protected float agility;
-    
-    //could also have special attributes like speed or armour in the future.
-    
-    /*getters and setter*/
-    
+
+    //getters and setters
+    @Override
+    public int getHP()
+    {
+        return HP;
+    }
+
+    public void damage(int points){
+        int newHP = getHP()-points;
+        if(newHP < 0)
+        {
+            newHP = 0;
+        }
+        setHP(newHP);
+    }
+
+    public void heal(int points){
+       int newHP = getHP()+points;
+       if(newHP > MAX_HP){
+           newHP = MAX_HP;
+       }
+       setHP(newHP);
+    }
+
+    protected void setHP(int HP)
+    {
+        this.HP = HP;
+        if(HP <= 0)
+        {
+            //die(); // protected abstract void die();
+        }
+    }
+
     public String getName()
     {
         return name;
     }
 
-    public int getHitPoints()
+    public Color getColor()
     {
-        return hitPoints;
+        return color;
     }
 
-    public void setHitPoints(int hitPoints)
-    {
-        this.hitPoints = hitPoints;
-    }
-    //NOTE: not sure that every combatant should be allowed to get a name change yet, leaving it for now?
-    
-    public int getX()
-    {
-        return x;
-    }
-
-    public int getY()
-    {
-        return y;
-    }
-
-    /*
-    //do we want all combatants, including players, so have their x set? the server can forcedly update the position of enemies, but does that apply to players?, possible teleportation, etc
-    //no?
-    public void setX(int x)
-    {
-        this.x = x;
-    }
-
-    public void setY(int y)
-    {
-        this.y = y;
-    }
-    */
-
-    public float getDirection()
-    {
-        return direction;
-    }
-    
-    public void setDirection(float direction)
-    {
-        this.direction = direction;
-    }
-    
     public float getSpeed()
     {
         return speed;
     }
-    
+
     public void setSpeed(float speed)
     {
         this.speed = speed;
+        //update the vector.
+        setVel(
+                new PolarVector(
+                        polarVel.radius*this.speed,
+                        polarVel.angle
+                )
+        );
     }
-    
+
     public float getAgility()
     {
         return agility;
     }
-    
+
     public void setAgility(float agility)
     {
         this.agility = agility;
     }
-    
-    public Combatant(int hitPoints, String name, int id, Color color, int x, int y, float direction, float speed, float agility)
-    {
-        this.hitPoints = hitPoints;
-        this.name = name;
-        this.id = id;
-        this.color = color;
-        
-        //in the long run there will probably be a list of available spawn points for combatants provided by the map
-        //possibly even segregated into specific types
-        //so this code is temporary
-        //note: is it worth using a float for x and y? probably not.
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
 
-        this.speed = speed;        
-        this.agility = agility;
-    }
-    
-    /*
-     Some 'helper' functions all of which may not be kept
-    */
-    
+    //helpers
+
+    @Override
     public boolean isAlive()
     {
-        return hitPoints > 0;
+        return HP > 0;
     }
 
-    //NOTE: WHEN DOING LAGG MOVEMENT IT MIGHT BE USEFUL TO USE THE BASIC MOVE AND TURN FUNCTIONS FOR REMOTE ONES AS WELL, BUT IT MIGHT NOT, WE MIGHT JUST QUE EVENTS INSTEAD? WE'LL HAVE TO THINK ABOUT IT, TAKING THEM AWAY AND INTO THE FIGHTER CLASS FOR NOW THOUGH
+    @Override
+    public void kill(){
+        setHP(0);
+    }
 
-    //other methods
-
+    @Override
     public boolean isMapped()
     {
-        //using isAlive explicitly would mean that
+        return isAlive();
+    }
+
+    public Combatant(int id, String name, Color color)
+    {
+        super(
+                id,
+                0, //x
+                0, //y
+                DEF_HIT_RADIUS, //hitRadius
+                new PolarVector(0,0) //vector
+        );
+
+        this.name = name; // "Dummy_"+id;
+        HP = 0;
+        this.color = color;
+        hitRadius = DEF_HIT_RADIUS;
+        speed = DEF_SPEED;
+    }
+    public Combatant(int id, String name)
+    {
+        this(id, name, DEF_COLOR);
     }
 
     /**
-     * Spawn with the data specifiec
-     * @param x
-     * @param y
-     * @param direction
-     * @param hitPoints
+     * Checks whether or not it is alive, then moves normally
+     * @see protected void trig.game.entity.GenericMoving.move();
      */
-    public void spawn(int x, int y, float direction, int hitPoints)
+    @Override
+    protected void move()
     {
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
-        this.hitPoints = hitPoints;
+        if(isMapped()){
+            super.move();
+        }
     }
+
+    //TODO: BOUNDARY HIT MANAGEMENT IN GENERICMOVING
+
+    //TODO: MAKE STANDARD TURN FUNCTION, MAKE DEMO KEYBOARD EVENT STUFF MAYBE?
 }
 
-/*
-this is just some draftish notes right now?
-**
- * Speed and direction in which combatant will move, possibly for use by the server for anti-lag purposes
- * @author marcos
- *
-class Trajectory
-{
-
-   //Note: using a trajectory instead of just constantly updating current position may be useful for smoothing out lag?
-   //there could be a standard rate of deceleration used so that remote clients can have your combatant moving between updates, possibly?
-
-   //haven't decided to express angle, but I'm thinking thinking it should be done in a way that most simplifies the proccessing of each screen frame?
-   private float angle;
-
-
-   //to be used a multiplier rather than a base px per second etc.
-   //float/int not sure?
-   private float speed;
-
-}
-*/
+////Old version, only good for code scraps, etc
+//public abstract class Combatant implements Entity, Visible, Ambulant
+//{
+//    //constants
+//    //is there any reason for these to be public?
+//    //a standard amount by which to turn a combatant by at a time? 1/36th of a circle at a time maybe? experimental value
+//    protected static final float STANDARD_TURN = (float) (((float)1/18)*Math.PI);
+//
+//    //a standard amount by which to move at a time? not sure yet if will be expressed in px or something, but yeh. experimental value
+//    protected static final int STANDARD_DISTANCE = 5;
+//
+//    protected int hitPoints;
+//
+//    //No need to update name, ID, or color within a single match, so may aswell make them final and publically accessible?
+//
+//    protected String name;
+//
+//    //likely to correspond to the Combatant's position in some list?
+//    public final int id;
+//
+//    //color of the combatant
+//    //no setter by default, subclasses can make one if needed, most shouldn't though?
+//    public Color color;
+//
+//    private boolean spawned;
+//
+//    //cartesian coordinates
+//    protected int x;
+//    protected int y;
+//
+//    //the direction in which the combatant is facing. Double unneccassary?
+//    //expressed in radians
+//    //if memory serves, we will need to use atan2 most often, so the angle will work like atan2 needs it to: 0 is 3 o'clock, must be between [-1pi, 1pi], moves anticlockwise, 12 o'clock is pi/2, 6 o'clock is -pi/2.
+//    protected float direction;
+//
+//    //movement speed multiplier factor?
+//    protected float speed;
+//
+//    //turn speed multiplier?
+//    //Note: possibly not using the agility factor, at least not for turning, we'll see, may be too annoying for mouse users etc.
+//    protected float agility;
+//
+//    //could also have special attributes like speed or armour in the future.
+//
+//    /*getters and setter*/
+//
+//    public String getName()
+//    {
+//        return name;
+//    }
+//
+//    public int getHitPoints()
+//    {
+//        return hitPoints;
+//    }
+//
+//    public void setHitPoints(int hitPoints)
+//    {
+//        this.hitPoints = hitPoints;
+//    }
+//    //NOTE: not sure that every combatant should be allowed to get a name change yet, leaving it for now?
+//
+//    public int getX()
+//    {
+//        return x;
+//    }
+//
+//    public int getY()
+//    {
+//        return y;
+//    }
+//
+//    /*
+//    //do we want all combatants, including players, so have their x set? the server can forcedly update the position of enemies, but does that apply to players?, possible teleportation, etc
+//    //no?
+//    public void setX(int x)
+//    {
+//        this.x = x;
+//    }
+//
+//    public void setY(int y)
+//    {
+//        this.y = y;
+//    }
+//    */
+//
+//    public float getDirection()
+//    {
+//        return direction;
+//    }
+//
+//    public void setDirection(float direction)
+//    {
+//        this.direction = direction;
+//    }
+//
+//    public float getSpeed()
+//    {
+//        return speed;
+//    }
+//
+//    public void setSpeed(float speed)
+//    {
+//        this.speed = speed;
+//    }
+//
+//    public float getAgility()
+//    {
+//        return agility;
+//    }
+//
+//    public void setAgility(float agility)
+//    {
+//        this.agility = agility;
+//    }
+//
+//    public Combatant(int hitPoints, String name, int id, Color color, int x, int y, float direction, float speed, float agility)
+//    {
+//        this.hitPoints = hitPoints;
+//        this.name = name;
+//        this.id = id;
+//        this.color = color;
+//
+//        //in the long run there will probably be a list of available spawn points for combatants provided by the map
+//        //possibly even segregated into specific types
+//        //so this code is temporary
+//        //note: is it worth using a float for x and y? probably not.
+//        this.x = x;
+//        this.y = y;
+//        this.direction = MathUtils.normalise(direction);
+//
+//        this.speed = speed;
+//        this.agility = agility;
+//    }
+//
+//    /*
+//     Some 'helper' functions all of which may not be kept
+//    */
+//
+//    public boolean isAlive()
+//    {
+//        return hitPoints > 0;
+//    }
+//
+//    //NOTE: WHEN DOING LAGG MOVEMENT IT MIGHT BE USEFUL TO USE THE BASIC MOVE AND TURN FUNCTIONS FOR REMOTE ONES AS WELL, BUT IT MIGHT NOT, WE MIGHT JUST QUE EVENTS INSTEAD? WE'LL HAVE TO THINK ABOUT IT, TAKING THEM AWAY AND INTO THE FIGHTER CLASS FOR NOW THOUGH
+//
+//    //other methods
+//
+//    public boolean isMapped()
+//    {
+//        //using isAlive explicitly would mean that
+//    }
+//
+//    /**
+//     * Spawn with the data specifiec
+//     * @param x
+//     * @param y
+//     * @param direction
+//     * @param hitPoints
+//     */
+//    public void spawn(int x, int y, float direction, int hitPoints)
+//    {
+//        this.x = x;
+//        this.y = y;
+//        this.direction = direction;
+//        this.hitPoints = hitPoints;
+//    }
+//}

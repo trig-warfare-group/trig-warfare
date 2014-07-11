@@ -1,16 +1,19 @@
 package trig.game.entity;
 
+import java.awt.*;
+
 /**
  * Currently just a test class, for thinking about what immovable entities might need,
  * Created by marcos on 8/07/2014.
  */
-public class extends BasicEntity implements Destructible, Visible {
-    int x;
-    int y;
+public class StWall extends BasicEntity implements Destructible, Visible {
+    protected float direction;
+    StWall(int id, int x, int y, float direction, float hitRadius) {
+        super(id, x, y, hitRadius);
+        this.direction = direction;
+    }
 
-
-
-    @Override
+    //some standard size data?
     public boolean isTangible()
     {
         return true;
@@ -20,8 +23,7 @@ public class extends BasicEntity implements Destructible, Visible {
         return true;
     }
 
-    @Override
-    public void draw() {
+    public void draw(Graphics2D g) {
 
     }
 }
