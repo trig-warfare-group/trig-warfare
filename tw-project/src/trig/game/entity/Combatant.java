@@ -15,19 +15,20 @@ import java.awt.Color;
  */
 public abstract class Combatant extends GenericMoving implements Living, Visible
 {
-    //constants/semi defaults?
+    //constants/semi defaults? - NOT TO BE USED DEFAULTS, MAINLY
     protected static final float ST_TURN = (float) (((float)1/18)*Math.PI);
-    protected static final int ST_DIST = 3;
+    protected static final int ST_DIST = 1;
 
     //random defaults?
-    public static final int MAX_HP = 10;
+    public static final int DEF_HP = 10;
     public static final Color DEF_COLOR = Color.WHITE;
-    public static final float DEF_HIT_RADIUS = 25; //circle of diameter = 50
+    public static final float DEF_HIT_RADIUS = 0; //circle of diameter = 50
     public static final float DEF_SPEED = 1; //no multiplicative effect
 
     //vars
     protected String name;
-    protected int HP;
+    protected int hp;
+    protected int maxHp;
     protected Color color;
 
     //movement speed multiplier factor? (not actual velocity)
@@ -39,32 +40,32 @@ public abstract class Combatant extends GenericMoving implements Living, Visible
 
     //getters and setters
     @Override
-    public int getHP()
+    public int getHp()
     {
-        return HP;
+        return hp;
     }
 
     public void damage(int points){
-        int newHP = getHP()-points;
-        if(newHP < 0)
+        int newhp = getHp()-points;
+        if(newhp < 0)
         {
-            newHP = 0;
+            newhp = 0;
         }
-        setHP(newHP);
+        setHp(newhp);
     }
 
     public void heal(int points){
-       int newHP = getHP()+points;
-       if(newHP > MAX_HP){
-           newHP = MAX_HP;
+       int newhp = getHp()+points;
+       if(newhp > maxHp){
+           newhp = maxHp;
        }
-       setHP(newHP);
+       setHp(newhp);
     }
 
-    protected void setHP(int HP)
+    protected void setHp(int hp)
     {
-        this.HP = HP;
-        if(HP <= 0)
+        this.hp = hp;
+        if(hp <= 0)
         {
             //die(); // protected abstract void die();
         }
@@ -112,12 +113,12 @@ public abstract class Combatant extends GenericMoving implements Living, Visible
     @Override
     public boolean isAlive()
     {
-        return HP > 0;
+        return hp > 0;
     }
 
     @Override
     public void kill(){
-        setHP(0);
+        setHp(0);
     }
 
     @Override
@@ -126,25 +127,27 @@ public abstract class Combatant extends GenericMoving implements Living, Visible
         return isAlive();
     }
 
-    public Combatant(int id, String name, Color color)
+    public Combatant(/*int id,*/ String name, float hitRadius, int maxHp, Color color, float speed)
     {
         super(
-                id,
+                /*id,*/
                 0, //x
                 0, //y
-                DEF_HIT_RADIUS, //hitRadius
+                hitRadius, //hitRadius
                 new PolarVector(0,0) //vector
         );
 
         this.name = name; // "Dummy_"+id;
-        HP = 0;
+        this.hitRadius = hitRadius;
+        this.maxHp = maxHp;
         this.color = color;
-        hitRadius = DEF_HIT_RADIUS;
-        speed = DEF_SPEED;
+
+        this.speed = speed;
     }
-    public Combatant(int id, String name)
+    public Combatant(/*int id*/) //TODO: don't use this one in practice!, possibly remove most of the constants too.
     {
-        this(id, name, DEF_COLOR);
+        this(/*id,*/ "", DEF_HIT_RADIUS, DEF_HP, DEF_COLOR, DEF_SPEED);
+        name = "Combatant_"+id;
     }
 
     /**

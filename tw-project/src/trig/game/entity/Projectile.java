@@ -8,12 +8,12 @@ import trig.utility.vector.*;
  */
 public abstract class Projectile extends GenericMoving implements TickActor
 {
-    public Projectile(int id, int x, int y, float hitRadius, CartesianVector vector) {
-        super(id, x, y, hitRadius, vector);
+    public Projectile(/*int id,*/ int x, int y, float hitRadius, CartesianVector vector) {
+        super(/*id,*/ x, y, hitRadius, vector);
     }
 
-    public Projectile(int id, int x, int y, float hitRadius, PolarVector vector) {
-        super(id, x, y, hitRadius, vector);
+    public Projectile(/*int id,*/ int x, int y, float hitRadius, PolarVector vector) {
+        super(/*id,*/ x, y, hitRadius, vector);
     }
 
     /**

@@ -25,4 +25,6 @@ public class Methods
         }
         return angle;
     }
+    public static Variables DummyVars = new Variables();
+
 }

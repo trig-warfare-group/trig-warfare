@@ -7,11 +7,11 @@ package trig.game.entity;
  */
 public interface Entity
 {
-    final int id = 0;
+    //final long id = 0; doesn't work this way
 
     //IDEA: TANGIBILITY CAN BE CONTROLLED BY HITBOX SIZE TO A DEGREE, 0 = NOT TANGLIBLE
 
-
+    abstract public long getId();
     abstract public float getHitRadius();
 
     /*

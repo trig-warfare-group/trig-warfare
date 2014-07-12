@@ -17,10 +17,23 @@ public abstract class GenericMoving extends BasicEntity implements Ambulant{
     protected int velX;
     protected int velY;
 
-    GenericMoving(int id, int x, int y, float hitRadius) {
-        super(id, x, y, hitRadius);
+    GenericMoving(/*int id,*/ int x, int y, float hitRadius) {
+        super(/*id,*/ x, y, hitRadius);
     }
 
+    public GenericMoving(/*int id,*/ int x, int y, float hitRadius, CartesianVector vector)
+    {
+        //pipe these straight to the BasicEntity constructor.
+        super(/*id,*/ x, y, hitRadius);
+        this.setVel(vector);
+    }
+
+    public GenericMoving(/*int id,*/ int x, int y, float hitRadius, PolarVector vector)
+    {
+        //pipe these straight to the BasicEntity constructor.
+        super(/*id,*/ x, y, hitRadius);
+        this.setVel(vector);
+    }
     //getters & setters
     public PolarVector getPolarVel()
     {
@@ -55,19 +68,7 @@ public abstract class GenericMoving extends BasicEntity implements Ambulant{
         velY = Math.round(cartVel.y);
     }
 
-    public GenericMoving(int id, int x, int y, float hitRadius, CartesianVector vector)
-    {
-        //pipe these straight to the BasicEntity constructor.
-        super(id, x, y, hitRadius);
-        this.setVel(vector);
-    }
 
-    public GenericMoving(int id, int x, int y, float hitRadius, PolarVector vector)
-    {
-        //pipe these straight to the BasicEntity constructor.
-        super(id, x, y, hitRadius);
-        this.setVel(vector);
-    }
 
     /**
      * Standard movement method for projectiles, just moves by velocity.

@@ -6,24 +6,34 @@ import trig.utility.vector.*;
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 /**
- * Dummy/test class
+ * (Dummy/test) temporary test implementation of Combatant, MAY CONTAIN UNWANTED HARD-CODED DATA/INEFFICIENCIES, REUSE WITH CAUTION
+ * NOTE: MAKE CONTAIN A HELPFUL TEMPLATE FOR FIRING PROJECTILES.
  * Created by marcos on 11/07/2014.
  */
-public class DummyTriangle extends Combatant implements TickActor
+public final class DummyTriangle extends Combatant implements TickActor
 {
     public static final Color DEF_COLOR = Color.WHITE;
+    public static final int PROJECTILE_LIMIT = 100;
     private int step = 0;
     private Random r = new Random();
-    public DummyTriangle(int id)
+
+    private ArrayList<Projectile> projectiles = new ArrayList<Projectile>(); //is this a good or bad way to do this? DUNNO, only a demo..
+
+    public DummyTriangle()
     {
         super(
-                id, //id
-                "Dummy_" + id //name
+                /*id, //id*/
+                "", //name,
+                (float) 25, //hitRadius
+                10, //hp
+                Color.WHITE, //appease compiler by putting super() first
+                1//speed
         );
+        name = "Dummy_" + id;
         color = new Color(
                 r.nextInt((250 - 75) + 1) + 75,
                 r.nextInt((250 - 75) + 1) + 75,
@@ -41,9 +51,10 @@ public class DummyTriangle extends Combatant implements TickActor
         {
             //forced-move along the relevant axis to the exact edge for non-collision, or back one further? (exact because we used the > comparison, not >=?
             x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
-        }else if(x - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        }
+        else if(x - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
         {
-            x = Constants.WORLD_COLLISION_PADDING + (int) hitRadius - 1;
+            x = Constants.WORLD_COLLISION_PADDING + Math.round(hitRadius) - 1;
         }
 
         //not else if for x/y, both could occur
@@ -51,9 +62,10 @@ public class DummyTriangle extends Combatant implements TickActor
         {
             //forced-move along the relevant axis to the exact edge for non-collision, or back one further? (exact because we used the > comparison, not >=?
             y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
-        }else if(y - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        }
+        else if(y - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
         {
-            y = Constants.WORLD_COLLISION_PADDING + (int) hitRadius - 1;
+            y = Constants.WORLD_COLLISION_PADDING + Math.round(hitRadius) - 1;
         }
     }
 
@@ -64,7 +76,7 @@ public class DummyTriangle extends Combatant implements TickActor
 
 
         //reset life-specific data
-        HP = MAX_HP; //no point in entities having HP if its 0, one-hit-ko creatures should probably not even have
+        hp = maxHp; //no point in entities having hp if its 0, one-hit-ko creatures should probably not even have
         speed = DEF_SPEED;
 
         int newX;
@@ -87,14 +99,18 @@ public class DummyTriangle extends Combatant implements TickActor
 
     }
 
+    private void fireProjectile(Projectile munition) //bad name?
+    {
+        projectiles.add(munition); //NOTE/TODO: DOES NOT ADD TO THE ENTITY LIST, THIS IS IMPORTANT, I THINK, ETC.
+        if(projectiles.size() > PROJECTILE_LIMIT)
+        {
+            projectiles.remove(0); //remove last
+        }
+    }
+
     @Override
     public void draw(Graphics2D g)
     {
-        //white hitbox?
-        g.setColor(Color.WHITE);
-
-        int approxHitDiameter = Math.round(hitRadius*2);
-        g.drawOval((int) (x-hitRadius), (int) (y-hitRadius), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo
         //get the color right
         g.setColor(color);
 
@@ -103,7 +119,7 @@ public class DummyTriangle extends Combatant implements TickActor
         //terrible name for this, but I'm tired and it's just an example..
         //absolute of the angle to rotate by against point A, to get points B and C
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
-        float rotationAngle = (float) ( ( (float) 3 / 5 ) * Math.PI);
+        float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
         PolarVector frontPolar = new PolarVector(hitRadius, polarVel.angle);
 
         //A,B,C points of the triangle, these are vector, and not real locations, as such they use the location of the entity as the origin, they must later be converted to locations.
@@ -140,22 +156,40 @@ public class DummyTriangle extends Combatant implements TickActor
         g.draw(new Line2D.Float(lA.x, lA.y, lC.x, lC.y));
         g.draw(new Line2D.Float(lB.x, lB.y, lC.x, lC.y));
         //draw the name of the triangle above it
-        g.drawString(name, x-(hitRadius/2), (float) (y-hitRadius*1.2));
+        float textBaseline = (float) (y-hitRadius*1.2);
+
+        g.drawString(x+", "+y, Math.round(x-(hitRadius/1.2)), (float) (textBaseline));
+        g.drawString(name, x-(hitRadius), (float) (textBaseline-15));
+        g.drawString("HP: "+hp, Math.round(x-(hitRadius/1.5)), (float) (textBaseline-30));
+
+        g.setColor(Color.RED);
+
+        int approxHitDiameter = Math.round(hitRadius*2);
+        g.drawOval((int) (x-hitRadius), (int) (y-hitRadius), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo, HITBOX
 
         //g.drawString(Float.toString(polarVel.angle), x-(hitRadius/2)-10, (float) (y-hitRadius*1.2)-10);
+
+        //draw sub projectiles, shit way of doing it, ik.
+        for(Entity e: projectiles)
+        {
+            if(e instanceof Visible && e.isMapped())
+            {
+                ((Visible) e).draw(g);
+            }
+        }
     }
 
     @Override
     public void onTick()
     {
-        if(step == 500)
+        if(step == 2000)
         {
             //kill();
             //spawn();
             //reset
             step = 0;
         }
-        else if(step % 100 == 0) //prime number, to prevent turning and moving, for now, I think it will anyway.
+        else if(step % 500 == 0) //prime number, to prevent turning and moving, for now, I think it will anyway.
         {
 
             //randomise direction!
@@ -164,7 +198,18 @@ public class DummyTriangle extends Combatant implements TickActor
         }
         else
         {
+            if(step % 50 == 0)
+            {
+                fireProjectile(new DummyBullet(Math.round(x+hitRadius), Math.round(y+hitRadius), polarVel.angle));
+            }
             move();
+            for(Entity e: projectiles)
+            {
+                if (e instanceof TickActor)
+                {
+                    ((TickActor) e).onTick();
+                }
+            }
         }
         step++;
     }

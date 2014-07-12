@@ -13,6 +13,7 @@ import trig.game.entity.TickActor;
 import trig.game.entity.Visible;
 import trig.listener.GameListener;
 import trig.utility.Constants;
+import trig.utility.Methods;
 import trig.view.GameView;
 
 /**
@@ -30,7 +31,6 @@ public class GameClient
 	private boolean gameRunning = true;
 
     //temp/cheap engine-demo stuff
-    private long last_id = 0; //need some way to loop this back eventually maybe?
     private ArrayList<Entity> entities = new ArrayList<Entity>(); //may use hashSet instead, idk;
     private Font bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
     private Font lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
@@ -43,10 +43,10 @@ public class GameClient
 
         g.setFont(bigFont);
         g.setColor(Color.WHITE);
-        g.drawString("Game-Mechanics", Constants.WINDOW_DIMENSION.width/2 - 200, 325);
-
+        g.drawString("Game-Mechanics", Constants.WINDOW_DIMENSION.width / 2 - 200, 325);
         g.setFont(lilFont);
 
+        g.drawString("Entities Created: "+Long.toString(Methods.DummyVars.getLastEntityId())+" Max Entities living: ~"+Integer.toString(DummyTriangle.PROJECTILE_LIMIT*entities.size()+entities.size()), Constants.WORLD_COLLISION_PADDING-1, Constants.WINDOW_DIMENSION.height-Constants.WORLD_COLLISION_PADDING-1);
         for(Entity e: entities)
         {
             if(e instanceof Visible && e.isMapped())
@@ -62,7 +62,7 @@ public class GameClient
             if(step % 25 == 0)
             {
                 entities.add(
-                        new DummyTriangle((int) last_id++) //++ should increment after use, right
+                        new DummyTriangle() //++ should increment after use, right
                 );
             }
             step++;

@@ -11,7 +11,7 @@ public interface Living {
      * Gets the HP held by the player
      * @return amount of HP the entity has, possibility influenced by stats in the future
      */
-    abstract public int getHP();
+    abstract public int getHp();
     /**
      * Deals a given amount of damage to the entity, possibility influenced by stats in the future
      */
