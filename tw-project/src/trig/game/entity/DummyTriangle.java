@@ -17,20 +17,44 @@ public class DummyTriangle extends Combatant implements TickActor
 {
     public static final Color DEF_COLOR = Color.WHITE;
     private int step = 0;
-
+    private Random r = new Random();
     public DummyTriangle(int id)
     {
         super(
                 id, //id
                 "Dummy_" + id //name
         );
-        Random r = new Random();
         color = new Color(
                 r.nextInt((250 - 75) + 1) + 75,
                 r.nextInt((250 - 75) + 1) + 75,
                 r.nextInt((250 - 75) + 1) + 75
         ); //random
         spawn();
+    }
+
+    @Override
+    protected void move()
+    {
+        super.move();
+        //rough, circle based edge-detection, temporary, handle in collisions later!!!
+        if( x + hitRadius > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
+        {
+            //forced-move along the relevant axis to the exact edge for non-collision, or back one further? (exact because we used the > comparison, not >=?
+            x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
+        }else if(x - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        {
+            x = Constants.WORLD_COLLISION_PADDING + (int) hitRadius - 1;
+        }
+
+        //not else if for x/y, both could occur
+        if( y + hitRadius > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
+        {
+            //forced-move along the relevant axis to the exact edge for non-collision, or back one further? (exact because we used the > comparison, not >=?
+            y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
+        }else if(y - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        {
+            y = Constants.WORLD_COLLISION_PADDING + (int) hitRadius - 1;
+        }
     }
 
     @Override
@@ -48,11 +72,11 @@ public class DummyTriangle extends Combatant implements TickActor
         float newDirection;
         do
         {
-            newX = (int) (Math.random() * Constants.WINDOW_DIMENSION.width-hitRadius-21); //little extra padding? //REPLACE THIS VAL WITH BOUDARY RELEVANT STUFF
-            newY = (int) (Math.random() * Constants.WINDOW_DIMENSION.height-hitRadius-21);
+            newX = (int) (r.nextInt() * ( (Constants.WINDOW_DIMENSION.width-1 - hitRadius) + 1) + hitRadius); //little extra padding? //REPLACE THIS VAL WITH BOUDARY RELEVANT STUFF
+            newY = (int) (r.nextInt() * ( (Constants.WINDOW_DIMENSION.width-1 - hitRadius) + 1) + hitRadius);
 
         }while(false); //!canSpawnAt(x, y) (pseudocode)
-        newDirection = (float) Math.random() * 2 - 1; //between [-1,1], I think
+        newDirection = (float) ( ( (r.nextFloat() * 2) - 1 ) * Math.PI ); //between [-1,1], I think; //between [-1,1], I think
 
         //NOTE: FOR SAFETY WE REALLY NEED TO LIMIT THE NUMBER OF LOOPS SOMEHOW!
 
@@ -66,11 +90,13 @@ public class DummyTriangle extends Combatant implements TickActor
     @Override
     public void draw(Graphics2D g)
     {
+        //white hitbox?
+        g.setColor(Color.WHITE);
+
+        int approxHitDiameter = Math.round(hitRadius*2);
+        g.drawOval((int) (x-hitRadius), (int) (y-hitRadius), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo
         //get the color right
         g.setColor(color);
-
-        //temporary boundary data for basic version
-        int mapSize = 400;
 
         //direction-corrected isosceles triangle!, I hope..
 
@@ -91,7 +117,7 @@ public class DummyTriangle extends Combatant implements TickActor
                 (float) ( polarVel.angle - rotationAngle)
         );
 
-        //real coords of A,B,C
+        //real coords of A,B,C, seems a bit inefficient to create new objects for them unnecessarily, but this is only a demo for now.
         Location lA = new Location(
                 x+vA.x,
                 y+vA.y
@@ -115,22 +141,25 @@ public class DummyTriangle extends Combatant implements TickActor
         g.draw(new Line2D.Float(lB.x, lB.y, lC.x, lC.y));
         //draw the name of the triangle above it
         g.drawString(name, x-(hitRadius/2), (float) (y-hitRadius*1.2));
+
+        //g.drawString(Float.toString(polarVel.angle), x-(hitRadius/2)-10, (float) (y-hitRadius*1.2)-10);
     }
 
     @Override
     public void onTick()
     {
-        if(step == 200)
+        if(step == 500)
         {
-            kill();
-            spawn();
+            //kill();
+            //spawn();
             //reset
             step = 0;
         }
-        else if(step % 40 == 0) //prime number, to prevent turning and moving, for now, I think it will anyway.
+        else if(step % 100 == 0) //prime number, to prevent turning and moving, for now, I think it will anyway.
         {
+
             //randomise direction!
-            float newDirection = (float) Math.random() * 2 - 1; //between [-1,1], I think
+            float newDirection = (float) ( ( (r.nextFloat() * 2) - 1 ) * Math.PI ); //between [-1,1], I think
             setVel(new PolarVector(ST_DIST*speed, newDirection));
         }
         else

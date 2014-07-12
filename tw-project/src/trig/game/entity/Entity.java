@@ -11,8 +11,13 @@ public interface Entity
 
     //IDEA: TANGIBILITY CAN BE CONTROLLED BY HITBOX SIZE TO A DEGREE, 0 = NOT TANGLIBLE
 
+
     abstract public float getHitRadius();
 
+    /*
+        maybe:
+        abstract public float getHitDiameter(); //hitRadius*2, ofc
+    */
     //safety check to determine whether or not we can look at the x or y of the object, also, objects that aren't mapped shouldn't be drawn, or collided with
     abstract public boolean isMapped();
 

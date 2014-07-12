@@ -77,17 +77,6 @@ public abstract class GenericMoving extends BasicEntity implements Ambulant{
         int newX = x+velX;
         int newY = y+velY;
 
-        /*
-        //outOfMap is pseudocode since we don't have map boundaries defined yet, etc.
-        if(outOfMap(newX, newY))
-        {
-            newX = mapBoundaryAlongTheObjectTrajectory;
-            newY = mapBoundaryAlongTheObjectTrajectory;
-        }
-
-        //mapboundary collision event will get raised externally, if applicable
-        */
-
         x = newX;
         y = newY;
     }

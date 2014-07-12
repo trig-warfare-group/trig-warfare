@@ -6,10 +6,6 @@
 
 package trig.game.entity;
 
-import trig.utility.MathUtils;
-
-import java.awt.Color;
-
 /**
  * Class for the Player, may later adjust it as a base for AI Combatants
  * massively outdated, only good for stripping for parts.

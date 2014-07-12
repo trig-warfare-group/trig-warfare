@@ -1,6 +1,6 @@
 package trig.utility.vector;
 
-import trig.utility.MathUtils;
+import trig.utility.Methods;
 
 /**
  * Vector in the form of Radius, Angle, explicitly starting at the origin
@@ -16,7 +16,7 @@ public class PolarVector implements Vector
     public PolarVector(float radius, float angle)
     {
         this.radius = radius;
-        this.angle = MathUtils.normalise(angle);
+        this.angle = Methods.normalise(angle);
     }
 
     /**
@@ -27,7 +27,7 @@ public class PolarVector implements Vector
     public static CartesianVector toCartesian(float radius, float angle)
     {
         //make sure to normalise
-        angle = MathUtils.normalise(angle);
+        angle = Methods.normalise(angle);
         return new CartesianVector
         (
                 (float) (radius*Math.cos(angle)), //x
