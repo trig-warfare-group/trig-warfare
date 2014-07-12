@@ -49,7 +49,7 @@ public final class DummyTriangle extends Combatant implements TickActor
         //rough, circle based edge-detection, temporary, handle in collisions later!!!
         if( x + hitRadius > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
         {
-            //forced-move along the relevant axis to the exact edge for non-collision, or back one further? (exact because we used the > comparison, not >=?
+            //force-move to exact edge
             x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
         }
         else if(x - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
@@ -57,10 +57,8 @@ public final class DummyTriangle extends Combatant implements TickActor
             x = Constants.WORLD_COLLISION_PADDING + Math.round(hitRadius) - 1;
         }
 
-        //not else if for x/y, both could occur
-        if( y + hitRadius > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
+        if( y + hitRadius > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1) )
         {
-            //forced-move along the relevant axis to the exact edge for non-collision, or back one further? (exact because we used the > comparison, not >=?
             y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
         }
         else if(y - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
