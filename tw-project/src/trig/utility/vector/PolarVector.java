@@ -8,7 +8,7 @@ import trig.utility.Methods;
  * like Python tuples!, or Java Double(the class)
  * Created by marcos on 11/07/2014.
  */
-public class PolarVector implements Vector
+public class PolarVector
 {
     public final float radius;
     public final float angle;

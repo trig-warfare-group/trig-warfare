@@ -13,17 +13,17 @@ public abstract class BasicEntity implements Entity
     protected int x;
     protected int y;
 
-    //size of the hitbox around the entity, for collisions, etc
-    protected float hitRadius; //TODO: THIS SHOULD BE AN INT UNLESS COORDS BECOME FLOATS TOO!
+    //size of the (most basic/draft) hitbox around the entity, for collisions, etc
+    protected int hitSize; //TODO: THIS SHOULD BE AN INT UNLESS COORDS BECOME FLOATS TOO!
 
     public long getId()
     {
         return id;
     }
 
-    public float getHitRadius()
+    public int getHitSize()
     {
-        return hitRadius;
+        return hitSize;
     }
 
     public int getX() {
@@ -34,10 +34,10 @@ public abstract class BasicEntity implements Entity
         return y;
     }
 
-    BasicEntity(/*int id,*/ int x, int y, float hitRadius){ //TODO: fix where id comes from, etc.
+    BasicEntity(/*int id,*/ int x, int y, int hitSize){ //TODO: fix where id comes from, etc, probably needs to be able to recycle, or refresh periodically?
         this.id = Methods.DummyVars.getNextEntityId();
         this.x = x;
         this.y = y;
-        this.hitRadius = hitRadius;
+        this.hitSize = hitSize;
     }
 }

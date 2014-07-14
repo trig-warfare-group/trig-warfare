@@ -18,7 +18,7 @@ public final class DummyBullet extends Projectile implements Destructible, Visib
     public DummyBullet(int x, int y, float direction) {
 
         super(/*id,*/ x, y,
-                3, //hitRadius,
+                3, //hitSize,
                 new PolarVector(7, direction) //velocity = 4
         );
         name = "DBullet_" + id;
@@ -41,31 +41,31 @@ public final class DummyBullet extends Projectile implements Destructible, Visib
         super.move();
 
         //rough, circle based edge-detection, temporary, handle in collisions later!!!
-        if( x + hitRadius > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
+        if( x + hitSize > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
         {
             //forced-move along the relevant axis to the exact edge for non-collision, or back one further? (exact because we used the > comparison, not >=?
-            x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
+            x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitSize) - 1;
 
             //destroy
         }
-        else if(x - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        else if(x - hitSize < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
         {
-            x = Constants.WORLD_COLLISION_PADDING + Math.round(hitRadius) - 1;
+            x = Constants.WORLD_COLLISION_PADDING + Math.round(hitSize) - 1;
 
             //destroy
         }
 
         //not else if for x/y, both could occur
-        if( y + hitRadius > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
+        if( y + hitSize > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
         {
             //forced-move along the relevant axis to the exact edge for non-collision, or back one further? (exact because we used the > comparison, not >=?
-            y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
+            y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitSize) - 1;
 
             //destroy
         }
-        else if(y - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        else if(y - hitSize < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
         {
-            y = Constants.WORLD_COLLISION_PADDING + Math.round(hitRadius) - 1;
+            y = Constants.WORLD_COLLISION_PADDING + Math.round(hitSize) - 1;
 
             //destroy
         }
@@ -73,26 +73,26 @@ public final class DummyBullet extends Projectile implements Destructible, Visib
     }
 
 
-    @Override
-    public void draw(Graphics2D g)
-    {
-        g.setColor(color);
-
-        int approxHitDiameter = Math.round(hitRadius*2);
-        g.fillOval((int) (x-hitRadius), (int) (y-hitRadius), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo
-        //get the color right
-        g.setColor(color);
-
-        //draw the name of the triangle above it
-        float textBaseline = (float) (y-hitRadius*1.2);
-
-        /*
-        g.drawString(x+", "+y, Math.round(x-(hitRadius/1.2)), (float) (textBaseline));
-        g.drawString(name, x-(hitRadius), (float) (textBaseline-15));
-        */
-        g.setColor(Color.RED);
-        g.drawOval((int) (x-hitRadius), (int) (y-hitRadius), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo
-    }
+//    @Override
+//    public void draw(Graphics2D g)
+//    {
+//        g.setColor(color);
+//
+//        int approxHitDiameter = Math.round(hitSize*2);
+//        g.fillOval((int) (x-hitSize), (int) (y-hitSize), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo
+//        //get the color right
+//        g.setColor(color);
+//
+//        //draw the name of the triangle above it
+//        float textBaseline = (float) (y-hitSize*1.2);
+//
+//        /*
+//        g.drawString(x+", "+y, Math.round(x-(hitSize/1.2)), (float) (textBaseline));
+//        g.drawString(name, x-(hitSize), (float) (textBaseline-15));
+//        */
+//        g.setColor(Color.RED);
+//        g.drawOval((int) (x-hitSize), (int) (y-hitSize), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo
+//    }
 
     //TODO: WRITE DESTRUCTION LISTENER INTO ENGINE, ETC?
 }

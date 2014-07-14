@@ -14,7 +14,7 @@ import java.util.Random;
  * NOTE: MAKE CONTAIN A HELPFUL TEMPLATE FOR FIRING PROJECTILES.
  * Created by marcos on 11/07/2014.
  */
-public final class DummyTriangle extends Combatant implements TickActor
+public final class DummyTriangle extends Combatant implements updateListener
 {
     public static final Color DEF_COLOR = Color.WHITE;
     public static final int PROJECTILE_LIMIT = 100;
@@ -28,7 +28,7 @@ public final class DummyTriangle extends Combatant implements TickActor
         super(
                 /*id, //id*/
                 "", //name,
-                (float) 25, //hitRadius
+                25, //hitSize
                 10, //hp
                 Color.WHITE, //appease compiler by putting super() first
                 1//speed
@@ -47,23 +47,23 @@ public final class DummyTriangle extends Combatant implements TickActor
     {
         super.move();
         //rough, circle based edge-detection, temporary, handle in collisions later!!!
-        if( x + hitRadius > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
+        if( x + hitSize > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1) ) //it's always -1 at the end, since the largest val is width-1, etc
         {
             //force-move to exact edge
-            x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
+            x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitSize) - 1;
         }
-        else if(x - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        else if(x - hitSize < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
         {
-            x = Constants.WORLD_COLLISION_PADDING + Math.round(hitRadius) - 1;
+            x = Constants.WORLD_COLLISION_PADDING + Math.round(hitSize) - 1;
         }
 
-        if( y + hitRadius > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1) )
+        if( y + hitSize > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1) )
         {
-            y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitRadius) - 1;
+            y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitSize) - 1;
         }
-        else if(y - hitRadius < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        else if(y - hitSize < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
         {
-            y = Constants.WORLD_COLLISION_PADDING + Math.round(hitRadius) - 1;
+            y = Constants.WORLD_COLLISION_PADDING + Math.round(hitSize) - 1;
         }
     }
 
@@ -82,8 +82,8 @@ public final class DummyTriangle extends Combatant implements TickActor
         float newDirection;
         do
         {
-            newX = (int) (r.nextInt() * ( (Constants.WINDOW_DIMENSION.width-1 - hitRadius) + 1) + hitRadius); //little extra padding? //REPLACE THIS VAL WITH BOUDARY RELEVANT STUFF
-            newY = (int) (r.nextInt() * ( (Constants.WINDOW_DIMENSION.width-1 - hitRadius) + 1) + hitRadius);
+            newX = (int) (r.nextInt() * ( (Constants.WINDOW_DIMENSION.width-1 - hitSize) + 1) + hitSize); //little extra padding? //REPLACE THIS VAL WITH BOUDARY RELEVANT STUFF
+            newY = (int) (r.nextInt() * ( (Constants.WINDOW_DIMENSION.width-1 - hitSize) + 1) + hitSize);
 
         }while(false); //!canSpawnAt(x, y) (pseudocode)
         newDirection = (float) ( ( (r.nextFloat() * 2) - 1 ) * Math.PI ); //between [-1,1], I think; //between [-1,1], I think
@@ -118,16 +118,16 @@ public final class DummyTriangle extends Combatant implements TickActor
         //absolute of the angle to rotate by against point A, to get points B and C
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
         float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
-        PolarVector frontPolar = new PolarVector(hitRadius, polarVel.angle);
+        PolarVector frontPolar = new PolarVector(hitSize, polarVel.angle);
 
         //A,B,C points of the triangle, these are vector, and not real locations, as such they use the location of the entity as the origin, they must later be converted to locations.
         CartesianVector vA = frontPolar.toCartesian();
         CartesianVector vB = PolarVector.toCartesian(
-                hitRadius,
+                hitSize,
                 (float) ( polarVel.angle + rotationAngle)
         );
         CartesianVector vC = PolarVector.toCartesian(
-                hitRadius,
+                hitSize,
                 (float) ( polarVel.angle - rotationAngle)
         );
 
@@ -154,18 +154,18 @@ public final class DummyTriangle extends Combatant implements TickActor
         g.draw(new Line2D.Float(lA.x, lA.y, lC.x, lC.y));
         g.draw(new Line2D.Float(lB.x, lB.y, lC.x, lC.y));
         //draw the name of the triangle above it
-        float textBaseline = (float) (y-hitRadius*1.2);
+        float textBaseline = (float) (y-hitSize*1.2);
 
-        g.drawString(x+", "+y, Math.round(x-(hitRadius/1.2)), (float) (textBaseline));
-        g.drawString(name, x-(hitRadius), (float) (textBaseline-15));
-        g.drawString("HP: "+hp, Math.round(x-(hitRadius/1.5)), (float) (textBaseline-30));
+        g.drawString(x+", "+y, Math.round(x-(hitSize/1.2)), (float) (textBaseline));
+        g.drawString(name, x-(hitSize), (float) (textBaseline-15));
+        g.drawString("HP: "+hp, Math.round(x-(hitSize/1.5)), (float) (textBaseline-30));
 
         g.setColor(Color.RED);
 
-        int approxHitDiameter = Math.round(hitRadius*2);
-        g.drawOval((int) (x-hitRadius), (int) (y-hitRadius), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo, HITBOX
+        int approxHitDiameter = Math.round(hitSize*2);
+        g.drawOval((int) (x-hitSize), (int) (y-hitSize), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo, HITBOX
 
-        //g.drawString(Float.toString(polarVel.angle), x-(hitRadius/2)-10, (float) (y-hitRadius*1.2)-10);
+        //g.drawString(Float.toString(polarVel.angle), x-(hitSize/2)-10, (float) (y-hitSize*1.2)-10);
 
         //draw sub projectiles, shit way of doing it, ik.
         for(Entity e: projectiles)
@@ -198,14 +198,14 @@ public final class DummyTriangle extends Combatant implements TickActor
         {
             if(step % 50 == 0)
             {
-                fireProjectile(new DummyBullet(Math.round(x+hitRadius), Math.round(y+hitRadius), polarVel.angle));
+                fireProjectile(new DummyBullet(Math.round(x+hitSize), Math.round(y+hitSize), polarVel.angle));
             }
             move();
             for(Entity e: projectiles)
             {
-                if (e instanceof TickActor)
+                if (e instanceof updateListener)
                 {
-                    ((TickActor) e).onTick();
+                    ((updateListener) e).onTick();
                 }
             }
         }

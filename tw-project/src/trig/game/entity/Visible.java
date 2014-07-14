@@ -15,14 +15,32 @@ public interface Visible {
      * Method to draw the object on the screen
      * does not, for now rely on external image assets etc
      */
-    abstract public void draw(Graphics2D g);
+    //abstract public void draw(Graphics2D g);
 
+    /**
+     * Gets the Shape that represents the Entity visually
+     * @return a Shape object for the game to draw
+     */
+    abstract public Shape getShape();
     /*
         NEEDS:
         public twPolygon getPolygon();
         public float getFacingDir();
         the gist is basically having a polygon class, which is a series of PolarVectors, which can then have their angle adjusted by the angle from getFacingDir(), and be converted to a CartesianVector, which can then be drawn.
     */
+
+    /**
+     * Gets the visual facing-direction of the entity.
+     * @return an angle, expressed in radians, by which to rotate the entity's shape for drawing, defaults to 0 (west)
+     */
+    abstract public float getDirection();
+
+    /**
+     * Determines if the entity is currently visible. Allows entities to change visibility dynamically.
+     * QUESTION: WOULD AN EMPTY SHAPE BE AS EFFICIENT/MORE?
+     * @return
+     */
+    abstract public boolean isVisible();
 
 
 

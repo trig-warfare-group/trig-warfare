@@ -6,14 +6,14 @@ import trig.utility.vector.*;
  * Base class for objects that mostly move in a straight line, such as bullets
  * Created by marcos on 10/07/14.
  */
-public abstract class Projectile extends GenericMoving implements TickActor
+public abstract class Projectile extends GenericMoving implements updateListener
 {
-    public Projectile(/*int id,*/ int x, int y, float hitRadius, CartesianVector vector) {
-        super(/*id,*/ x, y, hitRadius, vector);
+    public Projectile(/*int id,*/ int x, int y, int hitSize, CartesianVector vector) {
+        super(/*id,*/ x, y, hitSize, vector);
     }
 
-    public Projectile(/*int id,*/ int x, int y, float hitRadius, PolarVector vector) {
-        super(/*id,*/ x, y, hitRadius, vector);
+    public Projectile(/*int id,*/ int x, int y, int hitSize, PolarVector vector) {
+        super(/*id,*/ x, y, hitSize, vector);
     }
 
     /**

@@ -4,12 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import trig.game.entity.DummyTriangle;
 import trig.game.entity.Entity;
-import trig.game.entity.TickActor;
+import trig.game.entity.updateListener;
 import trig.game.entity.Visible;
 import trig.listener.GameListener;
 import trig.utility.Constants;
@@ -38,8 +36,10 @@ public class GameClient
 
     public void tempEngineDemoRender(Graphics2D g)
     {
+        /*
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, Constants.WINDOW_DIMENSION.width, Constants.WINDOW_DIMENSION.height);
+        */
 
         g.setFont(bigFont);
         g.setColor(Color.WHITE);
@@ -69,9 +69,9 @@ public class GameClient
         }
         for(Entity e: entities)
         {
-            if(e instanceof TickActor)
+            if(e instanceof updateListener)
             {
-                ((TickActor) e).onTick();
+                ((updateListener) e).onTick();
             }
         }
     }
@@ -115,7 +115,6 @@ public class GameClient
             
             //for(int i = 0; i < c.length; i++)
             //    g.drawOval(c[i].x, c[i].y, c[i].r, c[i].r);
-
             tempEngineDemoRender(g);
             
 	}

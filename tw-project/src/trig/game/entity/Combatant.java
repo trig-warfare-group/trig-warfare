@@ -127,28 +127,30 @@ public abstract class Combatant extends GenericMoving implements Living, Visible
         return isAlive();
     }
 
-    public Combatant(/*int id,*/ String name, float hitRadius, int maxHp, Color color, float speed)
+    public Combatant(/*int id,*/ String name, int hitSize, int maxHp, Color color, float speed)
     {
         super(
                 /*id,*/
                 0, //x
                 0, //y
-                hitRadius, //hitRadius
+                hitSize, //hitSize
                 new PolarVector(0,0) //vector
         );
 
         this.name = name; // "Dummy_"+id;
-        this.hitRadius = hitRadius;
+        this.hitSize = hitSize;
         this.maxHp = maxHp;
         this.color = color;
 
         this.speed = speed;
     }
-    public Combatant(/*int id*/) //TODO: don't use this one in practice!, possibly remove most of the constants too.
-    {
-        this(/*id,*/ "", DEF_HIT_RADIUS, DEF_HP, DEF_COLOR, DEF_SPEED);
-        name = "Combatant_"+id;
-    }
+
+
+//    public Combatant(/*int id*/) //TODO: don't use this one in practice!, possibly remove most of the constants too.
+//    {
+//        this(/*id,*/ "", DEF_HIT_RADIUS, DEF_HP, DEF_COLOR, DEF_SPEED);
+//        name = "Combatant_"+id;
+//    }
 
     /**
      * Checks whether or not it is alive, then moves normally

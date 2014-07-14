@@ -12,7 +12,12 @@ public interface Entity
     //IDEA: TANGIBILITY CAN BE CONTROLLED BY HITBOX SIZE TO A DEGREE, 0 = NOT TANGLIBLE
 
     abstract public long getId();
-    abstract public float getHitRadius();
+
+    /**
+     * used to create a very rough hitbox, for broad collision detection.
+     * @return
+     */
+    abstract public int getHitSize();
 
     /*
         maybe:

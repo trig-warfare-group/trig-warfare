@@ -17,21 +17,21 @@ public abstract class GenericMoving extends BasicEntity implements Ambulant{
     protected int velX;
     protected int velY;
 
-    GenericMoving(/*int id,*/ int x, int y, float hitRadius) {
-        super(/*id,*/ x, y, hitRadius);
+    GenericMoving(/*int id,*/ int x, int y, int hitSize) {
+        super(/*id,*/ x, y, hitSize);
     }
 
-    public GenericMoving(/*int id,*/ int x, int y, float hitRadius, CartesianVector vector)
+    public GenericMoving(/*int id,*/ int x, int y, int hitSize, CartesianVector vector)
     {
         //pipe these straight to the BasicEntity constructor.
-        super(/*id,*/ x, y, hitRadius);
+        super(/*id,*/ x, y, hitSize);
         this.setVel(vector);
     }
 
-    public GenericMoving(/*int id,*/ int x, int y, float hitRadius, PolarVector vector)
+    public GenericMoving(/*int id,*/ int x, int y, int hitSize, PolarVector vector)
     {
         //pipe these straight to the BasicEntity constructor.
-        super(/*id,*/ x, y, hitRadius);
+        super(/*id,*/ x, y, hitSize);
         this.setVel(vector);
     }
     //getters & setters

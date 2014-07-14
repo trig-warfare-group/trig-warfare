@@ -5,4 +5,5 @@ package trig.utility.vector;
  * Created by marcos on 11/07/2014.
  */
 public interface Vector {
+
 }
