@@ -26,7 +26,7 @@ public class Location
         this.x = Math.round(x);
         this.y = Math.round(y);
     }
-    public Location(CartesianVector vector)
+    public Location(Vector.CartesianForm vector)
     {
         this(vector.x, vector.y);
     }

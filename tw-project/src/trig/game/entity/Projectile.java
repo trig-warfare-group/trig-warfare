@@ -8,11 +8,11 @@ import trig.utility.vector.*;
  */
 public abstract class Projectile extends GenericMoving implements updateListener
 {
-    public Projectile(/*int id,*/ int x, int y, int hitSize, CartesianVector vector) {
+    public Projectile(/*int id,*/ int x, int y, int hitSize, Vector.CartesianForm vector) {
         super(/*id,*/ x, y, hitSize, vector);
     }
 
-    public Projectile(/*int id,*/ int x, int y, int hitSize, PolarVector vector) {
+    public Projectile(/*int id,*/ int x, int y, int hitSize, Vector.PolarForm vector) {
         super(/*id,*/ x, y, hitSize, vector);
     }
 

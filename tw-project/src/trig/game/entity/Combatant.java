@@ -5,7 +5,7 @@
  */
 
 package trig.game.entity;
-import trig.utility.vector.PolarVector;
+import trig.utility.vector.Vector;
 
 import java.awt.Color;
 
@@ -91,7 +91,7 @@ public abstract class Combatant extends GenericMoving implements Living, Visible
         this.speed = speed;
         //update the vector.
         setVel(
-                new PolarVector(
+                new Vector.PolarForm(
                         polarVel.radius*this.speed,
                         polarVel.angle
                 )
@@ -134,7 +134,7 @@ public abstract class Combatant extends GenericMoving implements Living, Visible
                 0, //x
                 0, //y
                 hitSize, //hitSize
-                new PolarVector(0,0) //vector
+                new Vector.PolarForm(0,0) //vector
         );
 
         this.name = name; // "Dummy_"+id;

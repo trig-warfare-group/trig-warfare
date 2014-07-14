@@ -93,7 +93,7 @@ public final class DummyTriangle extends Combatant implements updateListener
         //if the loop ends, we can spawn safely
         this.x = newX;
         this.y = newY;
-        setVel(new PolarVector(ST_DIST*speed, newDirection));
+        setVel(new Vector.PolarForm(ST_DIST*speed, newDirection));
 
     }
 
@@ -118,17 +118,17 @@ public final class DummyTriangle extends Combatant implements updateListener
         //absolute of the angle to rotate by against point A, to get points B and C
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
         float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
-        PolarVector frontPolar = new PolarVector(hitSize, polarVel.angle);
+        Vector.PolarForm frontPolar = new Vector.PolarForm(hitSize, polarVel.angle);
 
         //A,B,C points of the triangle, these are vector, and not real locations, as such they use the location of the entity as the origin, they must later be converted to locations.
-        CartesianVector vA = frontPolar.toCartesian();
-        CartesianVector vB = PolarVector.toCartesian(
+        Vector.CartesianForm vA = frontPolar.toCartesian();
+        Vector.CartesianForm vB = Vector.PolarForm.toCartesian(
                 hitSize,
-                (float) ( polarVel.angle + rotationAngle)
+                (float) (polarVel.angle + rotationAngle)
         );
-        CartesianVector vC = PolarVector.toCartesian(
+        Vector.CartesianForm vC = Vector.PolarForm.toCartesian(
                 hitSize,
-                (float) ( polarVel.angle - rotationAngle)
+                (float) (polarVel.angle - rotationAngle)
         );
 
         //real coords of A,B,C, seems a bit inefficient to create new objects for them unnecessarily, but this is only a demo for now.
@@ -192,7 +192,7 @@ public final class DummyTriangle extends Combatant implements updateListener
 
             //randomise direction!
             float newDirection = (float) ( ( (r.nextFloat() * 2) - 1 ) * Math.PI ); //between [-1,1], I think
-            setVel(new PolarVector(ST_DIST*speed, newDirection));
+            setVel(new Vector.PolarForm(ST_DIST*speed, newDirection));
         }
         else
         {

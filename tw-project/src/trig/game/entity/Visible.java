@@ -26,7 +26,7 @@ public interface Visible {
         NEEDS:
         public twPolygon getPolygon();
         public float getFacingDir();
-        the gist is basically having a polygon class, which is a series of PolarVectors, which can then have their angle adjusted by the angle from getFacingDir(), and be converted to a CartesianVector, which can then be drawn.
+        the gist is basically having a polygon class, which is a series of PolarVectors, which can then have their angle adjusted by the angle from getFacingDir(), and be converted to a CartesianForm, which can then be drawn.
     */
 
     /**

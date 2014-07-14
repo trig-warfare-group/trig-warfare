@@ -19,7 +19,7 @@ public final class DummyBullet extends Projectile implements Destructible, Visib
 
         super(/*id,*/ x, y,
                 3, //hitSize,
-                new PolarVector(7, direction) //velocity = 4
+                new Vector.PolarForm(7, direction) //velocity = 4
         );
         name = "DBullet_" + id;
         color = new Color(
