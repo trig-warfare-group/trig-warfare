@@ -1,7 +1,7 @@
 package trig.utility.vector;
 
 import trig.utility.vector.forms.cartesian.CartesianInt;
-import trig.utility.vector.forms.PolarInt;
+import trig.utility.vector.forms.polar.PolarInt;
 
 /**
  * @see trig.utility.vector.Vector

@@ -1,7 +1,6 @@
 package trig.utility.vector.forms.polar;
 
 import trig.utility.Methods;
-import trig.utility.vector.forms.PolarForm;
 import trig.utility.vector.forms.cartesian.CartesianFloat;
 
 /**

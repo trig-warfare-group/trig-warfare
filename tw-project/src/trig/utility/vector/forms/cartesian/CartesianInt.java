@@ -1,6 +1,6 @@
 package trig.utility.vector.forms.cartesian;
 
-import trig.utility.vector.forms.PolarInt;
+import trig.utility.vector.forms.polar.PolarInt;
 
 /**
 * Created by marcos on 14/07/2014.

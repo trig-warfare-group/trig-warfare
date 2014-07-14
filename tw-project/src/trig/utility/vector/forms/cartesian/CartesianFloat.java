@@ -1,6 +1,6 @@
 package trig.utility.vector.forms.cartesian;
 
-import trig.utility.vector.forms.PolarFloat;
+import trig.utility.vector.forms.polar.PolarFloat;
 
 /**
  * Floating-point accuracy VectorForm.PolarForm

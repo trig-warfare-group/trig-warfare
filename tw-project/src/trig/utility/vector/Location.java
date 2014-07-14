@@ -1,5 +1,5 @@
 package trig.utility.vector;
-
+import trig.utility.vector.forms.cartesian.CartesianFloat;
 /**
  * Dummy Class for holding X and Y coordinates for use with entities, maybe?
  * Intended to be used only for transporting data, such as a return of a function,
@@ -26,7 +26,7 @@ public class Location
         this.x = Math.round(x);
         this.y = Math.round(y);
     }
-    public Location(Vector.CartesianForm vector)
+    public Location(CartesianFloat vector)
     {
         this(vector.x, vector.y);
     }
