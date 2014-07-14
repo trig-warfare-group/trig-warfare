@@ -1,4 +1,4 @@
-package trig.game.entity;
+package trig.game.entity.interfaces;
 
 /**
  * For classes that take action periodically on game ticks or frames or something? Such as maybe projectiles/bullets or AI.

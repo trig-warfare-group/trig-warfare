@@ -1,12 +1,14 @@
 package trig.game.entity;
 
+import trig.game.entity.interfaces.Ambulant;
 import trig.utility.vector.Vector;
 
 /**
  * Bad naming I know, but not all moving entities need a directional velocity, some might just move in a fixed pattern, I guess?
  * Created by marcos on 11/07/2014.
  */
-public abstract class GenericMoving extends BasicEntity implements Ambulant{
+public abstract class GenericMoving extends BasicEntity implements Ambulant
+{
     //data used to calculate x and y velocities.
 
     protected Vector velocity;

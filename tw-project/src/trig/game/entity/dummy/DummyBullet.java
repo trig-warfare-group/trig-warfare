@@ -1,5 +1,8 @@
-package trig.game.entity;
+package trig.game.entity.dummy;
 
+import trig.game.entity.interfaces.Destructible;
+import trig.game.entity.Projectile;
+import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
 import trig.utility.vector.*;
 

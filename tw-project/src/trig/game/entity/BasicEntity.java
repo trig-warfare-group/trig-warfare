@@ -1,7 +1,7 @@
 package trig.game.entity;
 
+import trig.game.entity.interfaces.Entity;
 import trig.utility.Methods;
-import trig.utility.Variables;
 
 /**
  * Base class for in game entities, should we be directly implimenting some of the aspects of entity here, or delete this class and do it repeatedly in others? IMO: here, less code

@@ -1,12 +1,13 @@
 package trig.utility.vector.forms.cartesian;
 
-import trig.utility.vector.forms.polar.PolarFloat;
+import trig.utility.vector.forms.CartesianForm;
+import trig.utility.vector.forms.polar.FloatPolar;
 
 /**
  * Floating-point accuracy VectorForm.PolarForm
- * @see CartesianForm
+ * @see trig.utility.vector.forms.CartesianForm
  */
-public class CartesianFloat extends CartesianForm
+public class FloatCartesian extends CartesianForm
 {
     //for now going to be a float for slightly better accuracy converting to and from PolarForm
     public final float x;
@@ -16,7 +17,7 @@ public class CartesianFloat extends CartesianForm
      * @param x a distance from origin along the x-axis
      * @param y a distance from origin along the y-axis
      */
-    public CartesianFloat(float x, float y)
+    public FloatCartesian(float x, float y)
     {
         this.x = x;
         this.y = y;
@@ -28,9 +29,9 @@ public class CartesianFloat extends CartesianForm
      * @param y a distance from origin along the y-axis
      * @return a vector from given data, in polar form
      */
-    public static PolarFloat toPolar(float x, float y)
+    public static FloatPolar toPolar(float x, float y)
     {
-        return new PolarFloat
+        return new FloatPolar
                 (
                         (float) Math.sqrt((x * x) + (y * y)), //radius
                         (float) Math.atan2(y, x) //angle
@@ -38,7 +39,7 @@ public class CartesianFloat extends CartesianForm
     }
 
     @Override
-    public PolarFloat toPolar()
+    public FloatPolar toPolar()
     {
         return toPolar(x, y);
     }

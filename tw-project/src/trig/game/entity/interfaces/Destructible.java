@@ -1,4 +1,4 @@
-package trig.game.entity;
+package trig.game.entity.interfaces;
 
 /**
  * Objects that can be removed from the game entirely, (does NOT include the player, though may include remote players)

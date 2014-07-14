@@ -1,7 +1,7 @@
 package trig.utility.vector;
 
-import trig.utility.vector.forms.cartesian.CartesianInt;
-import trig.utility.vector.forms.polar.PolarInt;
+import trig.utility.vector.forms.cartesian.IntCartesian;
+import trig.utility.vector.forms.polar.IntPolar;
 
 /**
  * @see trig.utility.vector.Vector
@@ -9,11 +9,11 @@ import trig.utility.vector.forms.polar.PolarInt;
 */
 public class IntVector extends Vector
 {
-    public IntVector(CartesianInt baseForm)
+    public IntVector(IntCartesian baseForm)
     {
         super(baseForm);
     }
-    public IntVector(PolarInt baseForm)
+    public IntVector(IntPolar baseForm)
     {
         super(baseForm);
     }

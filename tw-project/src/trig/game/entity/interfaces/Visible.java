@@ -1,4 +1,4 @@
-package trig.game.entity;
+package trig.game.entity.interfaces;
 //NOTE: probably better to have some class with draw methods corresponding to each object or something rather than these imports in lots of places? idk.
 import java.awt.*;
 

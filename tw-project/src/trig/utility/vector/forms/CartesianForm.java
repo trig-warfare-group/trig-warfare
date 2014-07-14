@@ -1,6 +1,4 @@
-package trig.utility.vector.forms.cartesian;
-
-import trig.utility.vector.forms.VectorForm;
+package trig.utility.vector.forms;
 
 /**
  * a vector in the form X, Y, explicitly starting at the origin

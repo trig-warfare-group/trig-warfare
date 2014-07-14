@@ -1,8 +1,5 @@
 package trig.utility.vector.forms;
 
-import trig.utility.vector.forms.cartesian.CartesianForm;
-import trig.utility.vector.forms.polar.PolarForm;
-
 /**
  * Vector data storage forms
  * @see trig.utility.vector.Vector

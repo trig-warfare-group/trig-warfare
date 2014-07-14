@@ -5,6 +5,8 @@
  */
 
 package trig.game.entity;
+import trig.game.entity.interfaces.Living;
+import trig.game.entity.interfaces.Visible;
 import trig.utility.vector.Vector;
 
 import java.awt.Color;

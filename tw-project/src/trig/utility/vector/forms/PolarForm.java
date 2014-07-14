@@ -1,6 +1,4 @@
-package trig.utility.vector.forms.polar;
-
-import trig.utility.vector.forms.VectorForm;
+package trig.utility.vector.forms;
 
 /**
  * A vector in the form of Radius, Angle, explicitly starting at the origin

@@ -1,4 +1,4 @@
-package trig.game.entity;
+package trig.game.entity.interfaces;
 
 /**
  * Interface class for all entities, where entities are anything that can interact with other entities in the game.

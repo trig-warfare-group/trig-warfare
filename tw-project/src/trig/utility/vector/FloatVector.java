@@ -1,7 +1,7 @@
 package trig.utility.vector;
 
-import trig.utility.vector.forms.cartesian.CartesianFloat;
-import trig.utility.vector.forms.polar.PolarFloat;
+import trig.utility.vector.forms.cartesian.FloatCartesian;
+import trig.utility.vector.forms.polar.FloatPolar;
 
 /**
  * @see trig.utility.vector.Vector
@@ -10,11 +10,11 @@ import trig.utility.vector.forms.polar.PolarFloat;
 public class FloatVector extends Vector
 {
 
-    public FloatVector(CartesianFloat baseForm)
+    public FloatVector(FloatCartesian baseForm)
     {
         super(baseForm);
     }
-    public FloatVector(PolarFloat baseForm)
+    public FloatVector(FloatPolar baseForm)
     {
         super(baseForm);
     }

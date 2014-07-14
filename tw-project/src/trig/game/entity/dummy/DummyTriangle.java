@@ -1,6 +1,10 @@
-package trig.game.entity;
+package trig.game.entity.dummy;
 
 //NOTE: probably better to have some class with draw methods corresponding to each object or something rather than these imports in lots of places? idk.
+import trig.game.entity.*;
+import trig.game.entity.interfaces.Entity;
+import trig.game.entity.interfaces.UpdateListener;
+import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
 import trig.utility.vector.*;
 

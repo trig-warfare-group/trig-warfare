@@ -5,10 +5,10 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import trig.game.entity.DummyTriangle;
-import trig.game.entity.Entity;
-import trig.game.entity.UpdateListener;
-import trig.game.entity.Visible;
+import trig.game.entity.dummy.DummyTriangle;
+import trig.game.entity.interfaces.Entity;
+import trig.game.entity.interfaces.UpdateListener;
+import trig.game.entity.interfaces.Visible;
 import trig.listener.GameListener;
 import trig.utility.Constants;
 import trig.utility.Methods;

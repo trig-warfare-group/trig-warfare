@@ -1,5 +1,6 @@
 package trig.game.entity;
 
+import trig.game.entity.interfaces.UpdateListener;
 import trig.utility.vector.*;
 
 /**
