@@ -1,6 +1,6 @@
 package trig.utility.vector;
 
-import trig.utility.vector.forms.CartesianInt;
+import trig.utility.vector.forms.cartesian.CartesianInt;
 import trig.utility.vector.forms.PolarInt;
 
 /**

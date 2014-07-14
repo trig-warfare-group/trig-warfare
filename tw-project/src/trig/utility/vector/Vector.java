@@ -1,15 +1,28 @@
 package trig.utility.vector;
 
-import trig.utility.vector.forms.*;
+import trig.utility.vector.forms.cartesian.CartesianForm;
+import trig.utility.vector.forms.polar.PolarForm;
+
 
 /**
- * A vector, that is a quantity containing both magnitude and direction.
- * Contains both a cartesianForm and polarForm
+ * A vector, that is: a quantity containing both magnitude and direction.
+ * Contains both a cartesianForm and polarForm, which have helper methods for conversion etc.
  */
 public abstract class Vector
 {
-    public final CartesianForm cartesianForm;
-    public final PolarForm polarForm;
+    protected final CartesianForm cartesianForm;
+    protected final PolarForm polarForm;
+
+    public CartesianForm getCartesianForm()
+    {
+        return cartesianForm;
+    }
+
+    public PolarForm getPolarForm()
+    {
+        return polarForm;
+    }
+
     public Vector(CartesianForm baseForm)
     {
         cartesianForm = baseForm;
