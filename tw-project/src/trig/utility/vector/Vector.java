@@ -1,6 +1,6 @@
 package trig.utility.vector;
 
-import trig.utility.Methods;
+import trig.utility.vector.forms.*;
 
 /**
  * A vector, that is a quantity containing both magnitude and direction.
@@ -22,19 +22,4 @@ public abstract class Vector
         cartesianForm = baseForm.toCartesian();
     }
 
-    public static class Float extends Vector
-    {
-
-        public Float(CartesianForm.Float baseForm)
-        {
-            super(baseForm);
-        }
-    }
-    public static class Int extends Vector
-    {
-        public Int(CartesianForm.Int baseForm)
-        {
-            super(baseForm);
-        }
-    }
 }
