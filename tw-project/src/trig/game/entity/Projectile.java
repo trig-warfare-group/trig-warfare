@@ -6,7 +6,7 @@ import trig.utility.vector.*;
  * Base class for objects that mostly move in a straight line, such as bullets
  * Created by marcos on 10/07/14.
  */
-public abstract class Projectile extends GenericMoving implements updateListener
+public abstract class Projectile extends GenericMoving implements UpdateListener
 {
     public Projectile(/*int id,*/ int x, int y, int hitSize, Vector.CartesianForm vector) {
         super(/*id,*/ x, y, hitSize, vector);

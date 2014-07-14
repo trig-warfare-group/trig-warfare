@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import trig.game.entity.DummyTriangle;
 import trig.game.entity.Entity;
-import trig.game.entity.updateListener;
+import trig.game.entity.UpdateListener;
 import trig.game.entity.Visible;
 import trig.listener.GameListener;
 import trig.utility.Constants;
@@ -69,9 +69,9 @@ public class GameClient
         }
         for(Entity e: entities)
         {
-            if(e instanceof updateListener)
+            if(e instanceof UpdateListener)
             {
-                ((updateListener) e).onTick();
+                ((UpdateListener) e).onTick();
             }
         }
     }

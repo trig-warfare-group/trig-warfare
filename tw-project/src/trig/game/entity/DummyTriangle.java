@@ -14,7 +14,7 @@ import java.util.Random;
  * NOTE: MAKE CONTAIN A HELPFUL TEMPLATE FOR FIRING PROJECTILES.
  * Created by marcos on 11/07/2014.
  */
-public final class DummyTriangle extends Combatant implements updateListener
+public final class DummyTriangle extends Combatant implements UpdateListener
 {
     public static final Color DEF_COLOR = Color.WHITE;
     public static final int PROJECTILE_LIMIT = 100;
@@ -203,9 +203,9 @@ public final class DummyTriangle extends Combatant implements updateListener
             move();
             for(Entity e: projectiles)
             {
-                if (e instanceof updateListener)
+                if (e instanceof UpdateListener)
                 {
-                    ((updateListener) e).onTick();
+                    ((UpdateListener) e).onTick();
                 }
             }
         }
