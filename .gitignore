@@ -1,5 +1,8 @@
 */build/
-*/.idea/*
+*/.idea/
 */nbproject
 */build.xml
 */manifest.mf
+*/META-INF/
+/.idea/
+/out/
