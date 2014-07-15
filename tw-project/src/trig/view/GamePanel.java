@@ -6,21 +6,21 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import trig.game.GameClient;
+import trig.view.login.LoginView;
 
 public class GamePanel extends JPanel
 {
 	
-	private GameClient gameModel = null;
+	private GameClient client = null;
 	
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		gameModel.render((Graphics2D) g);
+		client.render((Graphics2D) g);
 	}
 	
 	public void addModel(GameClient gameModel) 
 	{
-		this.gameModel = gameModel;
+		this.client = gameModel;
 	}
-
 }
