@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 import trig.game.state.login.LoginMachine;
 import trig.view.GameView;
-
+//CHANGE
 /**
  * The StateManager will hold all the over-arching states, managing them.
  * 
