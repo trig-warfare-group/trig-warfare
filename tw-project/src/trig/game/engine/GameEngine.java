@@ -56,21 +56,22 @@ public class GameEngine //may extend some GameState interface I think, not an ex
      */
     public void update()
     {
-        for(Entity e: entities)
+        Entity e;
+        for (int i = 0; i < entities.size(); i++)
         {
-            if(e instanceof UpdateListener)
+            e = entities.get(i);
+            if (e instanceof UpdateListener)
             {
                 ((UpdateListener) e).update(this);
             }
         }
     }
-
     public void render(Graphics2D g) //we ordinarily won't be calling this, ourselves, a state machine will
     {
-        /*
-        g.setColor(Color.BLACK);
+
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, Constants.WINDOW_DIMENSION.width, Constants.WINDOW_DIMENSION.height);
-        */
+
 
         g.setFont(bigFont);
         g.setColor(Color.WHITE);
@@ -82,8 +83,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 Constants.WORLD_COLLISION_PADDING-1,
                 Constants.WINDOW_DIMENSION.height-Constants.WORLD_COLLISION_PADDING-1
         );
-        synchronized (this)
-        {
+
         /*
 
             Entity rendering
@@ -94,31 +94,32 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             we'll possibly keep a drawable list in the entities list
             (and handle this via the add/removeEntity functions) eventually?
          */
-            for (Entity e : entities)
+        Entity e;
+        for (int i=0;i<entities.size();i++)
+        {
+            e = entities.get(i);
+            if (e instanceof Visible)
             {
-                if (e instanceof Visible)
+                v = (Visible) e;
+            /*
+                some entities can hide?
+                or just not be mapped yet?
+                either way I guess it works?
+                Is there a better way?
+            */
+                g.setColor(v.getColor());
+                if (v.isVisible())
                 {
-                    v = (Visible) e;
-                /*
-                    some entities can hide?
-                    or just not be mapped yet?
-                    either way I guess it works?
-                    Is there a better way?
-                 */
-                    g.setColor(v.getColor());
-                    if (v.isVisible())
-                    {
 
-                        AffineTransform oldTransform = g.getTransform(); //store old transformation
+                    AffineTransform oldTransform = g.getTransform(); //store old transformation
 
-                        g.translate((double) v.getX(), (double) v.getY());
-                        g.rotate((double) v.getDirection());
-                        g.draw(
-                                v.getShape()
-                        );
+                    g.translate((double) v.getX(), (double) v.getY());
+                    g.rotate((double) v.getDirection());
+                    g.draw(
+                            v.getShape()
+                    );
 
-                        g.transform(oldTransform); //revert transformation
-                    }
+                    g.transform(oldTransform); //revert transformation
                 }
             }
         }

@@ -24,8 +24,6 @@ public class GameClient
     //temp demo stuff
     private GameEngine gameEngine;
 
-    private int testCounter = 0;
-
 
     public GameClient()
     {
