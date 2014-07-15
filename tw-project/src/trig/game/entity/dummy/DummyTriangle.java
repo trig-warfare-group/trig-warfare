@@ -27,18 +27,17 @@ public final class DummyTriangle extends Combatant implements UpdateListener
     {
         //absolute of the angle to rotate by against point A, to get points B and C
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
-        float rotationBase = Math.round(1/2*Math.PI);
         float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
-        CartesianForm vA = PolarForm.toCartesian(hitSize, rotationBase); //1PI should north
+        CartesianForm vA = PolarForm.toCartesian(hitSize, (float) Math.PI); //1PI should north
 
         //A,B,C points of the triangle, these are vector, and not real locations, as such they use the location of the entity as the origin, they must later be converted to locations.
         CartesianForm vB = PolarForm.toCartesian(
                 hitSize,
-                (float) (rotationBase + rotationAngle)
+                (float) (Math.PI + rotationAngle)
         );
         CartesianForm vC = PolarForm.toCartesian(
                 hitSize,
-                (float) (rotationBase - rotationAngle)
+                (float) (Math.PI - rotationAngle)
         );
         return makeDrawableShape(new CartesianForm[]{vA, vB, vC});
     }
@@ -203,11 +202,9 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         }
         else
         {
-            if(step % 10 == 0)
+            if(step % 50 == 0)
             {
-                CartesianForm bulletSpawnOffset = PolarForm.toCartesian(hitSize, velocity.inPolar().angle);
-
-                fireProjectile(new DummyBullet(x+bulletSpawnOffset.getX(), y+bulletSpawnOffset.getY(), velocity.inPolar().angle), engine);
+                fireProjectile(new DummyBullet(Math.round(x+hitSize), Math.round(y+hitSize), velocity.inPolar().angle), engine);
             }
             move();
         }

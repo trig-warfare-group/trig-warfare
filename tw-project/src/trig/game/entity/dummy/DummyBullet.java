@@ -18,7 +18,7 @@ import java.util.Random;
  */
 public final class DummyBullet extends Projectile implements Visible
 {
-    protected Shape shape = new RoundRectangle2D.Float(hitSize, hitSize, hitSize, hitSize, (float) 0, (float) 0);
+    protected Shape shape = new RoundRectangle2D.Float(hitSize, hitSize, hitSize, hitSize, 0, 0);
 
     @Override
     public Shape getShape(){
