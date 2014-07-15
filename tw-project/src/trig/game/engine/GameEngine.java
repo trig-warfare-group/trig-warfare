@@ -116,8 +116,19 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                     g.draw(
                             v.getShape()
                     );
+
+                    /*
+                        revert transform
+                     */
                     g.rotate(-(double) v.getDirection());
                     g.translate(-(double) v.getX(), -(double) v.getY());
+                    /*
+                        debug draw
+                     */
+                    int size = e.getHitSize();
+                    int halfSize = Math.round((float)size/2);
+                    g.setColor(Color.RED);
+                    g.drawRect(v.getX()-halfSize, v.getY()-halfSize, size, size);
                 }
             }
         }
