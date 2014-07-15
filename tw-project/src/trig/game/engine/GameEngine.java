@@ -54,7 +54,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     /**
      * Do stuff on frame update, or w/e
      */
-    public synchronized void update()
+    public void update()
     {
         for(Entity e: entities)
         {
