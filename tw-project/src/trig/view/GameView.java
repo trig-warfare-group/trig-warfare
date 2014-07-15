@@ -4,35 +4,36 @@ import trig.game.GameClient;
 import trig.utility.Constants;
 import trig.view.login.LoginView;
 
+import java.awt.*;
+
 public class GameView 
 {
 	private GameFrame frame;
 	private GamePanel panel;
 	private GameClient client;
 
-	public GameView(GameClient gameClient)
-	{
+    public GameView(GameClient gameClient)
+    {
 
-		frame = new GameFrame();
-		frame.addModel(gameClient);
-		panel = new GamePanel();
-		panel.addModel(gameClient);
-		this.client = client;
-		this.init();
-	}
-	
-	/**
-	 * Initializes the components to display
-	 */
-	private void init() 
-	{
-		frame.setTitle(Constants.GAME_TITLE + " - " + Constants.AUTHOR);
-		frame.setSize(Constants.WINDOW_DIMENSION);
-		
-		frame.getContentPane().add(panel);
-		frame.setResizable(false);
-		frame.setVisible(true);
-	}
+        frame = new GameFrame();
+        frame.addModel(gameClient);
+        panel = new GamePanel();
+        panel.addModel(gameClient);
+        this.client = gameClient;
+    }
+
+    /**
+     * Initializes the components to display
+     */
+    public void init()
+    {
+        frame.setTitle(Constants.GAME_TITLE + " - " + Constants.AUTHOR);
+        frame.setSize(Constants.WINDOW_DIMENSION);
+        panel.setBackground(new Color(28, 31, 19));
+        frame.getContentPane().add(panel);
+        frame.setResizable(false);
+        frame.setVisible(true);
+    }
 	
 	public GameFrame getGameFrame() 
 	{

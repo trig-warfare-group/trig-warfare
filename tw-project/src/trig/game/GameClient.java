@@ -16,28 +16,19 @@ package trig.game;
 
 public class GameClient
 {
+    private GameEngine gameEngine;
     private StateManager stateManager;
     private GameView gameView;
     private GameThread thread;
     private boolean gameRunning = true;
 
-    //temp demo stuff
-    private GameEngine gameEngine;
-
-
     public GameClient()
     {
-        gameEngine = new GameEngine();
         gameView = new GameView(this);
         stateManager = new StateManager(gameView);
+        gameEngine = new GameEngine();
         thread = new GameThread();
-
         this.init();
-    }
-
-    public void login(String username)
-    {
-        stateManager.login(username);
     }
 
     /**
@@ -45,9 +36,10 @@ public class GameClient
      */
     private void init()
     {
+        //stateManager.init();
+        gameView.init();
         thread.start();
     }
-
     public void updateGame()
     {
         gameEngine.update();
@@ -56,6 +48,11 @@ public class GameClient
     public void render(Graphics2D g)
     {
         gameEngine.render(g);
+    }
+
+    public void login(String username)
+    {
+        stateManager.login(username);
     }
 
     public void delayGame()

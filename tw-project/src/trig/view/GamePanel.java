@@ -16,6 +16,7 @@ public class GamePanel extends JPanel
 	@Override
 	public void paintComponent(Graphics g)
 	{
+        super.paintComponent(g);
 		client.render((Graphics2D) g);
 	}
 	

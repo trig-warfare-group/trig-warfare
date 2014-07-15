@@ -21,9 +21,14 @@ public class StateManager
 	public StateManager(GameView view)
 	{
 		this.gameView = view;
-		this.loginMachine = new LoginMachine(view.constructLoginView());
-		currentMachine = loginMachine;
 	}
+
+    public void init()
+    {
+        this.loginMachine = new LoginMachine(gameView.constructLoginView());
+        currentMachine = loginMachine;
+    }
+
 
 	public void login(String username) 
 	{
