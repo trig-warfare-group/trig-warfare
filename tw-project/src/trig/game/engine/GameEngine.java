@@ -111,15 +111,13 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 if (v.isVisible())
                 {
 
-                    AffineTransform oldTransform = g.getTransform(); //store old transformation
-
                     g.translate((double) v.getX(), (double) v.getY());
                     g.rotate((double) v.getDirection());
                     g.draw(
                             v.getShape()
                     );
-
-                    g.transform(oldTransform); //revert transformation
+                    g.rotate(-(double) v.getDirection());
+                    g.translate(-(double) v.getX(), -(double) v.getY());
                 }
             }
         }
