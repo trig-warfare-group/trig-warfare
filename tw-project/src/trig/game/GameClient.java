@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import trig.game.engine.GameEngine;
 import trig.game.entity.dummy.DummyTriangle;
 import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
@@ -28,59 +29,16 @@ public class GameClient
 	private GameThread thread;
 	private boolean gameRunning = true;
 
-    //temp/cheap engine-demo stuff
-    private ArrayList<Entity> entities = new ArrayList<Entity>(); //may use hashSet instead, idk;
-    private Font bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
-    private Font lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    private int step = 0;
+    //temp for engine only version
+    private GameEngine gameEngine;
 
-    public void tempEngineDemoRender(Graphics2D g)
-    {
-        /*
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, Constants.WINDOW_DIMENSION.width, Constants.WINDOW_DIMENSION.height);
-        */
-
-        g.setFont(bigFont);
-        g.setColor(Color.WHITE);
-        g.drawString("Game-Mechanics", Constants.WINDOW_DIMENSION.width / 2 - 200, 325);
-        g.setFont(lilFont);
-
-        g.drawString("Entities Created: "+Long.toString(Methods.DummyVars.getLastEntityId())+" Max Entities living: ~"+Integer.toString(DummyTriangle.PROJECTILE_LIMIT*entities.size()+entities.size()), Constants.WORLD_COLLISION_PADDING-1, Constants.WINDOW_DIMENSION.height-Constants.WORLD_COLLISION_PADDING-1);
-        for(Entity e: entities)
-        {
-            if(e instanceof Visible && e.isMapped())
-            {
-                ((Visible) e).draw(g);
-            }
-        }
-    }
-
-    public void tempEngineDemoUpdate()
-    {
-        if(step < 125){
-            if(step % 25 == 0)
-            {
-                entities.add(
-                        new DummyTriangle() //++ should increment after use, right
-                );
-            }
-            step++;
-        }
-        for(Entity e: entities)
-        {
-            if(e instanceof UpdateListener)
-            {
-                ((UpdateListener) e).onTick();
-            }
-        }
-    }
-
+    private int testCounter = 0;
 
 	public GameClient()
 	{
             inputHandler = new GameListener();
             gameView = new GameView(this);
+
             thread = new GameThread();
             this.init();
         }
@@ -90,8 +48,10 @@ public class GameClient
 	 */
 	private void init() 
 	{
+            gameEngine = new GameEngine();
             inputHandler.initListening(gameView);
             thread.start();
+
 	}
 
 	public void updateGame()
@@ -100,11 +60,13 @@ public class GameClient
 		for(int i = 0; i < c.length; i++)
                     c[i] = new C((int) Math.abs(r.nextInt() % 800), (int) Math.abs(r.nextInt() % 640), 25);*/
 
-        tempEngineDemoUpdate();
+        gameEngine.update();
+
+        //
 	}
 
 
-	public void render(Graphics2D g)
+	public synchronized void render(Graphics2D g)
 	{
             /*
             Font f = new Font(Font.SANS_SERIF, Font.BOLD, 45);
@@ -115,7 +77,7 @@ public class GameClient
             
             //for(int i = 0; i < c.length; i++)
             //    g.drawOval(c[i].x, c[i].y, c[i].r, c[i].r);
-            tempEngineDemoRender(g);
+            gameEngine.render(g);
             
 	}
     /*    //DELETE ME://///////////
@@ -142,6 +104,7 @@ public class GameClient
 				updateGame();
 				gameView.render();
 				delayGame();
+                testCounter++;
 			}
 		}
 	}

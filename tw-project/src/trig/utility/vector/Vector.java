@@ -1,38 +1,28 @@
 package trig.utility.vector;
 
-import trig.utility.vector.forms.CartesianForm;
-import trig.utility.vector.forms.PolarForm;
 
+import trig.utility.vector.CartesianForm;
+import trig.utility.vector.PolarForm;
 
 /**
  * A vector, that is: a quantity containing both magnitude and direction.
- * Contains both a cartesianForm and polarForm, which have helper methods for conversion etc.
  */
-public abstract class Vector
+public interface Vector
 {
-    protected final CartesianForm cartesianForm;
-    protected final PolarForm polarForm;
+    /**
+     * Produces a cartesian-form equivalent of the vector
+     * @return this vector, represented in cartesian form
+     * @see trig.utility.vector.CartesianForm
+     */
+    public CartesianForm inCartesian();
 
-    public CartesianForm getCartesianForm()
-    {
-        return cartesianForm;
-    }
+    /**
+     * Produces a polar-form equivalent of the vector
+     * @return this vector, represented in polar form
+     * @see trig.utility.vector.PolarForm
+     */
+    public PolarForm inPolar();
 
-    public PolarForm getPolarForm()
-    {
-        return polarForm;
-    }
 
-    public Vector(CartesianForm baseForm)
-    {
-        cartesianForm = baseForm;
-        polarForm = baseForm.toPolar();
-    }
-
-    public Vector(PolarForm baseForm)
-    {
-        polarForm = baseForm;
-        cartesianForm = baseForm.toCartesian();
-    }
-
+    //todo: add some other math functions? (as they become used?) such as the dot and cross product
 }

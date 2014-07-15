@@ -1,5 +1,6 @@
 package trig.game.entity;
 
+import trig.game.engine.GameEngine;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.utility.vector.*;
 
@@ -9,19 +10,14 @@ import trig.utility.vector.*;
  */
 public abstract class Projectile extends GenericMoving implements UpdateListener
 {
-    public Projectile(/*int id,*/ int x, int y, int hitSize, Vector.CartesianForm vector) {
+    public Projectile(/*int id,*/ int x, int y, int hitSize, Vector vector) {
         super(/*id,*/ x, y, hitSize, vector);
     }
-
-    public Projectile(/*int id,*/ int x, int y, int hitSize, Vector.PolarForm vector) {
-        super(/*id,*/ x, y, hitSize, vector);
-    }
-
     /**
-     * Usable template for how projectiles should behave onTick
+     * Usable template for how projectiles should behave onTick?
      */
     @Override
-    public void onTick()
+    public void update(GameEngine engine)
     {
         move();
     }

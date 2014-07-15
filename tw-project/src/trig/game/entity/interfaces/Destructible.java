@@ -8,4 +8,5 @@ package trig.game.entity.interfaces;
 public interface Destructible
 {
     //indicates that the game engine or w.e can completely erase the object!, doesn't have methods persay?
+    abstract void destroy();
 }

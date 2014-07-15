@@ -1,22 +1,33 @@
-package trig.utility.vector.forms.polar;
+package trig.utility.vector;
 
 import trig.utility.Methods;
-import trig.utility.vector.forms.PolarForm;
-import trig.utility.vector.forms.cartesian.FloatCartesian;
 
 /**
-* Created by marcos on 14/07/2014.
-*/
-public class FloatPolar extends PolarForm
+ * A vector in the form of Radius, Angle, explicitly starting at the origin
+ * Created by marcos on 11/07/2014.
+ */
+public class PolarForm implements Vector
 {
     public final float radius;
     public final float angle;
+
+    //return self, for getting this form back from the vector interface!
+    /**
+     * A helper method used to allow casting to Vector
+     * @return this object
+     * @see trig.utility.vector.Vector
+     */
+    @Override
+    public PolarForm inPolar()
+    {
+        return this;
+    }
 
     /**
      * @param radius the distance from origin
      * @param angle  expressed in radians, between [-PI, -PI]
      */
-    public FloatPolar(float radius, float angle)
+    public PolarForm(float radius, float angle)
     {
         this.radius = radius;
         this.angle = Methods.normalise(angle);
@@ -28,19 +39,25 @@ public class FloatPolar extends PolarForm
      * @param angle  expressed in radians, between [-PI, -PI]
      * @return a vector from given data, in cartesian form
      */
-    public static FloatCartesian toCartesian(float radius, float angle)
+    public static CartesianForm toCartesian(float radius, float angle)
     {
         //make sure to normalise
         angle = Methods.normalise(angle);
-        return new FloatCartesian
+        return new CartesianForm
                 (
                         (float) (radius * Math.cos(angle)), //x
                         (float) (radius * Math.sin(angle)) //y
                 );
     }
 
-    public FloatCartesian toCartesian()
+    /**
+     * Produces a cartesian-form equivalent of the vector
+     * @return this vector, represented in cartesian form
+     * @see trig.utility.vector.CartesianForm
+     */
+    public CartesianForm inCartesian()
     {
         return toCartesian(radius, angle);
     }
 }
+
