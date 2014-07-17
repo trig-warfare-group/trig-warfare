@@ -24,11 +24,11 @@ public abstract class BasicCombatant extends BasicEntity implements Living, Visi
     }
 
     /**
-     * A movement depending on what defines it.
-     * @param x - cartesian x-location
-     * @param y - cartesian y-location
+     * Moves the entity to the coordinates specified.
+     * @param destX - cartesian x-location
+     * @param destX - cartesian y-location
      */
-    public abstract void move(int x, int y);
+    public abstract void move(int destX, int destY);
 
     public boolean isAlive()
     {
