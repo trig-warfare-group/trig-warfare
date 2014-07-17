@@ -27,7 +27,7 @@ public class GameView
     {
         frame.setTitle(Constants.GAME_TITLE + " - " + Constants.AUTHOR);
         frame.setSize(Constants.WINDOW_DIMENSION);
-        panel.setBackground(new Color(7, 22, 0));
+        panel.setBackground(new Color(5, 10, 0));
         frame.getContentPane().add(panel);
         frame.setResizable(false);
         frame.setVisible(true);

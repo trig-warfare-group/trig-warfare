@@ -1,11 +1,12 @@
 package trig.game;
 
-        import java.awt.Graphics2D;
+import java.awt.Graphics2D;
 
-        import trig.game.engine.GameEngine;
-        import trig.game.state.StateManager;
-        import trig.utility.Constants;
-        import trig.view.GameView;
+import trig.game.engine.GameEngine;
+import trig.game.state.StateManager;
+import trig.listener.ListenHandler;
+import trig.utility.Constants;
+import trig.view.GameView;
 
 /**
  * GameClient acts as a model for the client-data.
@@ -17,6 +18,7 @@ package trig.game;
 public class GameClient
 {
     private GameEngine gameEngine;
+    private ListenHandler listenHandler;
     private StateManager stateManager;
     private GameView gameView;
     private GameThread thread;
@@ -25,6 +27,7 @@ public class GameClient
     public GameClient()
     {
         gameView = new GameView(this);
+        listenHandler = new ListenHandler(gameView);
         stateManager = new StateManager(gameView);
         gameEngine = new GameEngine();
         thread = new GameThread();
@@ -37,6 +40,7 @@ public class GameClient
     private void init()
     {
         //stateManager.init();
+        listenHandler.init();
         gameView.init();
         thread.start();
     }

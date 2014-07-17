@@ -1,136 +1,125 @@
 package trig.game.engine;
 
-import trig.game.entity.dummy.DummyTriangle;
-import trig.game.entity.interfaces.Entity;
-import trig.game.entity.interfaces.UpdateListener;
-import trig.game.entity.interfaces.Visible;
+import trig.game.entity.*;
 import trig.utility.Constants;
 import trig.utility.Methods;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
- * Dummy/Demo/Draft engine for some testing, etc etc?
  * Created by marcos on 14/07/2014.
+ * @author brody
  */
-public class GameEngine //may extend some GameState interface I think, not an exact name, but it's for the states that relate to rendering and updates and stuff.
+public class GameEngine
 {
-     /*
-        NOTE/TODO: THE PAUSED STATE CANNOT BY DEFAULT BE A SEPERATE STATE TO THE GAME ENGINE STUFF, IT MUST BE A SUBSTATE, PARTICULARLY IF THE GAME IS TO BE ONLINE.
-        SINCE THE GAME'S SCREEN WILL NEED TO RENDER IN THE BACKGROUND, BUT EVENT BEHAVIOUR WILL CHANGE!
-        MAYBE THIS COULD BE HANDLED BY HAVING A GAMEINPUTEVENTS AND PAUSEINPUTEVENTS FUNCTION OR SOMETHING?
-
-    */
-
-
-    //temp/cheap engine-demo stuff
-    private ArrayList<Entity> entities = new ArrayList<Entity>(); //may use hashSet instead, idk;
+   // private ArrayList<Entity> entities = new ArrayList<Entity>();
     private Font bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
     private Font lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    private int step = 0;
-    /*
-    todo: probably put the move and draw functions in here, tbh, and player control reaction. Not sure about the hp/stats functions, though?
-    todo: HOWEVER, before putting movement here, we need to think about how to facilitate special movement patterns, such as arcs!
-    */
-
-    /*
-        note: perhaps we could implement destruction more often and generalise the process of entity death a bit if we gave players a new craft each time they died?
-        player death kinda needs a animation, IMO
-    */
+    CollisionCheck col[];
 
     /**
-     * Initialisation of the state/engine/w.e
+     * Initialisation of the engine
      */
     public GameEngine()
     {
-        for(int i = 0; i < 5; i++)
-        addEntity(
-                new DummyTriangle()
-        );
+        //for(int i = 0; i < 50; i++)
+          //  entities.add(new Combatant(0, 0, 10));
+        col = new CollisionCheck[50];
+
+        for(int i = 0; i < 50; i ++)
+        {
+            col[i] = new CollisionCheck(new Combatant(0, 0, 10));
+        }
     }
 
     /**
-     * Do stuff on frame update, or w/e
+     * Update the game-engine
      */
     public void update()
     {
-        Entity e;
-        for (int i = 0; i < entities.size(); i++)
+
+        for(int i = 0; i < col.length; i++)
+            ((Living)col[i]).update();
+        //TODO Implement checking algorithm - which will be used in a collision-engine;
+
+        for(int i = 0; i < col.length; i++)
         {
-            e = entities.get(i);
-            if (e instanceof UpdateListener)
-                    ((UpdateListener) e).update(this);
-        }
-    }
+            Combatant cur = (Combatant) col[i].c;
+            boolean check = false;
 
-    public void render(Graphics2D g) //we ordinarily won't be calling this, ourselves, a state machine will
-    {
-        /*
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, Constants.WINDOW_DIMENSION.width, Constants.WINDOW_DIMENSION.height);
-        */
-
-        g.setFont(bigFont);
-        g.setColor(Color.GRAY);
-        g.drawString("Game-Mechanics", Constants.WINDOW_DIMENSION.width / 2 - 200, 325);
-        g.setFont(lilFont);
-        g.drawString(
-                "Entities Created: "+Long.toString(Methods.DummyVars.getLastEntityId())
-                + " Entities living: "+Long.toString(entities.size()),
-                Constants.WORLD_COLLISION_PADDING-1,
-                Constants.WINDOW_DIMENSION.height-Constants.WORLD_COLLISION_PADDING-1
-        );
-        synchronized (this)
-        {
-        /*
-
-            Entity rendering
-
-         */
-            Visible v;
-        /*
-            we'll possibly keep a drawable list in the entities list
-            (and handle this via the add/removeEntity functions) eventually?
-         */
-            for (Entity e : entities)
+            //Check against others.
+            for(int o = 0; i < col.length; i++)
             {
-                if (e instanceof Visible)
+                Combatant l = col[i].c;
+                //If not same entity
+                if(cur != l)
                 {
-                    v = (Visible) e;
-                /*
-                    some entities can hide?
-                    or just not be mapped yet?
-                    either way I guess it works?
-                    Is there a better way?
-                 */
-                    g.setColor(v.getColor());
-                    if (v.isVisible())
-                    {
-
-                        AffineTransform oldTransform = g.getTransform(); //store old transformation
-
-                        g.translate((double) v.getX(), (double) v.getY());
-                        g.rotate((double) v.getDirection());
-                        g.draw(
-                                v.getShape()
-                        );
-
-                        g.transform(oldTransform); //revert transformation
-                    }
+                    cur.hitbox.intersects((Rectangle)l.hitbox);
+                    check = true;
+                    break;
                 }
             }
+            if(check == false)
+                col[i].collided = false;
+            else
+                col[i].collided = true;
         }
     }
 
-    public synchronized void addEntity(Entity e)
+    public void render(Graphics2D g)
     {
-        entities.add(e);
+        g.setFont(bigFont);
+        g.setColor(Color.DARK_GRAY);
+
+        g.drawString("Game-Engine", Constants.WINDOW_DIMENSION.width / 2 - 175, 325);
+
+        g.setColor(new Color(74, 198, 36));
+        g.setFont(lilFont);
+
+        g.drawString(
+                "Entities Created: "+Long.toString(Methods.DummyVars.getLastEntityId())
+                + " Entities living: "+Long.toString(col.length),
+                5, Constants.WINDOW_DIMENSION.height - 10);
+
+        long start;
+        long end;
+
+        start = System.nanoTime();
+
+            Visible v;
+            for(int i = 0; i < col.length; i++)
+            {
+                g.setColor(new Color(74, 198, 36));
+                if(col[i].collided == true)
+                    g.setColor(new Color(174, 38, 36));
+                ((Visible)col[i].c).render(g);
+            }
+
+         //   for (Entity e : entities)
+          //  {
+         //       if (e instanceof Visible)
+              //  {
+         //           v = (Visible) e;
+                    //if(col[])
+            //        v.render(g);
+          // //     }
+          //  }
+        g.setColor(new Color(74, 198, 36));
+        end = System.nanoTime();
+        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "ms",
+                5,
+                15);
+
     }
 
-    public synchronized void removeEntity(Entity e){
-        entities.remove(e);
+    public void addEntity(Entity e)
+    {
+       // entities.add(e);
+    }
+
+    public void removeEntity(Entity e){
+        //entities.remove(e);
     }
 }
