@@ -7,6 +7,7 @@ import trig.utility.Methods;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by marcos on 14/07/2014.
@@ -17,20 +18,18 @@ public class GameEngine
    // private ArrayList<Entity> entities = new ArrayList<Entity>();
     private Font bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
     private Font lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    CollisionCheck col[];
+    ArrayList<CollisionCheck> collisionChecks;
 
     /**
      * Initialisation of the engine
      */
     public GameEngine()
     {
-        //for(int i = 0; i < 50; i++)
-          //  entities.add(new Combatant(0, 0, 10));
-        col = new CollisionCheck[5];
-
-        for(int i = 0; i < 5; i ++)
+        collisionChecks = new ArrayList<CollisionCheck>();
+        Random r = new Random();
+        for(int i = 0; i < 20; i ++)
         {
-            col[i] = new CollisionCheck(new Combatant(0, 0, 10));
+            collisionChecks.add(new CollisionCheck(new Combatant(r.nextInt(Constants.WORLD_DIM.width-Constants.WORLD_COLLISION_PADDING-1), r.nextInt(Constants.WORLD_DIM.height-Constants.WORLD_COLLISION_PADDING-1), 10)));
         }
     }
 
@@ -39,33 +38,34 @@ public class GameEngine
      */
     public void update()
     {
+        for(CollisionCheck each : collisionChecks)
+        {
+            ((Living) each).update(); //cast to living redundant
+        }
 
-        for(int i = 0; i < col.length; i++)
-            col[i].c.update();
 
 
         //TODO Implement checking algorithm - which will be used in a collision-engine;
-
-        for(int i = 0; i < col.length; i++)
+        boolean collided;
+        for(CollisionCheck checker : collisionChecks)
         {
-            Combatant cur = (Combatant) col[i].c;
-            boolean check = false;
+            collided = false;
 
             //Check against others.
-            for(int o = 0; o < col.length; o++)
+            for(CollisionCheck other : collisionChecks)
             {
-                Combatant l = col[o].c;
                 //If not same entity
-                if(cur != l)
+                if(checker != other)
                 {
-                    if(cur.hitbox.intersects((Rectangle)l.hitbox));
-                        check = true;
+                    if(checker.c.hitbox.intersects((java.awt.geom.Rectangle2D) other.c.hitbox)) //you even put a ; at the end of the for loop and then had the loop-code on the next line? Unreadable..
+                    {
+                        collided = true;
+                    }
+
                 }
             }
-            if(check == false)
-                col[i].collided = false;
-            else
-                col[i].collided = true;
+
+            checker.collided = collided;
         }
     }
 
@@ -81,7 +81,7 @@ public class GameEngine
 
         g.drawString(
                 "Entities Created: "+Long.toString(Methods.DummyVars.getLastEntityId())
-                + " Entities living: "+Long.toString(col.length),
+                + " Entities living: "+Long.toString(collisionChecks.size()),
                 5, Constants.WINDOW_DIMENSION.height - 10);
 
         long start;
@@ -89,12 +89,10 @@ public class GameEngine
 
         start = System.nanoTime();
 
-        for(int i = 0; i < col.length; i++)
+        for(CollisionCheck each : collisionChecks)
         {
-            g.setColor(new Color(74, 198, 36));
-            if(col[i].collided == true)
-                g.setColor(new Color(174, 38, 36));
-            ((Visible)col[i].c).render(g);
+            g.setColor(each.collided ? Color.RED : Color.GREEN);
+            ((Visible)each.c).render(g);
         }
 
         g.setColor(new Color(74, 198, 36));
