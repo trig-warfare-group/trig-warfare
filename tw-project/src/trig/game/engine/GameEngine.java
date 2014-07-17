@@ -47,9 +47,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     public GameEngine()
     {
         for(int i = 0; i < 5; i++)
-        addEntity(
-                new DummyTriangle()
-        );
+            addEntity(
+                    new DummyTriangle()
+            );
     }
 
     /**
@@ -68,70 +68,105 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         }
     }
 
-    public void render(Graphics2D g) //we ordinarily won't be calling this, ourselves, a state machine will
+    /**
+     * Performs the part of the rendering that deals with individual entities (not the HUD)
+     * @param g Graphics2D object that can be used to draw on the panel
+     * Full description:
+     *      Each entity that can be drawn will pass forward an object containing data needed to draw it, including:
+     *          a CustomPath as the basic polygon/image asset of the object
+     *          The x and y coordinates to which to translate the RenderPaths
+     *          The angle, in radians within the domain [-pi,pi] by which to rotate the points in the RenderPaths
+     *          Possibly more data in the future:
+     *              Possible a stat-rendering object, for things like text (e.g. name), something on the health or sheild, etc.
+     *      Note that the path used for rendering etc is not explicitly the same as the data used for collisions, that will be a separate object
+     * @see trig.utility.CustomPath
+     *
+     */
+    public void renderEntities(Graphics2D g)
     {
         /*
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, Constants.WINDOW_DIMENSION.width, Constants.WINDOW_DIMENSION.height);
-        */
-
-        g.setFont(bigFont);
-        g.setColor(Color.GRAY);
-        g.drawString("Game-Mechanics", Constants.WINDOW_DIMENSION.width / 2 - 200, 325);
-        g.setFont(lilFont);
-        g.drawString(
-                "Entities Created: "+Long.toString(Methods.DummyVars.getLastEntityId())
-                + " Entities living: "+Long.toString(entities.size()),
-                Constants.WORLD_COLLISION_PADDING-1,
-                Constants.WINDOW_DIMENSION.height-Constants.WORLD_COLLISION_PADDING-1
-        );
-        synchronized (this)
-        {
-        /*
-
-            Entity rendering
-
+            notes on custompath:
+            needs a better name
+            have a color object!
+            Support subpaths (for colour object and ther data inheritance purposes)
+            use Vectors for nodes/points (makes transforms such as rotation and translation easy?)
+            May not be enclosed:
+                (this could however be achieved: by referencing the first Vector as the last Vector, for example)
          */
-            Visible v;
+
+        /*
+            Note on stat-rendering:
+                health etc should be a bar
+         */
+        Visible v;
         /*
             we'll possibly keep a drawable list in the entities list
             (and handle this via the add/removeEntity functions) eventually?
          */
-            for (Entity e : entities)
+        for (Entity e : entities)
+        {
+            if (e instanceof Visible)
             {
-                if (e instanceof Visible)
+                v = (Visible) e;
+            /*
+                some entities can hide?
+                or just not be mapped yet?
+                either way I guess it works?
+                Is there a better way?
+             */
+
+            //old code
+
+                g.setColor(v.getColor());
+                if (v.isVisible())
                 {
-                    v = (Visible) e;
+
+                    g.translate((double) v.getX(), (double) v.getY());
+                    g.rotate((double) v.getDirection());
+
+                    g.draw(
+                            v.getShape()
+                    );
+
                 /*
-                    some entities can hide?
-                    or just not be mapped yet?
-                    either way I guess it works?
-                    Is there a better way?
+                    this reverse-transform results in too much rounding error to actually use
+                    We need another way to do the draw that doesn't involve a full canvas transform, such as creating the shape in this function based on data from the entity
+                    or
+                    Having the entity create a shape that is already at the correct location and rotated.
                  */
-                    g.setColor(v.getColor());
-                    if (v.isVisible())
-                    {
 
-                        g.translate((double) v.getX(), (double) v.getY());
-                        g.rotate((double) v.getDirection());
-
-                        g.draw(
-                                v.getShape()
-                        );
-
-                    /*
-                        this reverse-transform results in too much rounding error to actually use
-                        We need another way to do the draw that doesn't involve a full canvas transform, such as creating the shape in this function based on data from the entity
-                        or
-                        Having the entity create a shape that is already at the correct location and rotated.
-                     */
-
-                        g.rotate(-(double) v.getDirection());
-                        g.translate(-(double) v.getX(), -(double) v.getY());
-                    }
+                    g.rotate(-(double) v.getDirection());
+                    g.translate(-(double) v.getX(), -(double) v.getY());
                 }
             }
         }
+    }
+    public void render(Graphics2D g)
+    {
+        //important: we must always render entities first, then the HUD over the top
+
+        renderEntities(g);
+
+        /*
+            TODO: FIGURE OUT HOW THE DEBUG VIEW FITS INTO THIS:
+                IT NEEDS TO ADD TO ADD TO THE RENDERING OF BOTH ENTITIES AND THE HUD
+                SO PART OF IT MUST BE DONE AFTER renderEntities AND PART OF IT AFTER renderHUD
+        */
+
+        renderHUD(g); //may not keep this hud rendering as a separate function, haven't decided.
+    }
+
+    /**
+     * Renders the screen, like render(), but also includes debug outputs.
+     * This might be an easy way to use a gameView object to enable debugging mode
+     * @param g Graphics2D object that can be used to draw on the panel
+     */
+    public void debugRender(Graphics2D g)
+    {
+        //render entities normally
+        renderEntities(g);
+
+
     }
 
     public synchronized void addEntity(Entity e)
