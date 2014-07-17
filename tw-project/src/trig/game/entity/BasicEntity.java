@@ -1,8 +1,8 @@
 package trig.game.entity;
 
 import trig.game.entity.interfaces.Entity;
-import trig.utility.Methods;
-import trig.utility.vector.CartesianForm;
+import trig.utility.DummyMethods;
+import trig.utility.math.vector.CartesianForm;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -55,7 +55,7 @@ public abstract class BasicEntity implements Entity
     }
 
     BasicEntity(/*int id,*/ int x, int y, int hitSize){ //TODO: fix where id comes from, etc, probably needs to be able to recycle, or refresh periodically?
-        this.id = Methods.DummyVars.getNextEntityId();
+        this.id = DummyMethods.DummyVars.getNextEntityId();
         this.x = x;
         this.y = y;
         this.hitSize = hitSize;

@@ -3,15 +3,11 @@ package trig.game.entity.dummy;
 //NOTE: probably better to have some class with draw methods corresponding to each object or something rather than these imports in lots of places? idk.
 import trig.game.engine.GameEngine;
 import trig.game.entity.*;
-import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
-import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
-import trig.utility.vector.*;
+import trig.utility.math.vector.*;
 
 import java.awt.*;
-import java.awt.geom.*;
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -44,14 +40,13 @@ public final class DummyTriangle extends Combatant implements UpdateListener
     }
     //getters
 
+    shape.intersects(1,6,6);
 
-    @Override
     public Shape getShape()
     {
-        return shape;
+        return ;
     }
 
-    @Override
     public boolean isVisible()
     {
         return isMapped();

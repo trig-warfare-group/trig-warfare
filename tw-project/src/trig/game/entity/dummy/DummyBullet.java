@@ -1,14 +1,12 @@
 package trig.game.entity.dummy;
 
 import trig.game.engine.GameEngine;
-import trig.game.entity.interfaces.Destructible;
 import trig.game.entity.Projectile;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
-import trig.utility.vector.*;
+import trig.utility.math.vector.*;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Random;
 

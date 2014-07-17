@@ -18,7 +18,7 @@ package trig.game.entity;
 //    public Player(String name, int  id)
 //    {
 //
-//        //the random values etc are temp for now;
+//        //the random values etc are vector for now;
 //
 //        super
 //        (

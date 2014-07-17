@@ -7,9 +7,8 @@
 package trig.game.entity;
 import trig.game.entity.interfaces.Living;
 import trig.game.entity.interfaces.Visible;
-import trig.utility.vector.CartesianForm;
-import trig.utility.vector.PolarForm;
-import trig.utility.vector.Vector;
+import trig.utility.math.vector.CartesianForm;
+import trig.utility.math.vector.PolarForm;
 
 import java.awt.Color;
 
@@ -132,12 +131,6 @@ public abstract class Combatant extends GenericMoving implements Living, Visible
     public boolean isMapped()
     {
         return isAlive();
-    }
-
-    @Override
-    public float getDirection()
-    {
-        return getVelocity().inPolar().angle;
     }
 
     public Combatant(/*int id,*/ String name, int hitSize, int maxHp, Color color, float speed)

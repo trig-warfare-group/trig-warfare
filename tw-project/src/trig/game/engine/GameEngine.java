@@ -4,13 +4,9 @@ import trig.game.entity.dummy.DummyTriangle;
 import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
-import trig.utility.Constants;
-import trig.utility.Methods;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Dummy/Demo/Draft engine for some testing, etc etc?
@@ -26,7 +22,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     */
 
 
-    //temp/cheap engine-demo stuff
+    //vector/cheap engine-demo stuff
     private ArrayList<Entity> entities = new ArrayList<Entity>(); //may use hashSet instead, idk;
     private Font bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
     private Font lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
@@ -68,37 +64,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         }
     }
 
-    /**
-     * Performs the part of the rendering that deals with individual entities (not the HUD)
-     * @param g Graphics2D object that can be used to draw on the panel
-     * Full description:
-     *      Each entity that can be drawn will pass forward an object containing data needed to draw it, including:
-     *          a CustomPath as the basic polygon/image asset of the object
-     *          The x and y coordinates to which to translate the RenderPaths
-     *          The angle, in radians within the domain [-pi,pi] by which to rotate the points in the RenderPaths
-     *          Possibly more data in the future:
-     *              Possible a stat-rendering object, for things like text (e.g. name), something on the health or sheild, etc.
-     *      Note that the path used for rendering etc is not explicitly the same as the data used for collisions, that will be a separate object
-     * @see trig.utility.CustomPath
-     *
-     */
+
     public void renderEntities(Graphics2D g)
     {
-        /*
-            notes on custompath:
-            needs a better name
-            have a color object!
-            Support subpaths (for colour object and ther data inheritance purposes)
-            use Vectors for nodes/points (makes transforms such as rotation and translation easy?)
-            May not be enclosed:
-                (this could however be achieved: by referencing the first Vector as the last Vector, for example)
-         */
-
-        /*
-            Note on stat-rendering:
-                health etc should be a bar
-         */
-        Visible v;
         /*
             we'll possibly keep a drawable list in the entities list
             (and handle this via the add/removeEntity functions) eventually?
@@ -107,37 +75,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         {
             if (e instanceof Visible)
             {
-                v = (Visible) e;
-            /*
-                some entities can hide?
-                or just not be mapped yet?
-                either way I guess it works?
-                Is there a better way?
-             */
-
-            //old code
-
-                g.setColor(v.getColor());
-                if (v.isVisible())
-                {
-
-                    g.translate((double) v.getX(), (double) v.getY());
-                    g.rotate((double) v.getDirection());
-
-                    g.draw(
-                            v.getShape()
-                    );
-
-                /*
-                    this reverse-transform results in too much rounding error to actually use
-                    We need another way to do the draw that doesn't involve a full canvas transform, such as creating the shape in this function based on data from the entity
-                    or
-                    Having the entity create a shape that is already at the correct location and rotated.
-                 */
-
-                    g.rotate(-(double) v.getDirection());
-                    g.translate(-(double) v.getX(), -(double) v.getY());
-                }
+                ((Visible) e).render(g);
             }
         }
     }
@@ -165,6 +103,15 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     {
         //render entities normally
         renderEntities(g);
+
+        //all entities should have debug stuff maybe?
+        for (Entity e : entities)
+        {
+            if (e instanceof Visible)
+            {
+                ((Visible) e).renderDebug(g); //will render the entity's debug info, but maybe the engine should handle that itself
+            }
+        }
 
 
     }
