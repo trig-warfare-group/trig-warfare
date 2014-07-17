@@ -1,82 +1,40 @@
 package trig.game.entity;
 
-import trig.utility.vector.CartesianVector;
-import trig.utility.vector.PolarVector;
+import trig.game.entity.interfaces.Ambulant;
+import trig.utility.vector.*;
 
 /**
  * Bad naming I know, but not all moving entities need a directional velocity, some might just move in a fixed pattern, I guess?
  * Created by marcos on 11/07/2014.
  */
-public abstract class GenericMoving extends BasicEntity implements Ambulant{
-    //data used to calculate x and y velocities.
+public abstract class GenericMoving extends BasicEntity implements Ambulant
+{
+    //the distance by which to move each tick
+    protected Vector velocity;
 
-    protected PolarVector polarVel;
-
-    //the distance by which to move each tick, stored here for processing speed enhancement.
-    //int because if x and y are X, then we'll end up rounding every time anyway.
-    protected int velX;
-    protected int velY;
-
-    GenericMoving(/*int id,*/ int x, int y, int hitSize) {
-        super(/*id,*/ x, y, hitSize);
+    public Vector getVelocity()
+    {
+        return velocity;
     }
 
-    public GenericMoving(/*int id,*/ int x, int y, int hitSize, CartesianVector vector)
+    public void setVelocity(Vector velocity)
+    {
+        this.velocity = velocity;
+    }
+
+    public GenericMoving(/*int id,*/ int x, int y, int hitSize, Vector vector)
     {
         //pipe these straight to the BasicEntity constructor.
         super(/*id,*/ x, y, hitSize);
-        this.setVel(vector);
+        this.setVelocity(vector);
     }
-
-    public GenericMoving(/*int id,*/ int x, int y, int hitSize, PolarVector vector)
-    {
-        //pipe these straight to the BasicEntity constructor.
-        super(/*id,*/ x, y, hitSize);
-        this.setVel(vector);
-    }
-    //getters & setters
-    public PolarVector getPolarVel()
-    {
-        return polarVel;
-    }
-
-    /**
-     * Gets the actual vector used when moving, since it can only move in integer amounts, etc..
-     */
-    public CartesianVector getRealCartVel(){
-        return new CartesianVector((float) velX, (float) velY); //may end up changing things so we don't need to create a new one each time
-    }
-
-    /**
-     * Updates velocity based on a PolarVector
-     */
-    public void setVel(CartesianVector vector)
-    {
-        polarVel = vector.toPolar();
-        velX = Math.round(vector.x);
-        velY = Math.round(vector.y);
-    }
-
-    /**
-     * Updates velocity based on a CartesianVector
-     */
-    public void setVel(PolarVector vector)
-    {
-        polarVel = vector;
-        CartesianVector cartVel = polarVel.toCartesian();
-        velX = Math.round(cartVel.x);
-        velY = Math.round(cartVel.y);
-    }
-
-
-
     /**
      * Standard movement method for projectiles, just moves by velocity.
      */
     protected void move()
     {
-        int newX = x+velX;
-        int newY = y+velY;
+        int newX = x+velocity.inCartesian().getX();
+        int newY = y+velocity.inCartesian().getY();
 
         x = newX;
         y = newY;

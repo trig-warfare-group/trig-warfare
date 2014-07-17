@@ -1,4 +1,4 @@
-package trig.game.entity;
+package trig.game.entity.interfaces;
 
 /**
  * Base class for entities that move around

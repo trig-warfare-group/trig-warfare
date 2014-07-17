@@ -1,26 +1,23 @@
 package trig.game.entity;
 
+import trig.game.engine.GameEngine;
+import trig.game.entity.interfaces.UpdateListener;
 import trig.utility.vector.*;
 
 /**
  * Base class for objects that mostly move in a straight line, such as bullets
  * Created by marcos on 10/07/14.
  */
-public abstract class Projectile extends GenericMoving implements updateListener
+public abstract class Projectile extends GenericMoving implements UpdateListener
 {
-    public Projectile(/*int id,*/ int x, int y, int hitSize, CartesianVector vector) {
+    public Projectile(/*int id,*/ int x, int y, int hitSize, Vector vector) {
         super(/*id,*/ x, y, hitSize, vector);
     }
-
-    public Projectile(/*int id,*/ int x, int y, int hitSize, PolarVector vector) {
-        super(/*id,*/ x, y, hitSize, vector);
-    }
-
     /**
-     * Usable template for how projectiles should behave onTick
+     * Usable template for how projectiles should behave onTick?
      */
     @Override
-    public void onTick()
+    public void update(GameEngine engine)
     {
         move();
     }

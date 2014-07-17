@@ -1,7 +1,11 @@
 package trig.game.entity;
 
+import trig.game.entity.interfaces.Entity;
 import trig.utility.Methods;
-import trig.utility.Variables;
+import trig.utility.vector.CartesianForm;
+
+import java.awt.*;
+import java.awt.geom.GeneralPath;
 
 /**
  * Base class for in game entities, should we be directly implimenting some of the aspects of entity here, or delete this class and do it repeatedly in others? IMO: here, less code
@@ -9,6 +13,22 @@ import trig.utility.Variables;
  */
 public abstract class BasicEntity implements Entity
 {
+    /**
+     * makes a shape from a series of points, dummy code for now, but could be used in the future
+     * @param points a 2d array of x,y coordinates.
+     * @return a Shape object, to be drawn
+     */
+    public static Shape makeDrawableShape(CartesianForm[] points){ //todo: make possible to add multiple shapes maybe? seems a simple task to do so.
+        final GeneralPath path = new GeneralPath();
+        path.moveTo(points[0].x, points[0].y);
+        for(int i = 1; i < points.length; i++)
+        {
+            path.lineTo(points[i].x, points[i].y);
+        }
+        path.closePath();
+        return path;
+    }
+
     protected final long id;
     protected int x;
     protected int y;

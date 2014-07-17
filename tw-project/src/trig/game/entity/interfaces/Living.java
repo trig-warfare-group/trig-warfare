@@ -1,4 +1,4 @@
-package trig.game.entity;
+package trig.game.entity.interfaces;
 
 /**
  * Interface for living entities, i.e. those ideally with more than one life, those that can die, those that can respawn, etc. Maybe not /all AI/ (idk)

@@ -1,4 +1,4 @@
-package trig.game.entity;
+package trig.game.entity.interfaces;
 
 /**
  * Indicates that the entity can have it's coordinates manually manipulated?

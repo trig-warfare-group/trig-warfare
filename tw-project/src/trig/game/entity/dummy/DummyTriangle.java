@@ -1,6 +1,11 @@
-package trig.game.entity;
+package trig.game.entity.dummy;
 
 //NOTE: probably better to have some class with draw methods corresponding to each object or something rather than these imports in lots of places? idk.
+import trig.game.engine.GameEngine;
+import trig.game.entity.*;
+import trig.game.entity.interfaces.Entity;
+import trig.game.entity.interfaces.UpdateListener;
+import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
 import trig.utility.vector.*;
 
@@ -14,14 +19,54 @@ import java.util.Random;
  * NOTE: MAKE CONTAIN A HELPFUL TEMPLATE FOR FIRING PROJECTILES.
  * Created by marcos on 11/07/2014.
  */
-public final class DummyTriangle extends Combatant implements updateListener
+public final class DummyTriangle extends Combatant implements UpdateListener
 {
-    public static final Color DEF_COLOR = Color.WHITE;
-    public static final int PROJECTILE_LIMIT = 100;
+    protected Shape shape;
+
+    protected Shape makeTriangle() //most java.awt functions use minimum floating-point accuracy, it seems?
+    {
+        //absolute of the angle to rotate by against point A, to get points B and C
+        //equilateral and isosceles triangle can be produced using +- this one angle, I think..
+        float rotationBase = Math.round(1/2*Math.PI);
+        float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
+        CartesianForm vA = PolarForm.toCartesian(hitSize, rotationBase); //1PI should north
+
+        //A,B,C points of the triangle, these are vector, and not real locations, as such they use the location of the entity as the origin, they must later be converted to locations.
+        CartesianForm vB = PolarForm.toCartesian(
+                hitSize,
+                (float) (rotationBase + rotationAngle)
+        );
+        CartesianForm vC = PolarForm.toCartesian(
+                hitSize,
+                (float) (rotationBase - rotationAngle)
+        );
+        return makeDrawableShape(new CartesianForm[]{vA, vB, vC});
+    }
+    //getters
+
+
+    @Override
+    public Shape getShape()
+    {
+        return shape;
+    }
+
+    @Override
+    public boolean isVisible()
+    {
+        return isMapped();
+    }
+
+    //PROBABLY USE TIMERS INSTEAD ETC
     private int step = 0;
     private Random r = new Random();
 
-    private ArrayList<Projectile> projectiles = new ArrayList<Projectile>(); //is this a good or bad way to do this? DUNNO, only a demo..
+    //random defaults
+    //protected static final float ST_TURN = (float) (((float)1/18)*Math.PI);
+    protected static final int ST_DIST = 1;
+    public static final float DEF_SPEED = 1; //no multiplicative effect
+
+    //private ArrayList<Projectile> projectiles = new ArrayList<Projectile>(); //is this a good or bad way to do this? DUNNO, only a demo..
 
     public DummyTriangle()
     {
@@ -39,6 +84,7 @@ public final class DummyTriangle extends Combatant implements updateListener
                 r.nextInt((250 - 75) + 1) + 75,
                 r.nextInt((250 - 75) + 1) + 75
         ); //random
+        shape = makeTriangle();
         spawn();
     }
 
@@ -93,66 +139,27 @@ public final class DummyTriangle extends Combatant implements updateListener
         //if the loop ends, we can spawn safely
         this.x = newX;
         this.y = newY;
-        setVel(new PolarVector(ST_DIST*speed, newDirection));
+        setVelocity(new PolarForm(ST_DIST * speed, newDirection));
 
     }
 
-    private void fireProjectile(Projectile munition) //bad name?
+    private void fireProjectile(Projectile munition, GameEngine engine) //bad name?
     {
-        projectiles.add(munition); //NOTE/TODO: DOES NOT ADD TO THE ENTITY LIST, THIS IS IMPORTANT, I THINK, ETC.
-        if(projectiles.size() > PROJECTILE_LIMIT)
-        {
-            projectiles.remove(0); //remove last
-        }
+        //POSSIBLY REDUCE AMMO STOCK OR CHECK SOME COOLDOWN IDK
+        engine.addEntity(munition);
+
+        /*
+            NOTE/TODO: DOES NOT ADD TO THE ENTITY LIST, THIS IS IMPORTANT,
+            also need way to limit the number of projectiles fired
+            probably can't really other than by fire rate or A COOLDOWN MECHANISM!!
+         */
     }
 
+    /*
     @Override
     public void draw(Graphics2D g)
     {
         //get the color right
-        g.setColor(color);
-
-        //direction-corrected isosceles triangle!, I hope..
-
-        //terrible name for this, but I'm tired and it's just an example..
-        //absolute of the angle to rotate by against point A, to get points B and C
-        //equilateral and isosceles triangle can be produced using +- this one angle, I think..
-        float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
-        PolarVector frontPolar = new PolarVector(hitSize, polarVel.angle);
-
-        //A,B,C points of the triangle, these are vector, and not real locations, as such they use the location of the entity as the origin, they must later be converted to locations.
-        CartesianVector vA = frontPolar.toCartesian();
-        CartesianVector vB = PolarVector.toCartesian(
-                hitSize,
-                (float) ( polarVel.angle + rotationAngle)
-        );
-        CartesianVector vC = PolarVector.toCartesian(
-                hitSize,
-                (float) ( polarVel.angle - rotationAngle)
-        );
-
-        //real coords of A,B,C, seems a bit inefficient to create new objects for them unnecessarily, but this is only a demo for now.
-        Location lA = new Location(
-                x+vA.x,
-                y+vA.y
-        );
-        Location lB = new Location(
-                x+vB.x,
-                y+vB.y
-        );
-        Location lC = new Location(
-                x+vC.x,
-                y+vC.y
-        );
-
-        //TODO: MAKE THE GAME ENGINE OR WHATEVER WIPE THE SCREEN TO BLANK/DEFAULT COLOUR ON EACH FRAME!
-
-        //TODO: DETERMINE IN THE HITBOX AND DRAWBOX MATCH UP!
-        //draw on the actual screen..
-        //there may be some shape class or something for this but atm who cares?
-        g.draw(new Line2D.Float(lA.x, lA.y, lB.x, lB.y));
-        g.draw(new Line2D.Float(lA.x, lA.y, lC.x, lC.y));
-        g.draw(new Line2D.Float(lB.x, lB.y, lC.x, lC.y));
         //draw the name of the triangle above it
         float textBaseline = (float) (y-hitSize*1.2);
 
@@ -176,9 +183,9 @@ public final class DummyTriangle extends Combatant implements updateListener
             }
         }
     }
-
+    */
     @Override
-    public void onTick()
+    public void update(GameEngine engine)
     {
         if(step == 2000)
         {
@@ -192,22 +199,17 @@ public final class DummyTriangle extends Combatant implements updateListener
 
             //randomise direction!
             float newDirection = (float) ( ( (r.nextFloat() * 2) - 1 ) * Math.PI ); //between [-1,1], I think
-            setVel(new PolarVector(ST_DIST*speed, newDirection));
+            setVelocity(new PolarForm(ST_DIST*speed, newDirection));
         }
         else
         {
-            if(step % 50 == 0)
+            if(step % 10 == 0)
             {
-                fireProjectile(new DummyBullet(Math.round(x+hitSize), Math.round(y+hitSize), polarVel.angle));
+                CartesianForm bulletSpawnOffset = PolarForm.toCartesian(hitSize, velocity.inPolar().angle);
+
+                fireProjectile(new DummyBullet(x+bulletSpawnOffset.getX(), y+bulletSpawnOffset.getY(), velocity.inPolar().angle), engine);
             }
             move();
-            for(Entity e: projectiles)
-            {
-                if (e instanceof updateListener)
-                {
-                    ((updateListener) e).onTick();
-                }
-            }
         }
         step++;
     }

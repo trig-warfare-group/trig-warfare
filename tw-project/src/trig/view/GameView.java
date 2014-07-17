@@ -1,48 +1,43 @@
 package trig.view;
 
-import javax.swing.*;
-
 import trig.game.GameClient;
 import trig.utility.Constants;
-
+import trig.view.login.LoginView;
 import java.awt.*;
 
-public class GameView 
+public class GameView
 {
-    //NOTE: should possibly use swing instead of awt??
 	private GameFrame frame;
 	private GamePanel panel;
+	private GameClient client;
 
-	public GameView(GameClient gameModel)
-	{
+    public GameView(GameClient gameClient)
+    {
+        frame = new GameFrame();
+        frame.addModel(gameClient);
+        panel = new GamePanel();
+        panel.addModel(gameClient);
+        this.client = gameClient;
+    }
 
-		frame = new GameFrame();
-		frame.addModel(gameModel);
-		panel = new GamePanel();
-		panel.addModel(gameModel);
-        panel.setBorder(BorderFactory.createEmptyBorder());
+    /**
+     * Initializes the components to display
+     */
+    public void init()
+    {
+        frame.setTitle(Constants.GAME_TITLE + " - " + Constants.AUTHOR);
+        panel.setBackground(new Color(7, 22, 0));
+        //must be setPrefferedSize to be recognised by frame.pack();
         panel.setPreferredSize(Constants.WINDOW_DIMENSION);
-        panel.setSize(Constants.WINDOW_DIMENSION);
-        panel.setBackground(Color.BLACK);
+        frame.getContentPane().add(panel);
+        frame.setResizable(false);
 
-        this.init();
-	}
-	
-	/**
-	 * Initializes the components to display
-	 */
-	private void init() 
-	{
-		frame.setTitle(Constants.GAME_TITLE + " - " + Constants.AUTHOR);
+        //setResizable(false); needs to be done before pack() for correct behaviour
+        frame.pack();
 
-        panel.setPreferredSize(Constants.WINDOW_DIMENSION);
-		frame.getContentPane().add(panel);
-        panel.setBorder(BorderFactory.createEmptyBorder());
-		frame.setResizable(false);
-        frame.pack(); //PACK AFTER MAKING RESIZABLE FALSE, OR GET UNWANTED BORDER-EDGE-THING
-		frame.setVisible(true);
-	}
-	
+        frame.setVisible(true);
+    }
+
 	public GameFrame getGameFrame() 
 	{
 		return frame;
@@ -56,6 +51,11 @@ public class GameView
 	public void render()
 	{
 		panel.repaint();
+	}
+	
+	public LoginView constructLoginView()
+	{
+		return new LoginView(panel, client);
 	}
 	
 }
