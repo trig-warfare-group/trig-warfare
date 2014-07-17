@@ -7,7 +7,7 @@ import trig.game.entity.Living;
  * Just a quick utility -- will be most likely scrapped / upgraded
  * Created by brody on 17/07/14.
  */
-public class CollisionCheck implements Living
+public class CollisionCheck
 {
        public Combatant c;
        public boolean collided;
@@ -17,10 +17,5 @@ public class CollisionCheck implements Living
             this.c = c;
             collided = false;
         }
-
-    public void update()
-    {
-        c.update();
-    }
 
 }

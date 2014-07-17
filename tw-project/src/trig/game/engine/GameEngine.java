@@ -26,9 +26,9 @@ public class GameEngine
     {
         //for(int i = 0; i < 50; i++)
           //  entities.add(new Combatant(0, 0, 10));
-        col = new CollisionCheck[50];
+        col = new CollisionCheck[5];
 
-        for(int i = 0; i < 50; i ++)
+        for(int i = 0; i < 5; i ++)
         {
             col[i] = new CollisionCheck(new Combatant(0, 0, 10));
         }
@@ -41,7 +41,7 @@ public class GameEngine
     {
 
         for(int i = 0; i < col.length; i++)
-            ((Living)col[i]).update();
+            col[i].c.update();
 
 
         //TODO Implement checking algorithm - which will be used in a collision-engine;
