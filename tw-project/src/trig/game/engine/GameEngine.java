@@ -62,7 +62,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         {
             e = entities.get(i);
             if (e instanceof UpdateListener)
-                    ((UpdateListener) e).update(this);
+            {
+                ((UpdateListener) e).update(this);
+            }
         }
     }
 
@@ -110,15 +112,22 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                     if (v.isVisible())
                     {
 
-                        AffineTransform oldTransform = g.getTransform(); //store old transformation
-
                         g.translate((double) v.getX(), (double) v.getY());
                         g.rotate((double) v.getDirection());
+
                         g.draw(
                                 v.getShape()
                         );
 
-                        g.transform(oldTransform); //revert transformation
+                    /*
+                        this reverse-transform results in too much rounding error to actually use
+                        We need another way to do the draw that doesn't involve a full canvas transform, such as creating the shape in this function based on data from the entity
+                        or
+                        Having the entity create a shape that is already at the correct location and rotated.
+                     */
+
+                        g.rotate(-(double) v.getDirection());
+                        g.translate(-(double) v.getX(), -(double) v.getY());
                     }
                 }
             }
