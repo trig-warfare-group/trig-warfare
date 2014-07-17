@@ -42,6 +42,8 @@ public class GameEngine
 
         for(int i = 0; i < col.length; i++)
             ((Living)col[i]).update();
+
+
         //TODO Implement checking algorithm - which will be used in a collision-engine;
 
         for(int i = 0; i < col.length; i++)
@@ -50,15 +52,14 @@ public class GameEngine
             boolean check = false;
 
             //Check against others.
-            for(int o = 0; i < col.length; i++)
+            for(int o = 0; o < col.length; o++)
             {
-                Combatant l = col[i].c;
+                Combatant l = col[o].c;
                 //If not same entity
                 if(cur != l)
                 {
-                    cur.hitbox.intersects((Rectangle)l.hitbox);
-                    check = true;
-                    break;
+                    if(cur.hitbox.intersects((Rectangle)l.hitbox));
+                        check = true;
                 }
             }
             if(check == false)
@@ -88,24 +89,14 @@ public class GameEngine
 
         start = System.nanoTime();
 
-            Visible v;
-            for(int i = 0; i < col.length; i++)
-            {
-                g.setColor(new Color(74, 198, 36));
-                if(col[i].collided == true)
-                    g.setColor(new Color(174, 38, 36));
-                ((Visible)col[i].c).render(g);
-            }
+        for(int i = 0; i < col.length; i++)
+        {
+            g.setColor(new Color(74, 198, 36));
+            if(col[i].collided == true)
+                g.setColor(new Color(174, 38, 36));
+            ((Visible)col[i].c).render(g);
+        }
 
-         //   for (Entity e : entities)
-          //  {
-         //       if (e instanceof Visible)
-              //  {
-         //           v = (Visible) e;
-                    //if(col[])
-            //        v.render(g);
-          // //     }
-          //  }
         g.setColor(new Color(74, 198, 36));
         end = System.nanoTime();
         g.drawString("Render time: " + Long.toString((end - start) / 1000) + "ms",
