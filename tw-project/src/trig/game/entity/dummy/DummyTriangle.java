@@ -40,11 +40,10 @@ public final class DummyTriangle extends Combatant implements UpdateListener
     }
     //getters
 
-    shape.intersects(1,6,6);
 
     public Shape getShape()
     {
-        return ;
+        return shape;
     }
 
     public boolean isVisible()

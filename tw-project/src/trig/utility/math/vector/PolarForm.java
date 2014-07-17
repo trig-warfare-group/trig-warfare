@@ -23,28 +23,28 @@ public class PolarForm implements Vector
 
     /**
      * @param radius the distance from origin
-     * @param angle  expressed in radians, between [-PI, -PI]
+     * @param theta an angle expressed in radians, between [-PI, -PI]
      */
-    public PolarForm(float radius, float angle)
+    public PolarForm(float radius, float theta)
     {
         this.radius = radius;
-        this.angle = trig.utility.math.Methods.normalise(angle);
+        this.angle = trig.utility.math.Methods.normalise(theta);
     }
 
     /**
      * Produces a CartesianForm equivalent of the given data
      * @param radius the distance from origin
-     * @param angle  expressed in radians, between [-PI, -PI]
+     * @param theta an angle expressed in radians, between [-PI, -PI]
      * @return a vector from given data, in cartesian form
      */
-    public static CartesianForm toCartesian(float radius, float angle)
+    public static CartesianForm toCartesian(float radius, float theta)
     {
         //make sure to normalise
-        angle = trig.utility.math.Methods.normalise(angle);
+        theta = trig.utility.math.Methods.normalise(theta);
         return new CartesianForm
                 (
-                        (float) (radius * Math.cos(angle)), //x
-                        (float) (radius * Math.sin(angle)) //y
+                        (float) (radius * Math.cos(theta)), //x
+                        (float) (radius * Math.sin(theta)) //y
                 );
     }
 

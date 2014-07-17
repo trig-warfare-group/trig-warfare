@@ -69,7 +69,7 @@ public class CartesianForm implements Vector
         return new PolarForm
                 (
                         (float) Math.sqrt((x * x) + (y * y)), //radius
-                        (float) Math.atan2(y, x) //angle
+                        (float) Math.atan2(y, x) //theta
                 );
     }
 
