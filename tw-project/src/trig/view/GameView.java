@@ -26,10 +26,15 @@ public class GameView
     public void init()
     {
         frame.setTitle(Constants.GAME_TITLE + " - " + Constants.AUTHOR);
-        frame.setSize(Constants.WINDOW_DIMENSION);
         panel.setBackground(new Color(7, 22, 0));
+        //must be setPrefferedSize to be recognised by frame.pack();
+        panel.setPreferredSize(Constants.WINDOW_DIMENSION);
         frame.getContentPane().add(panel);
         frame.setResizable(false);
+
+        //setResizable(false); needs to be done before pack() for correct behaviour
+        frame.pack();
+
         frame.setVisible(true);
     }
 
