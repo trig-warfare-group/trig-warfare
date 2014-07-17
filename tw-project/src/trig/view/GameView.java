@@ -1,13 +1,15 @@
 package trig.view;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import trig.game.GameClient;
 import trig.utility.Constants;
 
+import java.awt.*;
+
 public class GameView 
 {
+    //NOTE: should possibly use swing instead of awt??
 	private GameFrame frame;
 	private GamePanel panel;
 
@@ -18,8 +20,12 @@ public class GameView
 		frame.addModel(gameModel);
 		panel = new GamePanel();
 		panel.addModel(gameModel);
-		
-		this.init();
+        panel.setBorder(BorderFactory.createEmptyBorder());
+        panel.setPreferredSize(Constants.WINDOW_DIMENSION);
+        panel.setSize(Constants.WINDOW_DIMENSION);
+        panel.setBackground(Color.BLACK);
+
+        this.init();
 	}
 	
 	/**
@@ -28,10 +34,12 @@ public class GameView
 	private void init() 
 	{
 		frame.setTitle(Constants.GAME_TITLE + " - " + Constants.AUTHOR);
-		frame.setSize(Constants.WINDOW_DIMENSION);
-		
+
+        panel.setPreferredSize(Constants.WINDOW_DIMENSION);
 		frame.getContentPane().add(panel);
+        panel.setBorder(BorderFactory.createEmptyBorder());
 		frame.setResizable(false);
+        frame.pack(); //PACK AFTER MAKING RESIZABLE FALSE, OR GET UNWANTED BORDER-EDGE-THING
 		frame.setVisible(true);
 	}
 	
