@@ -19,6 +19,7 @@ public class Combatant extends BasicCombatant
     int u_id;
     Random r = new Random();
     Vector velocity;
+
     public Combatant(int x, int y, int hitPoints)
     {
         super(x, y, hitPoints);
@@ -27,10 +28,16 @@ public class Combatant extends BasicCombatant
         this.velocity = new PolarForm(5, (float) ((r.nextFloat()*2 - 1)*Math.PI));
         u_id = r.nextInt();
     }
-    public void move(int destX, int destY)
+
+    /**
+     *  Moves to the parameters location.
+     * @param dX -- x-location to move to.
+     * @param dY -- y-location to move to.
+     */
+    public void move(int dX, int dY)
     {
-        this.x = destX;
-        this.y = destY;
+        this.x = dX;
+        this.y = dY;
     }
 
     public void move()
@@ -42,30 +49,21 @@ public class Combatant extends BasicCombatant
     @Override
     public void update()
     {
-        move();
+        int x = r.nextInt(Constants.WINDOW_DIMENSION.width);
+        int y = r.nextInt(Constants.WINDOW_DIMENSION.height);
 
-        if(x > Constants.WINDOW_DIMENSION.width || x < 0
-            || y > Constants.WINDOW_DIMENSION.height || y < 0)
+        if(x < Constants.WINDOW_DIMENSION.width && x > 0
+            && y < Constants.WINDOW_DIMENSION.height && y > 0)
         {
-            //go in the opposite direction
-            PolarForm polarVelocity = velocity.inPolar();
-            velocity = new PolarForm(polarVelocity.radius, (float) (polarVelocity.angle-Math.PI));
-            move(); //move again so we aren't stuck off edge etc.
+            ((Rectangle)hitbox).x = x;
+            ((Rectangle)hitbox).y = y;
         }
     }
 
     @Override
     public void render(Graphics2D g)
     {
-        hitbox = new Rectangle(
-                (int) Math.round(x-(10)),
-                (int) Math.round(y-(10)),
-                50,
-                50
-        );
-        g.draw(
-            hitbox
-        );
-        g.drawString(Integer.toString(u_id), x, y + 60);
+        g.draw(hitbox);
+        g.drawString(Integer.toString(u_id), ((Rectangle)hitbox).x, ((Rectangle)hitbox).y + 60);
     }
 }

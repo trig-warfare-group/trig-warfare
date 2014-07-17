@@ -6,6 +6,9 @@ import trig.utility.Methods;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,7 +22,7 @@ public class GameEngine
     private Font bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
     private Font lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     ArrayList<CollisionCheck> collisionChecks;
-
+    int collisions = 0;
     /**
      * Initialisation of the engine
      */
@@ -29,7 +32,9 @@ public class GameEngine
         Random r = new Random();
         for(int i = 0; i < 20; i ++)
         {
-            collisionChecks.add(new CollisionCheck(new Combatant(r.nextInt(Constants.WORLD_DIM.width-Constants.WORLD_COLLISION_PADDING-1), r.nextInt(Constants.WORLD_DIM.height-Constants.WORLD_COLLISION_PADDING-1), 10)));
+            collisionChecks.add(new CollisionCheck(
+                    new Combatant(r.nextInt(Constants.WORLD_DIM.width-Constants.WORLD_COLLISION_PADDING-1),
+                            r.nextInt(Constants.WORLD_DIM.height-Constants.WORLD_COLLISION_PADDING-1), 10)));
         }
     }
 
@@ -40,13 +45,12 @@ public class GameEngine
     {
         for(CollisionCheck each : collisionChecks)
         {
-            ((Living) each).update(); //cast to living redundant
+            each.c.update();
         }
-
-
 
         //TODO Implement checking algorithm - which will be used in a collision-engine;
         boolean collided;
+        collisions = 0;
         for(CollisionCheck checker : collisionChecks)
         {
             collided = false;
@@ -57,9 +61,11 @@ public class GameEngine
                 //If not same entity
                 if(checker != other)
                 {
-                    if(checker.c.hitbox.intersects((java.awt.geom.Rectangle2D) other.c.hitbox)) //you even put a ; at the end of the for loop and then had the loop-code on the next line? Unreadable..
+                    if(checker.c.hitbox.intersects((Rectangle) other.c.hitbox))
                     {
                         collided = true;
+                        collisions++;
+                        break;
                     }
 
                 }
@@ -97,7 +103,7 @@ public class GameEngine
 
         g.setColor(new Color(74, 198, 36));
         end = System.nanoTime();
-        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "ms",
+        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "ms" + "|   Collision: " + Integer.toString(collisions),
                 5,
                 15);
 
