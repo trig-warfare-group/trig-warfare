@@ -9,5 +9,6 @@ import java.awt.geom.GeneralPath;
  */
 public interface Visible {
 
-    abstract public void render();
+    abstract public void render(Graphics2D graphics2D);
+    abstract public boolean isVisible();
 }

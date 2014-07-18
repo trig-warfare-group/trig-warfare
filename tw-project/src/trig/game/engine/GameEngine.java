@@ -4,6 +4,8 @@ import trig.game.entity.dummy.DummyTriangle;
 import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
+import trig.utility.Constants;
+import trig.utility.DummyMethods;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -81,9 +83,31 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     }
     public void render(Graphics2D g)
     {
-        //important: we must always render entities first, then the HUD over the top
+        long start;
+        long end;
+
+        start = System.nanoTime();
 
         renderEntities(g);
+
+        //important: we must always render entities first, then the HUD over the top
+        g.setFont(bigFont);
+        g.setColor(Color.DARK_GRAY);
+
+        g.drawString("Game-Engine", Constants.WINDOW_DIMENSION.width / 2 - 175, 325);
+
+        g.setColor(new Color(74, 198, 36));
+        g.setFont(lilFont);
+
+        g.drawString(
+                "Entities Created: "+Long.toString(DummyMethods.DummyVars.getLastEntityId())
+                        + " Entities living: "+Long.toString(entities.size()),
+                5, Constants.WINDOW_DIMENSION.height - 10);
+
+        end = System.nanoTime();
+        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "ms",
+                5,
+                15);
 
         /*
             TODO: FIGURE OUT HOW THE DEBUG VIEW FITS INTO THIS:
@@ -91,7 +115,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 SO PART OF IT MUST BE DONE AFTER renderEntities AND PART OF IT AFTER renderHUD
         */
 
-        renderHUD(g); //may not keep this hud rendering as a separate function, haven't decided.
+        //renderHUD(g); //may not keep this hud rendering as a separate function, haven't decided.
     }
 
     /**
@@ -101,17 +125,17 @@ public class GameEngine //may extend some GameState interface I think, not an ex
      */
     public void debugRender(Graphics2D g)
     {
-        //render entities normally
-        renderEntities(g);
-
-        //all entities should have debug stuff maybe?
-        for (Entity e : entities)
-        {
-            if (e instanceof Visible)
-            {
-                ((Visible) e).renderDebug(g); //will render the entity's debug info, but maybe the engine should handle that itself
-            }
-        }
+//        //render entities normally
+//        renderEntities(g);
+//
+//        //all entities should have debug stuff maybe?
+//        for (Entity e : entities)
+//        {
+//            if (e instanceof Visible)
+//            {
+//                ((Visible) e).renderDebug(g); //will render the entity's debug info, but maybe the engine should handle that itself
+//            }
+//        }
 
 
     }

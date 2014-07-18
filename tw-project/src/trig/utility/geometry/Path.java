@@ -35,13 +35,15 @@ public class Path<T extends Vector> extends LinkedList<T> implements Renderable
     @Override
     public Path2D.Float getPath2D(){
         GeneralPath pen = new GeneralPath();
-
-        CartesianForm cartPoint = this.get(0).inCartesian();
-        pen.moveTo(cartPoint.x, cartPoint.y);
-
-        for(T each : this){
-            cartPoint = each.inCartesian();
-            pen.lineTo(cartPoint.x, cartPoint.y);
+        if(this.size() > 0)
+        {
+            CartesianForm cartPoint = getFirst().inCartesian();
+            pen.moveTo(cartPoint.x, cartPoint.y);
+            for (int i=0; i < this.size(); i++)
+            {
+                cartPoint = get(i).inCartesian();
+                pen.lineTo(cartPoint.x, cartPoint.y);
+            }
         }
         return pen;
     }
