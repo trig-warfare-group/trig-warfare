@@ -4,7 +4,7 @@ package trig.utility.math.vector;
  * @see trig.utility.math.vector.Vector
  * Created by marcos on 11/07/2014.
  */
-public class CartesianForm implements Vector
+public class CartesianForm extends Vector
 {
     //for now going to be a float for slightly better accuracy converting to and from PolarForm
     public final float x;
@@ -82,5 +82,17 @@ public class CartesianForm implements Vector
     public PolarForm inPolar()
     {
         return toPolar(x, y);
+    }
+
+    @Override
+    public CartesianForm translate(float tX, float tY)
+    {
+        return super.translate(tX, tY).inCartesian();
+    }
+
+    @Override
+    public CartesianForm rotate(float theta)
+    {
+        return super.rotate(theta).inCartesian();
     }
 }

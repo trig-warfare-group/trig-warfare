@@ -4,7 +4,7 @@ package trig.utility.math.vector;
  * A vector in the form of Radius, Angle, explicitly starting at the origin
  * Created by marcos on 11/07/2014.
  */
-public class PolarForm implements Vector
+public class PolarForm extends Vector
 {
     public final float radius;
     public final float angle;
@@ -56,6 +56,18 @@ public class PolarForm implements Vector
     public CartesianForm inCartesian()
     {
         return toCartesian(radius, angle);
+    }
+
+    @Override
+    public PolarForm translate(float tX, float tY)
+    {
+        return super.translate(tX, tY).inPolar();
+    }
+
+    @Override
+    public PolarForm rotate(float theta)
+    {
+        return super.rotate(theta).inPolar();
     }
 }
 
