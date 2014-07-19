@@ -46,7 +46,7 @@ public class QuadTree
         {
             for (QuadTree each : children)
             {
-                render(g);
+                each.render(g);
             }
         }
     }
@@ -204,7 +204,7 @@ public class QuadTree
             result[i] = ++i;
         }
 
-        return null;
+        return result;
     }
 
 
@@ -240,15 +240,19 @@ public class QuadTree
      */
     public ArrayList<Entity> guestsNear(Entity subject)
     {
-        int[] index = getIndex(subject);
+
         ArrayList<Entity> result = new ArrayList<Entity>();
 
         result.addAll(guests);
 
         if(children[0] != null)
         {
+            int[] index = getIndex(subject);
+            System.out.print("children: "+children.length);
             for (int each : index)
             {
+                System.out.print(each);
+                //THERE IS A BUG HERE
                 result.addAll(children[each].guestsNear(subject));
             }
         }

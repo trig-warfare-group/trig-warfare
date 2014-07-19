@@ -1,6 +1,8 @@
 package trig.game.entity.dummy;
 
+import trig.game.engine.GameEngine;
 import trig.game.entity.GenericMoving;
+import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
 import trig.utility.math.vector.PolarForm;
@@ -11,14 +13,14 @@ import java.awt.*;
 /**
  * Created by marcos on 19/07/2014.
  */
-public class DummyCircle extends GenericMoving implements Visible
+public class DummyCircle extends GenericMoving implements Visible, UpdateListener
 {
     int x;
     int y;
 
     public DummyCircle(int x, int y, Vector velocity)
     {
-        super(x, y, 10, velocity);
+        super(x, y, 100, velocity);
     }
 
     @Override
@@ -74,5 +76,11 @@ public class DummyCircle extends GenericMoving implements Visible
     public boolean isVisible()
     {
         return true;
+    }
+
+    @Override
+    public void update(GameEngine engine)
+    {
+        move();
     }
 }

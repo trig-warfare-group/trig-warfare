@@ -68,13 +68,13 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         CartesianForm cartPoint;
         float angleAdjustment = Math.round( (2.0/3)*Math.PI) ;
 
-        for(int i = 0; i < 6;)
+        for(int i = 1; i <= 6; i++)
         {
             point = new PolarForm(30, i*angleAdjustment);
             cartPoint = point.inCartesian();
             //each travels in opposite direction that in which it spawned, then turns in opposite direction when it hits a wall
             addEntity(
-                    new DummyCircle(cartPoint.getX(), cartPoint.getY(),new PolarForm(30, (float) (point.angle+Math.PI) ) )
+                    new DummyCircle((int) Math.round(Constants.WORLD_DIM.width/2.0) + cartPoint.getX(), (int) Math.round(Constants.WORLD_DIM.width/2.0) + cartPoint.getY(), new PolarForm(150, (float) (point.angle+Math.PI) ) )
             );
 
         }
@@ -124,6 +124,8 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 }
             }
         }
+
+        //normally do it here quadTree.clear();
     }
 
 
@@ -161,11 +163,10 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         start = System.nanoTime();
 
         quadTree.render(g);
+        quadTree.clear();
 
         renderEntities(g);
         Random r = new Random();
-        for(int i = 0; i < 100; i++)
-            g.drawOval(r.nextInt(800),r.nextInt(600),r.nextInt(22),r.nextInt(22));
         //important: we must always render entities first, then the HUD over the top
         g.setFont(bigFont);
         g.setColor(Color.DARK_GRAY);
@@ -175,15 +176,20 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         g.setColor(new Color(74, 198, 36));
         g.setFont(lilFont);
 
-        g.drawString(
+        g.drawString
+        (
                 "Entities Created: "+Long.toString(DummyMethods.DummyVars.getLastEntityId())
                         + " Entities living: "+Long.toString(entities.size()),
-                5, Constants.WINDOW_DIMENSION.height - 10);
-        g.drawOval(r.nextInt(800),r.nextInt(600),r.nextInt(22),r.nextInt(22));
+                5, Constants.WINDOW_DIMENSION.height - 10
+        );
+
         end = System.nanoTime();
-        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "µs",
+        g.drawString
+        (
+                "Render time: " + Long.toString((end - start) / 1000) + "µs",
                 5,
-                15);
+                15
+        );
 
         /*
             TODO: FIGURE OUT HOW THE DEBUG VIEW FITS INTO THIS:
