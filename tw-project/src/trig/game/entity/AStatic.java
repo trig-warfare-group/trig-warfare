@@ -1,13 +1,11 @@
 package trig.game.entity;
 
 /**
- * Denotes a living-entity that requires constant attention via an update.
- * Although an entity may not always need to be updated if it is living,
- * it is quite a common trait.
+ * Denotes an interface for an Entity that needs an update.
  * Created by marcos on 11/07/2014.
  * @author brody
  */
-public interface Living
+public interface AStatic
 {
     /**
      * An update method that will be called each game-tick.

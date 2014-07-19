@@ -103,7 +103,7 @@ public class GameEngine
 
         g.setColor(new Color(74, 198, 36));
         end = System.nanoTime();
-        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "ms" + "|   Collision: " + Integer.toString(collisions),
+        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "µs" + "|   Collision: " + Integer.toString(collisions),
                 5,
                 15);
 

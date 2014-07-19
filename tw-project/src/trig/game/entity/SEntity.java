@@ -5,12 +5,12 @@ package trig.game.entity;
  * Created by marcos on 10/07/14
  * @author brody .
  */
-public abstract class BasicEntity implements Entity
+public abstract class SEntity implements Entity, AStatic, Visible, Collidable
 {
     protected int x;
     protected int y;
 
-    public BasicEntity(int x, int y)
+    public SEntity(int x, int y)
     {
         this.x = x;
         this.y = y;

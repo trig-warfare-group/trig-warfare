@@ -12,9 +12,12 @@ import java.awt.*;
  * A Combatant that shall be used as a basic NPC in the game.
  * Created by brody on 17/07/14.
  */
-public class Combatant extends BasicCombatant
+public class Combatant extends SEntity
 {
     /* This hitbox should be upgraded for collision-detection */
+    protected int hitPoints;
+    protected boolean alive;
+    ////////////////////
     public Shape hitbox = new Rectangle(0, 0, 50, 50);
     int u_id;
     Random r = new Random();
@@ -22,9 +25,8 @@ public class Combatant extends BasicCombatant
 
     public Combatant(int x, int y, int hitPoints)
     {
-        super(x, y, hitPoints);
-        this.x = x;
-        this.y = y;
+        super(x,y);
+        this.hitPoints = hitPoints;
         this.velocity = new PolarForm(5, (float) ((r.nextFloat()*2 - 1)*Math.PI));
         u_id = r.nextInt();
     }
@@ -66,4 +68,25 @@ public class Combatant extends BasicCombatant
         g.draw(hitbox);
         g.drawString(Integer.toString(u_id), ((Rectangle)hitbox).x, ((Rectangle)hitbox).y + 60);
     }
+
+    public boolean isAlive()
+    {
+        return alive;
+    }
+
+    public void setAlive(boolean alive)
+    {
+        this.alive = alive;
+    }
+
+    public int getHitPoints()
+    {
+        return hitPoints;
+    }
+
+    public void setHitPoints(int hitPoints)
+    {
+        this.hitPoints = hitPoints;
+    }
+
 }
