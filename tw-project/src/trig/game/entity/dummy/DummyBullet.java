@@ -1,14 +1,15 @@
 package trig.game.entity.dummy;
 
 import trig.game.engine.GameEngine;
-import trig.game.entity.interfaces.Destructible;
 import trig.game.entity.Projectile;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
-import trig.utility.vector.*;
+import trig.utility.geometry.ColorfulPath;
+import trig.utility.geometry.ColorfulPathList;
+import trig.utility.math.vector.*;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Random;
 
@@ -18,24 +19,38 @@ import java.util.Random;
  */
 public final class DummyBullet extends Projectile implements Visible
 {
-    protected Shape shape = new RoundRectangle2D.Float(hitSize, hitSize, hitSize, hitSize, 0, 0);
+    protected ColorfulPath<Vector> renderPath;
 
-    @Override
-    public Shape getShape(){
-        return shape;
-    }
-
-    @Override
-    public float getDirection()
+    protected void makePath() //most java.awt functions use minimum floating-point accuracy, it seems?
     {
-        /*
-            not all entities will need or want to turn when drawn,
-            a round bullet is a good example
-         */
-        return 0;
+        //absolute of the angle to rotate by against point A, to get points B and C
+        //equilateral and isosceles triangle can be produced using +- this one angle, I think..
+        float rotationBase = Math.round(1/2*Math.PI);
+        float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
+        renderPath = new ColorfulPath<Vector>(color);
+
+        Vector vA = new PolarForm(hitSize, rotationBase);
+        renderPath.add(vA);
+        renderPath.add(
+                new PolarForm(
+                        hitSize,
+                        (float) (rotationBase + rotationAngle
+                        )
+                )
+        );
+
+        renderPath.add(
+                new PolarForm(
+                        hitSize,
+                        (float) (rotationBase - rotationAngle)
+                )
+        );
+
+        //connect the last to the first
+        renderPath.add(vA);
     }
 
-    @Override
+
     public Color getColor()
     {
         return color;
@@ -67,6 +82,7 @@ public final class DummyBullet extends Projectile implements Visible
                 r.nextInt((250 - 75) + 1) + 75,
                 r.nextInt((250 - 75) + 1) + 75
         ); //random
+        makePath();
     }
 
     //note: one reason /all/ projectiles might be destructible is that we'd probably want to limit the number of them that exist for lagg-stopping purposes, we might instead just do that for StBullet or something though, idk
@@ -118,4 +134,13 @@ public final class DummyBullet extends Projectile implements Visible
 //    }
 
     //TODO: WRITE DESTRUCTION LISTENER INTO ENGINE, ETC?
+
+    @Override
+    public void render(Graphics2D g)
+    {
+        AffineTransform renderTransform = new AffineTransform();
+        renderTransform.translate(x, y);
+        renderTransform.rotate(velocity.inPolar().angle);
+        renderPath.render(g, renderTransform);
+    }
 }

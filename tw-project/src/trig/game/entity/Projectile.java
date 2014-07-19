@@ -2,7 +2,7 @@ package trig.game.entity;
 
 import trig.game.engine.GameEngine;
 import trig.game.entity.interfaces.UpdateListener;
-import trig.utility.vector.*;
+import trig.utility.math.vector.*;
 
 /**
  * Base class for objects that mostly move in a straight line, such as bullets

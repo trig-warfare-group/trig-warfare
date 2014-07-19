@@ -1,8 +1,7 @@
-package trig.utility;
+package trig.utility.math;
 
 /**
- * Stores some helper methods for physics-related math
- * Created by marcos on 11/07/2014.
+ * Created by marcos on 17/07/2014.
  */
 public class Methods
 {
@@ -25,6 +24,4 @@ public class Methods
         }
         return angle;
     }
-    public static Variables DummyVars = new Variables();
-
 }

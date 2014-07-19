@@ -3,15 +3,16 @@ package trig.game.entity.dummy;
 //NOTE: probably better to have some class with draw methods corresponding to each object or something rather than these imports in lots of places? idk.
 import trig.game.engine.GameEngine;
 import trig.game.entity.*;
-import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
-import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
-import trig.utility.vector.*;
+import trig.utility.geometry.ColorfulPath;
+import trig.utility.geometry.ColorfulPathList;
+import trig.utility.geometry.Path;
+import trig.utility.geometry.Renderable;
+import trig.utility.math.vector.*;
 
 import java.awt.*;
-import java.awt.geom.*;
-import java.util.ArrayList;
+import java.awt.geom.AffineTransform;
 import java.util.Random;
 
 /**
@@ -21,36 +22,46 @@ import java.util.Random;
  */
 public final class DummyTriangle extends Combatant implements UpdateListener
 {
-    protected Shape shape;
+    protected ColorfulPathList<ColorfulPath<Vector>, Vector> renderPath;
 
-    protected Shape makeTriangle() //most java.awt functions use minimum floating-point accuracy, it seems?
+    protected void makeTriangle() //most java.awt functions use minimum floating-point accuracy, it seems?
     {
         //absolute of the angle to rotate by against point A, to get points B and C
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
         float rotationBase = Math.round(1/2*Math.PI);
         float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
-        CartesianForm vA = PolarForm.toCartesian(hitSize, rotationBase); //1PI should north
 
-        //A,B,C points of the triangle, these are vector, and not real locations, as such they use the location of the entity as the origin, they must later be converted to locations.
-        CartesianForm vB = PolarForm.toCartesian(
+        Vector vA = new PolarForm(hitSize, rotationBase);
+        Vector vB = new PolarForm(
                 hitSize,
                 (float) (rotationBase + rotationAngle)
         );
-        CartesianForm vC = PolarForm.toCartesian(
+        Vector vC = new PolarForm(
                 hitSize,
                 (float) (rotationBase - rotationAngle)
         );
-        return makeDrawableShape(new CartesianForm[]{vA, vB, vC});
+
+        renderPath = new ColorfulPathList<ColorfulPath<Vector>, Vector>();
+        ColorfulPath<Vector> pA = new ColorfulPath(Color.RED);
+        pA.add(vA);
+        pA.add(vB);
+
+        ColorfulPath<Vector> pB = new ColorfulPath<Vector>(Color.GREEN);
+        pB.add(vB);
+        pB.add(vC);
+
+        ColorfulPath<Vector> pC = new ColorfulPath<Vector>(Color.BLUE);
+        pC.add(vC);
+        pC.add(vA);
+
+        renderPath.add(pA);
+        renderPath.add(pB);
+        renderPath.add(pC);
+
+        //connect the last to the first
+        renderPath.add(pA);
     }
     //getters
-
-
-    @Override
-    public Shape getShape()
-    {
-        return shape;
-    }
-
     @Override
     public boolean isVisible()
     {
@@ -84,7 +95,7 @@ public final class DummyTriangle extends Combatant implements UpdateListener
                 r.nextInt((250 - 75) + 1) + 75,
                 r.nextInt((250 - 75) + 1) + 75
         ); //random
-        shape = makeTriangle();
+        makeTriangle();
         spawn();
     }
 
@@ -212,5 +223,14 @@ public final class DummyTriangle extends Combatant implements UpdateListener
             move();
         }
         step++;
+    }
+
+    @Override
+    public void render(Graphics2D g)
+    {
+        AffineTransform renderTransform = new AffineTransform();
+        renderTransform.translate(x, y);
+        renderTransform.rotate(velocity.inPolar().angle);
+        renderPath.render(g, renderTransform);
     }
 }

@@ -27,6 +27,7 @@ public class GameView
     {
         frame.setTitle(Constants.GAME_TITLE + " - " + Constants.AUTHOR);
         panel.setBackground(new Color(7, 22, 0));
+
         //must be setPrefferedSize to be recognised by frame.pack();
         panel.setPreferredSize(Constants.WINDOW_DIMENSION);
         frame.getContentPane().add(panel);

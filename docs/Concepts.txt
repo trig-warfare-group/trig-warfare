@@ -1,3 +1,11 @@
+||NOTE||
+Perhaps I should stop assuming vectors are all immutable? IDK
+
+Use matrices for Polygons, not just vectors
+
+to check if the polygon is convex (we need this for the collision hitbox), I'm pretty sure, if for any set of 3 points that are connected, the middle point lies "outside" of a line between it's two neighbours, it's convex, all I need to do is work out how todefine "outside"
+	there might be a better way to do it using matrices though
+
 ||Dealing with Collisions||
 
 Use an array to check whether an entity has the ability to collide with another

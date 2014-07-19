@@ -1,7 +1,7 @@
 package trig.game.entity;
 
 import trig.game.entity.interfaces.Ambulant;
-import trig.utility.vector.*;
+import trig.utility.math.vector.*;
 
 /**
  * Bad naming I know, but not all moving entities need a directional velocity, some might just move in a fixed pattern, I guess?
