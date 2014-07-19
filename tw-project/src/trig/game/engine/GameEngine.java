@@ -9,6 +9,7 @@ import trig.utility.DummyMethods;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Dummy/Demo/Draft engine for some testing, etc etc?
@@ -89,7 +90,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         start = System.nanoTime();
 
         renderEntities(g);
-
+        Random r = new Random();
+        for(int i = 0; i < 100; i++)
+            g.drawOval(r.nextInt(800),r.nextInt(600),r.nextInt(22),r.nextInt(22));
         //important: we must always render entities first, then the HUD over the top
         g.setFont(bigFont);
         g.setColor(Color.DARK_GRAY);
@@ -103,9 +106,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 "Entities Created: "+Long.toString(DummyMethods.DummyVars.getLastEntityId())
                         + " Entities living: "+Long.toString(entities.size()),
                 5, Constants.WINDOW_DIMENSION.height - 10);
-
+        g.drawOval(r.nextInt(800),r.nextInt(600),r.nextInt(22),r.nextInt(22));
         end = System.nanoTime();
-        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "ms",
+        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "µs",
                 5,
                 15);
 
