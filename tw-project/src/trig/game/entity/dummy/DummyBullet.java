@@ -98,10 +98,10 @@ public final class DummyBullet extends Projectile implements Visible
         //if past allowed edge
         if (
                 (x + hitSize > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1))
-                        || (x - hitSize < (Constants.WORLD_COLLISION_PADDING - 1))
-                        || (y + hitSize > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1))
-                        || (y - hitSize < (Constants.WORLD_COLLISION_PADDING - 1))
-                ) //it's always -1 at the end, since the largest val is width-1, etc
+                || (x - hitSize < (Constants.WORLD_COLLISION_PADDING - 1))
+                || (y + hitSize > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1))
+                || (y - hitSize < (Constants.WORLD_COLLISION_PADDING - 1))
+        ) //it's always -1 at the end, since the largest val is width-1, etc
         {
             destroy(engine);
         }

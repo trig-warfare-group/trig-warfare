@@ -1,11 +1,16 @@
 package trig.game.engine;
 
+import trig.game.entity.dummy.DummyCircle;
 import trig.game.entity.dummy.DummyTriangle;
 import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
 import trig.utility.DummyMethods;
+import trig.utility.math.QuadTree;
+import trig.utility.math.vector.CartesianForm;
+import trig.utility.math.vector.PolarForm;
+import trig.utility.math.vector.Vector;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -24,16 +29,17 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     */
 
+    private QuadTree quadTree;
+    private ArrayList<Entity> entities;
 
-    //vector/cheap engine-demo stuff
-    private ArrayList<Entity> entities = new ArrayList<Entity>(); //may use hashSet instead, idk;
-    private Font bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
-    private Font lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    private int step = 0;
     /*
-    todo: probably put the move and draw functions in here, tbh, and player control reaction. Not sure about the hp/stats functions, though?
-    todo: HOWEVER, before putting movement here, we need to think about how to facilitate special movement patterns, such as arcs!
-    */
+        collisionPossible: whether or not the quadTree returned one or more entities with guestsNear() for each entity in each frame
+        collisionOccurred: whether or not a collision actually occurred for each entity in each frame
+
+     */
+    boolean[] collisionPossible, collisionOccurred;
+
+    private Font bigFont, lilFont;
 
     /*
         note: perhaps we could implement destruction more often and generalise the process of entity death a bit if we gave players a new craft each time they died?
@@ -45,10 +51,33 @@ public class GameEngine //may extend some GameState interface I think, not an ex
      */
     public GameEngine()
     {
-        for(int i = 0; i < 5; i++)
+        quadTree = new QuadTree
+        (
+            Constants.WORLD_DIM.width,
+            Constants.WORLD_DIM.height,
+            new float[]{0,0}
+        );
+
+        entities = new ArrayList<Entity>();
+        bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
+        lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+
+
+        //quad-tree testing
+        PolarForm point;
+        CartesianForm cartPoint;
+        float angleAdjustment = Math.round( (2.0/3)*Math.PI) ;
+
+        for(int i = 0; i < 6;)
+        {
+            point = new PolarForm(30, i*angleAdjustment);
+            cartPoint = point.inCartesian();
+            //each travels in opposite direction that in which it spawned, then turns in opposite direction when it hits a wall
             addEntity(
-                    new DummyTriangle()
+                    new DummyCircle(cartPoint.getX(), cartPoint.getY(),new PolarForm(30, (float) (point.angle+Math.PI) ) )
             );
+
+        }
     }
 
     /**
@@ -64,6 +93,36 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             {
                 ((UpdateListener) e).update(this);
             }
+
+            quadTree.insert(e);
+        }
+
+        //second pass, closer precision test
+        collisionPossible = new boolean[entities.size()];
+        collisionOccurred = new boolean[entities.size()];
+        ArrayList<Entity> possibleCollisions;
+        float distX, distY, distH;
+
+        for (int i = 0; i < collisionPossible.length; i++)
+        {
+            e = entities.get(i);
+
+            possibleCollisions = quadTree.guestsNear(e);
+            if(possibleCollisions.size() > 0)
+            {
+                collisionPossible[i] = true;
+                for (Entity each : possibleCollisions)
+                {
+
+                    distX = Math.abs(e.getX() + each.getX());
+                    distY = Math.abs(e.getY() + each.getY());
+                    distH = Math.round(Math.sqrt((distX * distX) + (distY * distY)));
+                    if (distH < e.getHitSize())
+                    {
+                        collisionOccurred[i] = true;
+                    }
+                }
+            }
         }
     }
 
@@ -74,11 +133,23 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             we'll possibly keep a drawable list in the entities list
             (and handle this via the add/removeEntity functions) eventually?
          */
-        for (Entity e : entities)
+        Entity e;
+        for (int i = 0; i < collisionPossible.length; i++)
         {
+            e = entities.get(i);
+
             if (e instanceof Visible)
             {
                 ((Visible) e).render(g);
+
+                int size = e.getHitSize();
+                int halfSize = Math.round(size);
+
+                g.setColor( collisionPossible[i] ? Color.RED : Color.GREEN );
+                g.drawRect(e.getX()-halfSize, e.getY()-halfSize, size, size);
+
+                g.setColor( collisionOccurred[i] ? Color.RED : Color.GREEN );
+                g.drawOval(e.getX()-halfSize, e.getY()-halfSize, size, size);
             }
         }
     }
@@ -88,6 +159,8 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         long end;
 
         start = System.nanoTime();
+
+        quadTree.render(g);
 
         renderEntities(g);
         Random r = new Random();
