@@ -7,13 +7,11 @@ package trig.utility.math.vector;
 public class CartesianForm extends Vector
 {
     //for now going to be a float for slightly better accuracy converting to and from PolarForm
-    public final float x;
-    public final float y;
+    public final float x, y;
 
 
     //going to also store the int approximation of the x and y for now, the way it's accessed means I can always changed this decision
-    protected final int intX;
-    protected final int intY;
+    protected final int intX, intY;
 
     /**
      * @return an integer approximation of x

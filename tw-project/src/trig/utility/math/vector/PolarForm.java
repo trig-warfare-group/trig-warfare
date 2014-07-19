@@ -6,8 +6,7 @@ package trig.utility.math.vector;
  */
 public class PolarForm extends Vector
 {
-    public final float radius;
-    public final float angle;
+    public final float radius, angle;
 
     //return self, for getting this form back from the vector interface!
     /**
