@@ -1,9 +1,6 @@
 package trig.game.engine;
 
-import jdk.nashorn.internal.ir.debug.JSONWriter;
-import jdk.nashorn.internal.parser.JSONParser;
 import trig.game.entity.dummy.DummyCircle;
-import trig.game.entity.dummy.DummyTriangle;
 import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
@@ -12,7 +9,6 @@ import trig.utility.DummyMethods;
 import trig.utility.math.QuadTree;
 import trig.utility.math.vector.CartesianForm;
 import trig.utility.math.vector.PolarForm;
-import trig.utility.math.vector.Vector;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -35,7 +31,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     private ArrayList<Entity> entities;
 
     /*
-        collisionPossible: whether or not the quadTree returned one or more entities with guestsNear() for each entity in each frame
+        collisionPossible: whether or not the quadTree returned one or more entities with neighbours() for each entity in each frame
         collisionOccurred: whether or not a collision actually occurred for each entity in each frame
 
      */
@@ -120,6 +116,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
      */
     public void update()
     {
+
         Entity e;
         for (int i = 0; i < entities.size(); i++)
         {
@@ -128,31 +125,26 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             {
                 ((UpdateListener) e).update(this);
             }
-
-            quadTree.insert(e);
         }
-
-        //System.out.println(quadTree.toString());
+        ArrayList<ArrayList<Entity>> possibleCollisions = quadTree.processList(entities);
 
         //second pass, closer precision test
         collisionPossible = new boolean[entities.size()];
         collisionOccurred = new boolean[entities.size()];
-        ArrayList<Entity> possibleCollisions;
         float distX, distY, distH;
 
         for (int i = 0; i < collisionPossible.length; i++)
         {
             e = entities.get(i);
-
-            possibleCollisions = quadTree.guestsNear(e);
-            if(possibleCollisions.size() > 0)
+            ArrayList<Entity> neighboursOfE = possibleCollisions.get(i);
+            if(neighboursOfE.size() > 0)
             {
                 collisionPossible[i] = true;
-                for (Entity each : possibleCollisions)
+                for (Entity each : neighboursOfE)
                 {
 
-                    distX = Math.abs(e.getX()+e.getHitSize()/2 + each.getX()+each.getHitSize()/2);
-                    distY = Math.abs(e.getY()+e.getHitSize()/2 + each.getY()+e.getHitSize()/2);
+                    distX = Math.abs(e.getX() + each.getX());
+                    distY = Math.abs(e.getY() + each.getY());
                     distH = Math.round(Math.sqrt((distX * distX) + (distY * distY)));
                     if (distH < e.getHitSize())
                     {
@@ -173,16 +165,14 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             (and handle this via the add/removeEntity functions) eventually?
          */
         Entity e;
-        for (int i = 0; i < collisionPossible.length; i++)
+        for (int i = 0; i < entities.size(); i++)
         {
             e = entities.get(i);
 
             if (e instanceof Visible)
             {
                 ((Visible) e).render(g);
-
                 int size = e.getHitSize();
-                int halfSize = Math.round(size/(float) 2);
 
                 g.setColor( collisionPossible[i] ? Color.RED : Color.GREEN );
                 g.drawRect(e.getX(), e.getY(), size, size);
@@ -200,7 +190,6 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         start = System.nanoTime();
 
         quadTree.render(g);
-        quadTree.clear();
 
         renderEntities(g);
         Random r = new Random();
