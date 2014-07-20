@@ -37,6 +37,27 @@ import java.util.ArrayList;
 public class QuadTree
 {
     /**
+     * debug thing because of lack of JSON builtin support
+     */
+    public String toString(String indentLevel)
+    {
+        String result = indentLevel+"Guests: "+guests.size()+"\n";
+        if(children[0] != null)
+        {
+            for(int i = 0; i < children.length; i++){
+                result += indentLevel+i+":\n";
+                result += children[i].toString(indentLevel+" ");
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public String toString()
+    {
+        return toString("");
+    }
+    /**
      * Temporary debug rendering
      */
     public void render(Graphics2D g)
@@ -169,9 +190,9 @@ public class QuadTree
     public int[] getIndex(Entity subject)
     {
         boolean left, right, above, below;
-        left = ((float) (subject.getX()-subject.getHitSize()) < center[0]); //some part is left of center
+        left = ((float) (subject.getX()) < center[0]); //some part is left of center
         right = ((float) (subject.getX()+subject.getHitSize()) > center[0]); //some part is right of center
-        above = ((float) (subject.getY()-subject.getHitSize()) < center[1]); //some part is above center
+        above = ((float) (subject.getY()) < center[1]); //some part is above center
         below = ((float) (subject.getY()+subject.getHitSize()) > center[1]); //some part is below center
 
         //determine the size of the return array,
@@ -189,19 +210,19 @@ public class QuadTree
         int i = 0; //track the last index used;
         if(above && left)
         {
-            result[i] = ++i;
+            result[i] = i++;
         }
         if(above && right)
         {
-            result[i] = ++i;
+            result[i] = i++;
         }
         if(below && left)
         {
-            result[i] = ++i;
+            result[i] = i++;
         }
         if(below && right)
         {
-            result[i] = ++i;
+            result[i] = i++;
         }
 
         return result;
@@ -215,23 +236,28 @@ public class QuadTree
      */
     public void insert(Entity subject)
     {
-        int[] index = getIndex(subject);
-        if(index.length == 1)
+        if (children[0] != null)
         {
-            if (children[0] != null)
+            int[] index = getIndex(subject);
+            if(index.length == 1)
             {
-                children[index[0]].insert(subject);
-                return;
-            }
-            else if (guests.size() >= QuadTree.MAX_OBJECTS && depth < QuadTree.MAX_DEPTH)
-            {
-                split();
                 children[index[0]].insert(subject);
                 return;
             }
         }
         //if it were added to a child already, this statement wouldn't be reached
         guests.add(subject);
+        if (guests.size() >= QuadTree.MAX_OBJECTS && depth < QuadTree.MAX_DEPTH)
+        {
+            split();
+            int[] index = getIndex(subject);
+            if(index.length == 1)
+            {
+                guests.remove(subject);
+                children[index[0]].insert(subject);
+                return;
+            }
+        }
     }
 
     /**
@@ -248,10 +274,8 @@ public class QuadTree
         if(children[0] != null)
         {
             int[] index = getIndex(subject);
-            System.out.print("children: "+children.length);
             for (int each : index)
             {
-                System.out.print(each);
                 //THERE IS A BUG HERE
                 result.addAll(children[each].guestsNear(subject));
             }

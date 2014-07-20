@@ -29,14 +29,14 @@ public final class DummyBullet extends Projectile implements Visible
         float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
         renderPath = new ColorfulPath<Vector>(color);
 
-        Vector vA = new PolarForm(hitSize, rotationBase);
+        CartesianForm vA = new PolarForm(hitSize, rotationBase).inCartesian();
         renderPath.add(vA);
         renderPath.add(
                 new PolarForm(
                         hitSize,
                         (float) (rotationBase + rotationAngle
                         )
-                )
+                ).inCartesian().translate(hitSize/2, hitSize)
         );
 
         renderPath.add(

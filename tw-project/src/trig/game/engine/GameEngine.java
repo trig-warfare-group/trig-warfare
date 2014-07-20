@@ -1,5 +1,7 @@
 package trig.game.engine;
 
+import jdk.nashorn.internal.ir.debug.JSONWriter;
+import jdk.nashorn.internal.parser.JSONParser;
 import trig.game.entity.dummy.DummyCircle;
 import trig.game.entity.dummy.DummyTriangle;
 import trig.game.entity.interfaces.Entity;
@@ -52,11 +54,11 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     public GameEngine()
     {
         quadTree = new QuadTree
-        (
-            Constants.WORLD_DIM.width,
-            Constants.WORLD_DIM.height,
-            new float[]{0,0}
-        );
+                (
+                        Constants.WORLD_DIM.width,
+                        Constants.WORLD_DIM.height,
+                        new float[]{0, 0}
+                );
 
         entities = new ArrayList<Entity>();
         bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
@@ -64,20 +66,35 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
 
         //quad-tree testing
-        PolarForm point;
-        CartesianForm cartPoint;
-        float angleAdjustment = Math.round( (2.0/3)*Math.PI) ;
+        CartesianForm point;
+        float angleAdjustment = ((float) 1 / 4) * (float) Math.PI;
 
-        for(int i = 1; i <= 6; i++)
-        {
-            point = new PolarForm(30, i*angleAdjustment);
-            cartPoint = point.inCartesian();
-            //each travels in opposite direction that in which it spawned, then turns in opposite direction when it hits a wall
-            addEntity(
-                    new DummyCircle((int) Math.round(Constants.WORLD_DIM.width/2.0) + cartPoint.getX(), (int) Math.round(Constants.WORLD_DIM.width/2.0) + cartPoint.getY(), new PolarForm(150, (float) (point.angle+Math.PI) ) )
-            );
+        point = new CartesianForm(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
+        addEntity(
+                new DummyCircle(
+                        (int) point.x - 50,
+                        (int) point.y - 50,
+                        new PolarForm(10, ((float) 9 / 8) * (float) Math.PI)
+                )
+        );
 
-        }
+        point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 1 / 4);
+        addEntity(
+                new DummyCircle(
+                        (int) point.x - 50,
+                        (int) point.y - 50,
+                        new PolarForm(10, 0)
+                )
+        );
+
+        point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
+        addEntity(
+                new DummyCircle(
+                        (int) point.x - 50,
+                        (int) point.y - 50,
+                        new PolarForm(10, 0)
+                )
+        );
     }
 
     /**
@@ -97,6 +114,8 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             quadTree.insert(e);
         }
 
+        //System.out.println(quadTree.toString());
+
         //second pass, closer precision test
         collisionPossible = new boolean[entities.size()];
         collisionOccurred = new boolean[entities.size()];
@@ -114,8 +133,8 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 for (Entity each : possibleCollisions)
                 {
 
-                    distX = Math.abs(e.getX() + each.getX());
-                    distY = Math.abs(e.getY() + each.getY());
+                    distX = Math.abs(e.getX()+e.getHitSize()/2 + each.getX()+each.getHitSize()/2);
+                    distY = Math.abs(e.getY()+e.getHitSize()/2 + each.getY()+e.getHitSize()/2);
                     distH = Math.round(Math.sqrt((distX * distX) + (distY * distY)));
                     if (distH < e.getHitSize())
                     {
@@ -145,13 +164,13 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 ((Visible) e).render(g);
 
                 int size = e.getHitSize();
-                int halfSize = Math.round(size);
+                int halfSize = Math.round(size/(float) 2);
 
                 g.setColor( collisionPossible[i] ? Color.RED : Color.GREEN );
-                g.drawRect(e.getX()-halfSize, e.getY()-halfSize, size, size);
+                g.drawRect(e.getX(), e.getY(), size, size);
 
                 g.setColor( collisionOccurred[i] ? Color.RED : Color.GREEN );
-                g.drawOval(e.getX()-halfSize, e.getY()-halfSize, size, size);
+                g.drawOval(e.getX(), e.getY(), size, size);
             }
         }
     }

@@ -15,9 +15,10 @@ import java.awt.*;
  */
 public class DummyCircle extends GenericMoving implements Visible, UpdateListener
 {
-    int x;
-    int y;
-
+    /*
+    tragectoryA = polarVel;
+    tragejectoryB = Math.round(polarVel.angle+Math.PI)
+    */
     public DummyCircle(int x, int y, Vector velocity)
     {
         super(x, y, 100, velocity);
@@ -27,34 +28,15 @@ public class DummyCircle extends GenericMoving implements Visible, UpdateListene
     public void move(){
         super.move();
 
-        boolean hit = false;
-
-        if( x + hitSize > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1) )
-        {
-            x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitSize) - 1;
-            hit = true;
-        }
-        else if(x - hitSize < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
-        {
-            x = Constants.WORLD_COLLISION_PADDING + Math.round(hitSize) - 1;
-            hit = true;
-        }
-
-        if( y + hitSize > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1) )
-        {
-            y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitSize) - 1;
-            hit = true;
-        }
-        else if(y - hitSize < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
-        {
-            y = Constants.WORLD_COLLISION_PADDING + Math.round(hitSize) - 1;
-            hit = true;
-        }
-
-        if(hit)
+        if (
+            (x + hitSize > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1))
+            || (x < (Constants.WORLD_COLLISION_PADDING - 1))
+            || (y + hitSize > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1))
+            || (y < (Constants.WORLD_COLLISION_PADDING - 1))
+        )
         {
             PolarForm polarVel = velocity.inPolar();
-            velocity = new PolarForm(polarVel.radius, Math.round(polarVel.angle+Math.PI));
+            velocity = new PolarForm(polarVel.radius,  polarVel.angle+ (float)Math.PI);
         }
     }
 
@@ -65,11 +47,15 @@ public class DummyCircle extends GenericMoving implements Visible, UpdateListene
     }
 
     @Override
-    public void render(Graphics2D graphics2D)
+    public void render(Graphics2D g)
     {
-        graphics2D.setColor(Color.GREEN);
-        int halfSize = (hitSize/2);
-        graphics2D.drawOval(x - halfSize, y - halfSize, hitSize, hitSize);
+        g.setColor(Color.GREEN);
+        int halfSize = Math.round(hitSize/(float) 2);
+        g.drawOval(x, y, hitSize, hitSize);
+
+        g.drawString("" + x + ", " + y, x+halfSize/2, y-10);
+
+
     }
 
     @Override

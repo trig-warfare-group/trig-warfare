@@ -8,20 +8,22 @@ public class Methods
     /**
      * Normalises a randian angle to be between [-PI,PI]
      * Note: [-PI,PI] is the domain (or is it range?) I believe we will need most? May need to update, or overload with multiple domains (ranges?)
-     * @param angle
+     * @param theta
      * Created by marcos on 11/07/2014.
      */
-    public static float normalise(float angle)
+    public static float normalise(float theta)
     {
-        while (angle <= -Math.PI)
+        float dubPiEst = (float) Math.PI*2;
+
+        while (theta <= -Math.PI)
         {
-            angle += Math.PI*2;
+            theta += dubPiEst;
         }
 
-        while (angle > Math.PI)
+        while (theta > Math.PI)
         {
-            angle -= Math.PI*2;
+            theta -= dubPiEst;
         }
-        return angle;
+        return theta;
     }
 }
