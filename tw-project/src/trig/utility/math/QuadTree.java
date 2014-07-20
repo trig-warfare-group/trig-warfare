@@ -240,7 +240,9 @@ public class QuadTree
     }
 
     /**
-     * Produces a list of all guests the subject entity might collide with.
+     * Produces a list of all guests the subject entity might collide with
+     * (note: the return list includes the subject)
+     *
      * @return
      */
     public ArrayList<Entity> guestsNear(Entity subject)
