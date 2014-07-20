@@ -1,7 +1,5 @@
 package trig.utility.vector;
 
-import trig.utility.Methods;
-
 /**
  * A vector in the form of Radius, Angle, explicitly starting at the origin
  * Created by marcos on 11/07/2014.

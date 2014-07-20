@@ -37,8 +37,27 @@ public class QuadTree
 
     private void init()
     {
-        tl = new QTNode(((SDimension) space).getHalvedDimension(), (SEntity []) list.toArray()); //Give top-left region.
+        SDimension bax = space;
+        SEntity [] e = (SEntity []) list.toArray();
+        //Give top-left region.
+        bax = (SDimension) bax.getHalvedDimension();
+        tl = new QTNode(bax, e);
+
         //Give top-right region.
+        bax.x = bax.width;
+        tr = new QTNode(bax, e);
+
+        //Give bottom-left region.
+        bax.x = space.x;
+        bax.y = bax.height;
+        bl = new QTNode(bax, e);
+
+        //Give bottom-right region.
+        bax.x = bax.width;
+        br = new QTNode(bax, e);
+
+        bax = null;
+        e = null;
     }
 
 
@@ -47,6 +66,16 @@ public class QuadTree
      */
     public void displayTree(Graphics2D g)
     {
+        //For each node, ask it to draw its self.
+        Color colorMemory = g.getColor();
+        g.setColor(Color.GREEN);
+
+        tl.displayNode(g);
+        tr.displayNode(g);
+        bl.displayNode(g);
+        br.displayNode(g);
+
+        g.setColor(colorMemory);
 
     }
 

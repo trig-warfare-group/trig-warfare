@@ -1,6 +1,7 @@
 package trig.game.engine;
 
 import trig.game.entity.SEntity;
+import trig.utility.SDimension;
 
 import java.awt.*;
 
@@ -21,6 +22,14 @@ public class QTNode
     {
         this.space = space;
         this.list = list;
+    }
+
+    public void displayNode(Graphics2D g)
+    {
+        g.draw3DRect(
+                ((SDimension) space).x, ((SDimension) space).y,
+                ((SDimension) space).width, ((SDimension) space).height,
+                true);
     }
 
     public QTNode getTLNode()

@@ -32,14 +32,25 @@ public class Combatant extends SEntity
     }
 
     /**
-     *  Moves to the parameters location.
+     *  Increases the current position, by the parameters.
      * @param dX -- x-location to move to.
      * @param dY -- y-location to move to.
      */
     public void move(int dX, int dY)
     {
-        this.x = dX;
-        this.y = dY;
+        this.x += dX;
+        this.y += dY;
+    }
+
+    /**
+     * Place to be localized(moved) to.
+     * @param x - x-location
+     * @param y - y-location
+     */
+    public void setLocation(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
     }
 
     public void move()
