@@ -37,27 +37,6 @@ import java.util.ArrayList;
 public class QuadTree
 {
     /**
-     * debug thing because of lack of JSON builtin support
-     */
-    public String toString(String indentLevel)
-    {
-        String result = indentLevel+"Guests: "+guests.size()+"\n";
-        if(children[0] != null)
-        {
-            for(int i = 0; i < children.length; i++){
-                result += indentLevel+i+":\n";
-                result += children[i].toString(indentLevel+" ");
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public String toString()
-    {
-        return toString("");
-    }
-    /**
      * Temporary debug rendering
      */
     public void render(Graphics2D g)
@@ -75,8 +54,8 @@ public class QuadTree
         the value of these constants were semi-randomly chosen,
         we should make a real decision  on them at some point.
      */
-    public static int MAX_OBJECTS = 2;
-    public static int MAX_DEPTH = 5;
+    public static int MAX_OBJECTS = 1;
+    public static int MAX_DEPTH = 4;
 
     //current depth
     private int depth;
@@ -210,19 +189,19 @@ public class QuadTree
         int i = 0; //track the last index used;
         if(above && left)
         {
-            result[i] = i++;
+            result[i++] = 0;
         }
         if(above && right)
         {
-            result[i] = i++;
+            result[i++] = 1;
         }
         if(below && left)
         {
-            result[i] = i++;
+            result[i++] = 2;
         }
         if(below && right)
         {
-            result[i] = i++;
+            result[i++] = 3;
         }
 
         return result;
@@ -247,7 +226,7 @@ public class QuadTree
         }
         //if it were added to a child already, this statement wouldn't be reached
         guests.add(subject);
-        if (guests.size() >= QuadTree.MAX_OBJECTS && depth < QuadTree.MAX_DEPTH)
+        if (guests.size() > QuadTree.MAX_OBJECTS && depth < QuadTree.MAX_DEPTH)
         {
             split();
             int[] index = getIndex(subject);
@@ -274,6 +253,7 @@ public class QuadTree
         if(children[0] != null)
         {
             int[] index = getIndex(subject);
+
             for (int each : index)
             {
                 //THERE IS A BUG HERE

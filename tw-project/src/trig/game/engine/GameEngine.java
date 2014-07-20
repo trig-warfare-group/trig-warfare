@@ -95,6 +95,24 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                         new PolarForm(10, 0)
                 )
         );
+
+        point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
+        addEntity(
+                new DummyCircle(
+                        (int) point.x - 50,
+                        (int) point.y - 50,
+                        new PolarForm(10, (float) 1.5 * (float) Math.PI)
+                )
+        );
+
+        point = new CartesianForm(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
+        addEntity(
+                new DummyCircle(
+                        (int) point.x - 50,
+                        (int) point.y - 50,
+                        new PolarForm(0, 0)
+                )
+        );
     }
 
     /**
