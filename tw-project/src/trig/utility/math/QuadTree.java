@@ -247,18 +247,21 @@ public class QuadTree
     {
 
         ArrayList<Entity> result = new ArrayList<Entity>();
-
-        result.addAll(guests);
-
-        if(children[0] != null)
+        int[] index = getIndex(subject);
+        if(index.length > 1 || children[0] == null)
         {
-            int[] index = getIndex(subject);
+            result.addAll(guests);
+        }
 
+        if (children[0] != null)
+        {
             for (int each : index)
             {
                 //THERE IS A BUG HERE
                 result.addAll(children[each].guestsNear(subject));
             }
+
+            ///don't collide with self!
         }
 
         return result;
