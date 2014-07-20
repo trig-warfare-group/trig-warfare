@@ -28,7 +28,7 @@ public class QuadTree
     SDimension space;
     ArrayList<SEntity> list;
 
-    public QuadTree(Dimension space, ArrayList<SEntity> list)
+    public QuadTree(SDimension space, ArrayList<SEntity> list)
     {
         this.space = (SDimension) space;
         this.list = list;

@@ -16,6 +16,14 @@ public class SDimension extends Dimension
         y = 0;
     }
 
+    public SDimension(Dimension dimension)
+    {
+        x = 0;
+        y = 0;
+        this.width = dimension.width;
+        this.height = dimension.height;
+    }
+
     /**
      * Creates a new Dimension, based on the current dimensions, dimension (width-height).
      * and scales the new Dimension, and returns it.

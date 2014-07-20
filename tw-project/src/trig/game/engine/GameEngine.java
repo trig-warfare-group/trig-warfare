@@ -2,6 +2,7 @@ package trig.game.engine;
 
 import trig.game.entity.*;
 import trig.utility.Constants;
+import trig.utility.SDimension;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -36,7 +37,8 @@ public class GameEngine
                     10));
 
 
-        qt = new QuadTree(Constants.WINDOW_DIMENSION, entities);
+        qt = new QuadTree(new SDimension(Constants.WINDOW_DIMENSION),
+                entities);
     }
 
     /**
