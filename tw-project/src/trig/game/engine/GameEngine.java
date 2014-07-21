@@ -30,14 +30,14 @@ public class GameEngine
         entities = new ArrayList<SEntity>();
         Random r = new Random();
 
-        for(int i = 0; i < 20; i ++)
+        for(int i = 0; i < 6; i ++)
             entities.add(new Combatant(
                     r.nextInt(Constants.WINDOW_DIMENSION.width),
                     r.nextInt(Constants.WINDOW_DIMENSION.height),
                     10));
 
 
-        qt = new QuadTree(new SDimension(Constants.WINDOW_DIMENSION),
+       qt = new QuadTree(new SDimension(Constants.WINDOW_DIMENSION),
                 entities);
     }
 
@@ -46,8 +46,12 @@ public class GameEngine
      */
     public void update()
     {
-
+        qt.clear();
+        for(SEntity e : entities)
+            e.update();
+        qt.plantSeed();
     }
+
 
     public void render(Graphics2D g)
     {
@@ -59,13 +63,16 @@ public class GameEngine
         g.setColor(new Color(74, 198, 36));
         g.setFont(lilFont);
 
-
-
-
         long start;
         long end;
 
         start = System.nanoTime();
+
+        for(SEntity e : entities)
+            e.render(g);
+
+        //qt.displayTree(g);
+        qt.displayStructure(g);
 
         g.setColor(new Color(74, 198, 36));
         end = System.nanoTime();

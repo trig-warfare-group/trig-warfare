@@ -5,7 +5,7 @@ package trig.game.entity;
  * Created by marcos on 10/07/14
  * @author brody .
  */
-public abstract class SEntity implements Entity, AStatic, Visible, Collidable
+public abstract class SEntity implements Entity, AStatic, Visible, QTCollision
 {
     protected int x;
     protected int y;

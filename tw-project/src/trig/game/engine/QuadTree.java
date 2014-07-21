@@ -1,9 +1,11 @@
 package trig.game.engine;
 
 
+import trig.game.entity.Entity;
 import trig.game.entity.SEntity;
 import trig.utility.SDimension;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 
 /**
@@ -21,45 +23,36 @@ import java.util.ArrayList;
  */
 public class QuadTree
 {
-    QTNode tl;
-    QTNode tr;
-    QTNode bl;
-    QTNode br;
+    QTNode root;
     SDimension space;
     ArrayList<SEntity> list;
+    protected final static short MAX_NODE_DEPTH = 5;
 
     public QuadTree(SDimension space, ArrayList<SEntity> list)
     {
         this.space = (SDimension) space;
         this.list = list;
-        init();
+        root = new QTNode(space, list.toArray(new SEntity[list.size()]));
     }
-
-    private void init()
+    /**
+     * Clear the tree, and prepare for re-growing it.
+     */
+    public void clear()
     {
-        SDimension bax = space;
-        SEntity [] e = (SEntity []) list.toArray();
-        //Give top-left region.
-        bax = (SDimension) bax.getHalvedDimension();
-        tl = new QTNode(bax, e);
-
-        //Give top-right region.
-        bax.x = bax.width;
-        tr = new QTNode(bax, e);
-
-        //Give bottom-left region.
-        bax.x = space.x;
-        bax.y = bax.height;
-        bl = new QTNode(bax, e);
-
-        //Give bottom-right region.
-        bax.x = bax.width;
-        br = new QTNode(bax, e);
-
-        bax = null;
-        e = null;
+        root = new QTNode(space, list.toArray(new SEntity[list.size()]));
     }
 
+    /**
+     * Takes the current settings, and creates a tree based on them.
+     */
+    public void plantSeed()
+    {
+        root.sprout();
+    }
+
+    //public void
+    //SEntity [] getPossibleCollisions()
+    //QTNode [] getLeaves();
 
     /**
      *  Used to display the QuadTree dividing the space up into nodes.
@@ -68,15 +61,48 @@ public class QuadTree
     {
         //For each node, ask it to draw its self.
         Color colorMemory = g.getColor();
-        g.setColor(Color.GREEN);
+        SDimension d;
 
-        tl.displayNode(g);
-        tr.displayNode(g);
-        bl.displayNode(g);
-        br.displayNode(g);
+        g.setColor(Color.YELLOW);
+
+        for(SEntity e : list)
+        {
+            Point p;
+            Dimension dim;
+            d = e.getCollisionRegion();
+            p = d.getPoint();
+            dim = d.getDimension();
+
+            g.drawRect(p.x, p.y, dim.width, dim.height);
+
+        }
+        g.setStroke(new BasicStroke(15));
+        g.setColor(Color.DARK_GRAY);
+        //Display all-nodes.
+        root.displayNodes(g);
+
+
 
         g.setColor(colorMemory);
 
     }
+    /*
+       TODO - Create small boxes representing each node,
 
+    */
+    public void displayStructure(Graphics2D g)
+    {
+
+    }
+
+    private class NodeBox
+    {
+        public QTNode n;
+
+          //TODO Draw box, with the depth, and connection to sub-nodes.
+        public void displayNodeBox(Graphics2D g)
+        {
+
+        }
+    }
 }

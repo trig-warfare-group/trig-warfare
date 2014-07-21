@@ -5,44 +5,53 @@ import java.awt.*;
 /**
  * Created by brody on 20/07/14.
  */
-public class SDimension extends Dimension
+public class SDimension implements Cloneable
 {
-    public int x;
-    public int y;
 
-    public SDimension()
-    {
-        x = 0;
-        y = 0;
-    }
+
+    Dimension d;
+    Point p;
 
     public SDimension(Dimension dimension)
     {
-        x = 0;
-        y = 0;
-        this.width = dimension.width;
-        this.height = dimension.height;
+        this.p = new Point(0, 0);
+        this.d = dimension;
     }
 
+    public SDimension(Point point, Dimension dimension)
+    {
+        this.d = dimension;
+        this.p = point;
+    }
+
+    public SDimension(int width, int height)
+    {
+        p = new Point(0, 0);
+        d = new Dimension(width, height);
+    }
+
+
     /**
-     * Creates a new Dimension, based on the current dimensions, dimension (width-height).
+     * Creates a new SDimension, based on the current dimensions, dimension (width-height).
      * and scales the new Dimension, and returns it.
      * @param widthScale -- to scale the width by.
      * @param heightScale -- to scale the width by.
      * @return -- returns the new Dimension.
      */
-    public Dimension getScaledDimension(double widthScale, double heightScale)
+    public SDimension getScaledDimension(double widthScale, double heightScale)
     {
-        return new Dimension((int) (this.width * widthScale), (int) (this.height * heightScale));
+        return new SDimension((int) (d.width * widthScale), (int) (d.height * heightScale));
     }
 
     /**
-     * Creates new Dimension half the original size.
+     * Creates new SDimension half the original size.
      * @return -- return a new Dimension, half of the original.
      */
-    public Dimension getHalvedDimension()
+    public SDimension getHalvedDimension()
     {
-        return new Dimension(this.width / 2, this.width / 2);
+        Point p = this.p;
+        Dimension d = new Dimension(this.d.width/2, this.d.height/2);
+        return new SDimension(p, d);
     }
 
     /**
@@ -53,33 +62,58 @@ public class SDimension extends Dimension
      */
     public boolean intersects(SDimension checkDimension)
     {
-        Point p = new Point(checkDimension.x, checkDimension.y);
+        Point p = new Point(checkDimension.getPoint().x, checkDimension.getPoint().y);
         if(this.pointWithin(p))
             return true;
 
-        p.x = checkDimension.width;
+        p.x = checkDimension.getDimension().width;
         if(this.pointWithin(p))
             return true;
 
-        p.y = checkDimension.height;
+        p.y = checkDimension.getDimension().height;
         if(this.pointWithin(p))
             return true;
 
-        p.x = checkDimension.x;
+        p.x = checkDimension.getPoint().x;
         if(this.pointWithin(p))
             return true;
 
         return false;
     }
 
-    private boolean pointWithin(Point p)
+    private boolean pointWithin(Point pc)
     {
-        if(p.x > this.x && p.x < this.width
-                && p.y > this.y && p.y < this.height)
+        if(pc.x > p.x && pc.x < d.width
+                && pc.y > p.y && pc.y < d.height)
             return true;
         else
             return false;
     }
 
+    public Dimension getDimension()
+    {
+        return d;
+    }
+
+    public void setDimension(Dimension dimension)
+    {
+        this.d = dimension;
+    }
+
+    public Point getPoint()
+    {
+        return p;
+    }
+
+    public void setPoint(Point point)
+    {
+        this.p = point;
+    }
+
+    @Override
+    public Object clone()
+    {
+        return new SDimension(p, d);
+    }
 
 }
