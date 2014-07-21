@@ -29,11 +29,7 @@ import java.util.ArrayList;
  *  receiving the objects within the tree that are in the same node as a particular object and therefore likely to collide.
  *  clearing all objects from a node and its subnodes. (In Java this is redundant due to the garbage collector, we'll either just clear the top one or create a new one every frame
  *
- * For my implimentation I am thinking of (BUT HAVEN'T YET) doing the following customisations on the basic algorithm:
- *  using a temporary wrapper object to store each object's node location in the tree, rather than re-searching each time:
- *      including which sub-nodes the object overlaps if this occurs
- *      it could possibly be created by the tree and returned?
- * Created by marcos on 19/07/2014.
+ * Note on possible optimisations: returning the getLocation list slightly differently to allowing of knowing whether or not the overlap occurs
  */
 
 public class QuadTree
@@ -43,7 +39,7 @@ public class QuadTree
         and some data-hiding
     */
 
-    public static int MAX_OBJECTS = 2;
+    public static int MAX_OBJECTS = 3;//2;
     public static int MAX_DEPTH = 4;
 
     protected QTNode root;
@@ -56,29 +52,25 @@ public class QuadTree
     /**
      * processes a list of entities and returns the possible collisions for each of them, then clears itself
      */
-    public ArrayList<ArrayList<Entity>> processList(ArrayList<Entity> subjects){
+    public ArrayList<ArrayList<Entity>> processList(ArrayList<Entity> guests){
         root.clear();
 
-        ArrayList<ArrayList<Entity>> result = new ArrayList<ArrayList<Entity>>(subjects.size());
+        ArrayList<ArrayList<Entity>> result = new ArrayList<ArrayList<Entity>>(guests.size());
 
         ArrayList<Entity> subResult;
-        Entity subject;
-
-        QTNode[] approxLoc = new QTNode[subjects.size()];
 
         //first insert them all
-        for(int i = 0; i < approxLoc.length; i++)
+        for(Entity each : guests)
         {
-            approxLoc[i] = root.insert(subjects.get(i));
+            root.insert(each);
         }
 
 
         //now get the lists of objects nearby each
-        for(int i = 0; i < approxLoc.length; i++)
+        for(Entity each : guests)
         {
-            subject = subjects.get(i);
-            subResult = approxLoc[i].neighbours(subject);
-            subResult.remove(subject);
+            subResult = root.neighbours(each);
+            subResult.remove(each);
             result.add(subResult);
         }
 
@@ -206,10 +198,10 @@ public class QuadTree
 
         /**
          * Determines which child nodes/quadrants the provided entity is fully or partially inside of
-         * @param subject an entity to determine the index of
+         * @param subject an entity to determine the location of
          * @return an array integers, with up to 4 elements each of which are the index of a child node the entity is inside
          */
-        public int[] getIndex(Entity subject)
+        public int[] getLocation(Entity subject)
         {
             boolean left, right, above, below;
             left = ((float) (subject.getX()) < center[0]); //some part is left of center
@@ -254,33 +246,40 @@ public class QuadTree
         /**
          * Places the object within the node, or it's sub nodes, depending on where it fits
          * @param subject an entity to place within the tree
-         * Note: may make this return some data about where the entity is in the tree, rather than having to re-do the search, dunno yet
+         * Note: this modifies the provided locations list, adding the location index(s) to it
+         * @return a set of int[] that can be used as a path to get all the guests a subject may collide with.
          */
-        protected QTNode insert(Entity subject)
+        public void insert(Entity subject)
         {
             if (type == NodeType.BRANCH)
             {
+                int[] location = getLocation(subject);
 
-                int[] index = getIndex(subject);
-                if(index.length == 1)
+                if(location.length == 1)
                 {
-                    return children[index[0]].insert(subject);
+                     children[location[0]].insert(subject);
+                    return;
                 }
             }
             //if it were added to a child already, this statement wouldn't be reached
             guests.add(subject);
-            if (guests.size() > QuadTree.MAX_OBJECTS && depth < QuadTree.MAX_DEPTH)
+
+            int guestCount = guests.size();//store the old size or else the loop won't got over all of them
+            if (guestCount > QuadTree.MAX_OBJECTS && depth < QuadTree.MAX_DEPTH)
             {
                 split();
-                int[] index = getIndex(subject);
-                if(index.length == 1)
+                for(int i = 0; i < guestCount; i++) //can't have two enhanced for loops occuring at the same time or in a nested fashion
                 {
-                    guests.remove(subject);
-                    return children[index[0]].insert(subject);
+                    Entity each = guests.get(0); //when removing an entity, it resizes it!
+                    int[] location = getLocation(each);
+                    if (location.length == 1)
+                    {
+                        guests.remove(each);
+                        children[location[0]].insert(each);
+                    }
                 }
+                return; //debug point
             }
-            //if it wasn't in this node, this statement wouldn't be reached
-            return this;
         }
 
         /**
@@ -295,11 +294,10 @@ public class QuadTree
             ArrayList<Entity> result = new ArrayList<Entity>();
 
             result.addAll(guests);
-
+            int[] location = getLocation(subject);
             if (type == NodeType.BRANCH)
             {
-                int[] index = getIndex(subject);
-                for (int each : index)
+                for (int each : location)
                 {
                     //THERE IS A BUG HERE
                     result.addAll(children[each].neighbours(subject));

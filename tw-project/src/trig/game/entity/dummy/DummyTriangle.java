@@ -28,18 +28,13 @@ public final class DummyTriangle extends Combatant implements UpdateListener
     {
         //absolute of the angle to rotate by against point A, to get points B and C
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
-        float rotationBase = Math.round(1/2*Math.PI);
-        float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
+        float rotationBase = (float)1/2* (float) Math.PI;
+        float rotationAngle =  ( ( (float) 5 / 7 ) * (float) Math.PI);
 
-        Vector vA = new PolarForm(hitSize, rotationBase);
-        Vector vB = new PolarForm(
-                hitSize,
-                (float) (rotationBase + rotationAngle)
-        );
-        Vector vC = new PolarForm(
-                hitSize,
-                (float) (rotationBase - rotationAngle)
-        );
+        float halfSize = (float)hitSize/2;
+        Vector vA = new PolarForm(halfSize, rotationBase);
+        Vector vB = new PolarForm(halfSize, (rotationBase + rotationAngle));
+        Vector vC = new PolarForm(halfSize, (rotationBase - rotationAngle));
 
         renderPath = new ColorfulPathList<ColorfulPath<Vector>, Vector>();
         ColorfulPath<Vector> pA = new ColorfulPath(Color.RED);
@@ -58,8 +53,8 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         renderPath.add(pB);
         renderPath.add(pC);
 
-        //connect the last to the first
-        renderPath.add(pA);
+        //translate it to the correct position;
+        renderPath.translate(halfSize, halfSize);
     }
     //getters
     @Override
@@ -84,7 +79,7 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         super(
                 /*id, //id*/
                 "", //name,
-                25, //hitSize
+                100, //hitSize
                 10, //hp
                 Color.WHITE, //appease compiler by putting super() first
                 1//speed
@@ -109,7 +104,7 @@ public final class DummyTriangle extends Combatant implements UpdateListener
             //force-move to exact edge
             x = Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - Math.round(hitSize) - 1;
         }
-        else if(x - hitSize < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        else if(x < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
         {
             x = Constants.WORLD_COLLISION_PADDING + Math.round(hitSize) - 1;
         }
@@ -118,7 +113,7 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         {
             y = Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - Math.round(hitSize) - 1;
         }
-        else if(y - hitSize < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
+        else if(y < ( Constants.WORLD_COLLISION_PADDING - 1 ) )
         {
             y = Constants.WORLD_COLLISION_PADDING + Math.round(hitSize) - 1;
         }

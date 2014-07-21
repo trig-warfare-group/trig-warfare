@@ -25,29 +25,23 @@ public final class DummyBullet extends Projectile implements Visible
     {
         //absolute of the angle to rotate by against point A, to get points B and C
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
-        float rotationBase = Math.round(1/2*Math.PI);
-        float rotationAngle = (float) ( ( (float) 5 / 7 ) * Math.PI);
+        float rotationBase = (float)1/2* (float) Math.PI;
+        float rotationAngle =  ( ( (float) 5 / 7 ) * (float) Math.PI);
         renderPath = new ColorfulPath<Vector>(color);
 
-        CartesianForm vA = new PolarForm(hitSize, rotationBase).inCartesian();
+        float halfSize = (float)hitSize/2;
+        Vector vA = new PolarForm(halfSize, rotationBase);
+        Vector vB = new PolarForm(halfSize, (rotationBase + rotationAngle));
+        Vector vC = new PolarForm(halfSize, (rotationBase - rotationAngle));
+
         renderPath.add(vA);
-        renderPath.add(
-                new PolarForm(
-                        hitSize,
-                        (float) (rotationBase + rotationAngle
-                        )
-                ).inCartesian().translate(hitSize/2, hitSize)
-        );
-
-        renderPath.add(
-                new PolarForm(
-                        hitSize,
-                        (float) (rotationBase - rotationAngle)
-                )
-        );
-
+        renderPath.add(vB);
+        renderPath.add(vC);
         //connect the last to the first
         renderPath.add(vA);
+
+        //translate it to the correct position;
+        renderPath.translate(halfSize, halfSize);
     }
 
 
@@ -98,9 +92,9 @@ public final class DummyBullet extends Projectile implements Visible
         //if past allowed edge
         if (
                 (x + hitSize > (Constants.WORLD_DIM.width - Constants.WORLD_COLLISION_PADDING - 1))
-                || (x - hitSize < (Constants.WORLD_COLLISION_PADDING - 1))
+                || (x < (Constants.WORLD_COLLISION_PADDING - 1))
                 || (y + hitSize > (Constants.WORLD_DIM.height - Constants.WORLD_COLLISION_PADDING - 1))
-                || (y - hitSize < (Constants.WORLD_COLLISION_PADDING - 1))
+                || (y < (Constants.WORLD_COLLISION_PADDING - 1))
         ) //it's always -1 at the end, since the largest val is width-1, etc
         {
             destroy(engine);
@@ -111,27 +105,6 @@ public final class DummyBullet extends Projectile implements Visible
     {
         move(engine);
     }
-
-//    @Override
-//    public void draw(Graphics2D g)
-//    {
-//        g.setColor(color);
-//
-//        int approxHitDiameter = Math.round(hitSize*2);
-//        g.fillOval((int) (x-hitSize), (int) (y-hitSize), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo
-//        //get the color right
-//        g.setColor(color);
-//
-//        //draw the name of the triangle above it
-//        float textBaseline = (float) (y-hitSize*1.2);
-//
-//        /*
-//        g.drawString(x+", "+y, Math.round(x-(hitSize/1.2)), (float) (textBaseline));
-//        g.drawString(name, x-(hitSize), (float) (textBaseline-15));
-//        */
-//        g.setColor(Color.RED);
-//        g.drawOval((int) (x-hitSize), (int) (y-hitSize), approxHitDiameter, approxHitDiameter); //inefficient re-do of math, only a demo
-//    }
 
     //TODO: WRITE DESTRUCTION LISTENER INTO ENGINE, ETC?
 

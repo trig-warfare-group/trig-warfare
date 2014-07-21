@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -60,7 +61,6 @@ public class Path<T extends Vector> extends LinkedList<T> implements Renderable
     {
         Path2D.Float pen = getPath2D();
         pen.transform(aT);
-
         g.draw(pen);
     }
 
@@ -76,15 +76,20 @@ public class Path<T extends Vector> extends LinkedList<T> implements Renderable
 
     @Override
     public void translate(float tX, float tY){
-        for(T each: this){
-            each.translate(tX, tY);
+        for(int i = 0; i < size(); i++)
+        {
+            //this should be guaranteed by the vector interface, btw, maybe I should figure out a way to use generics for vector? making cartesian and polar forms extend vectorform and making it private might work.
+            set(i, (T) get(i).translate(tX, tY));
         }
+        return;
     }
 
     @Override
     public void rotate(float theta){
-        for(T each: this){
-            each.rotate(theta);
+        //first, find the new 0,0 to use for the rotation.
+
+        for(int i = 0; i < size(); i++){
+            set( i, (T) get(i).rotate(theta) );
         }
     }
 
@@ -104,4 +109,7 @@ public class Path<T extends Vector> extends LinkedList<T> implements Renderable
         newPath.addAll(this);
        return newPath;
     }
+
+
+
 }

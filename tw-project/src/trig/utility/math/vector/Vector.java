@@ -26,7 +26,7 @@ public abstract class Vector
      */
     public Vector translate(float tX, float tY){
         CartesianForm cartForm = this.inCartesian();
-        return new CartesianForm(cartForm.x, cartForm.y);
+        return new CartesianForm(cartForm.x+tX, cartForm.y+tY);
     };
 
     /**

@@ -1,6 +1,7 @@
 package trig.game.engine;
 
 import trig.game.entity.dummy.DummyCircle;
+import trig.game.entity.dummy.DummyTriangle;
 import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
@@ -60,55 +61,61 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
         lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 
+        for(int i = 0; i < 5; i++)
+        {
+            addEntity(
+                    new DummyTriangle()
+            );
+        }
 
-        //quad-tree testing
-        CartesianForm point;
-        float angleAdjustment = ((float) 1 / 4) * (float) Math.PI;
-
-        point = new CartesianForm(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
-        addEntity(
-                new DummyCircle(
-                        (int) point.x - 50,
-                        (int) point.y - 50,
-                        new PolarForm(10, ((float) 9 / 8) * (float) Math.PI)
-                )
-        );
-
-        point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 1 / 4);
-        addEntity(
-                new DummyCircle(
-                        (int) point.x - 50,
-                        (int) point.y - 50,
-                        new PolarForm(10, 0)
-                )
-        );
-
-        point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
-        addEntity(
-                new DummyCircle(
-                        (int) point.x - 50,
-                        (int) point.y - 50,
-                        new PolarForm(10, 0)
-                )
-        );
-
-        point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
-        addEntity(
-                new DummyCircle(
-                        (int) point.x - 50,
-                        (int) point.y - 50,
-                        new PolarForm(10, (float) 1.5 * (float) Math.PI)
-                )
-        );
-
-        point = new CartesianForm(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
-        addEntity(
-                new DummyCircle(
-                        (int) point.x - 50,
-                        (int) point.y - 50,
-                        new PolarForm(0, 0)
-                )
-        );
+//        //quad-tree testing
+//        CartesianForm point;
+//        float angleAdjustment = ((float) 1 / 4) * (float) Math.PI;
+//
+//        point = new CartesianForm(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
+//        addEntity(
+//                new DummyCircle(
+//                        (int) point.x - 50,
+//                        (int) point.y - 50,
+//                        new PolarForm(10, ((float) 9 / 8) * (float) Math.PI)
+//                )
+//        );
+//
+//        /*point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 1 / 4);
+//        addEntity(
+//                new DummyCircle(
+//                        (int) point.x - 50,
+//                        (int) point.y - 50,
+//                        new PolarForm(10, 0)
+//                )
+//        );
+//
+//        point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
+//        addEntity(
+//                new DummyCircle(
+//                        (int) point.x - 50,
+//                        (int) point.y - 50,
+//                        new PolarForm(10, 0)
+//                )
+//        );
+//
+//        point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
+//        addEntity(
+//                new DummyCircle(
+//                        (int) point.x - 50,
+//                        (int) point.y - 50,
+//                        new PolarForm(10, (float) 1.5 * (float) Math.PI)
+//                )
+//        );*/
+//
+//        point = new CartesianForm(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
+//        addEntity(
+//                new DummyCircle(
+//                        (int) point.x - 50,
+//                        (int) point.y - 50,
+//                        new PolarForm(0, 0)
+//                )
+//        );
     }
 
     /**
