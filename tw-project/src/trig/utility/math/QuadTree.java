@@ -144,6 +144,9 @@ public class QuadTree
             //java's garbage collector makes this easy
             guests.clear();
             children = new QTNode[4];
+
+            //gotta reset the enum duh
+            type = NodeType.LEAF;
         }
         /**
          * Instantiates the child nodes.
@@ -199,7 +202,6 @@ public class QuadTree
                     );
 
             type = NodeType.BRANCH;
-            return;
         }
 
         /**
@@ -258,6 +260,7 @@ public class QuadTree
         {
             if (type == NodeType.BRANCH)
             {
+
                 int[] index = getIndex(subject);
                 if(index.length == 1)
                 {
