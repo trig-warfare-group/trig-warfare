@@ -40,9 +40,6 @@ public class GameEngine
        qt = new QuadTree(new SRectangle(Constants.WINDOW_DIMENSION),
                 entities);
 
-        SRectangle s = new SRectangle(new Point(0,0), new Dimension(100, 100));
-        SRectangle d = new SRectangle(new Point(-1, - 1), new Dimension(100, 100));
-        System.out.println("Intersects : " + s.intersects(d));
     }
 
     /**

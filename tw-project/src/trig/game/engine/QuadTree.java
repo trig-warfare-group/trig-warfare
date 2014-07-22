@@ -64,13 +64,9 @@ public class QuadTree
 
         for(SEntity e : list)
         {
-            Point p;
-            Dimension dim;
-            d = e.getCollisionRegion();
-            p = d.getPoint();
-            dim = d.getDimension();
+            SRectangle col = e.getCollisionRegion();
 
-            g.drawRect(p.x, p.y, dim.width, dim.height);
+            g.drawRect(col.x, col.y, col.width, col.height);
 
         }
         g.setStroke(new BasicStroke(15));

@@ -35,33 +35,28 @@ public class QTNode
 
     public void displayNodes(Graphics2D g)
     {
-        Point p = space.getPoint();
-        Dimension d = space.getDimension();
 
-        g.drawRect(p.x, p.y, d.width, d.height);
+        g.drawRect(space.x, space.y, space.width, space.height);
         displaySubNodes(nodes, g);
     }
 
     private void displaySubNodes(QTNode [] nodes, Graphics2D g)
     {
-
+        SRectangle sb = null;
         for(int i = 0; i < nodes.length; i++)
         {
-
-            Point p = nodes[i].space.getPoint();
-            Dimension d = nodes[i].space.getDimension();
-
+            sb = nodes[i].space;
             g.setStroke(new BasicStroke(0.1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
 
             if(nodes[i].getNodeType() == NodeType.LEAF)
             {
                 g.setColor(Color.GREEN);
-                g.drawRect(p.x, p.y, d.width, d.height);
+                g.drawRect(sb.x, sb.y, sb.width, sb.height);
             }
             else //Must be Branch, draw it, and its sub-nodes
             {
                 displaySubNodes(nodes[i].getNodes(), g);
-                g.drawRect(p.x, p.y, d.width, d.height);
+                g.drawRect(sb.x, sb.y, sb.width, sb.height);
             }
 
         }
@@ -85,7 +80,7 @@ public class QTNode
         {
             QTNode[] newNodes = this.createNewNodes();
             this.nodes = newNodes;
-            type = NodeType.BRANCH;
+            this.type = NodeType.BRANCH;
 
             for (int i = 0; i < newNodes.length; i++)
                 newNodes[i].sprout();
@@ -101,7 +96,7 @@ public class QTNode
         ArrayList<SEntity> collisions = new ArrayList<SEntity>();
 
         for(int i = 0; i < list.length; i++)
-            if(checkNode.space.intersects(list[i].getCollisionRegion()))
+            if(list[i].getCollisionRegion().intersects(checkNode.space))
                 collisions.add(list[i]);
 
         return collisions.toArray(new SEntity[collisions.size()]);
@@ -134,22 +129,22 @@ public class QTNode
         switch (region)
         {
             case 0: //Top-left
-                    newNode = new QTNode(subSpace, depth);
-                    newNode.region = NodeType.TOP_LEFT;
+                newNode = new QTNode(subSpace, depth);
+                newNode.region = NodeType.TOP_LEFT;
             break;
             case 1://Top-right
-                subSpace.getPoint().x = subSpace.getDimension().width;
+                subSpace.x = subSpace.width;
                 newNode = new QTNode(subSpace, depth);
                 newNode.region = NodeType.TOP_RIGHT;
             break;
             case 2://Bottom-left
-                subSpace.getPoint().y = subSpace.getDimension().height;
+                subSpace.y = subSpace.height;
                 newNode = new QTNode(subSpace, depth);
                 newNode.region = NodeType.BOTTOM_LEFT;
             break;
             case 3://Bottom-right
-                subSpace.getPoint().x = subSpace.getDimension().width;
-                subSpace.getPoint().y = subSpace.getDimension().height;
+                subSpace.x = subSpace.width;
+                subSpace.y = subSpace.height;
                 newNode = new QTNode(subSpace, depth);
                 newNode.region = NodeType.BOTTOM_RIGHT;
             break;
@@ -211,10 +206,8 @@ public class QTNode
     @Override
     public String toString()
     {
-        Point p = space.getPoint();
-        Dimension d = space.getDimension();
-        return "X: "+ p.x + "\t\tY:" + p.y
-                + "    \t\tWidth: " + d.width + "   \t\tHeight" + d.height
+        return "X: "+ space.x + "\t\tY:" + space.y
+                + "    \t\tWidth: " + space.width + "   \t\tHeight" + space.height
                 + "\tType: " + type + "\tRegion: " + region;
     }
 

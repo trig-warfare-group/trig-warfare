@@ -116,8 +116,7 @@ public class Combatant extends SEntity
     @Override
     public SRectangle getCollisionRegion()
     {
-        return new SRectangle(new Point(this.x, this.y),
-                new Dimension(b.x - this.x, c.y - this.y));
+        return new SRectangle(this.x, this.y, b.x - this.x, c.y - this.y);
     }
 
 }
