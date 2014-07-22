@@ -83,8 +83,8 @@ public class SRectangle implements Cloneable
 
     private boolean pointWithin(Point pc)
     {
-        if(pc.x > p.x && pc.x < d.width
-                && pc.y > p.y && pc.y < d.height)
+        if(pc.x > p.x && pc.x < p.x + d.width
+                && pc.y > p.y && pc.y < p.x + d.height)
             return true;
         else
             return false;
