@@ -5,26 +5,26 @@ import java.awt.*;
 /**
  * Created by brody on 20/07/14.
  */
-public class SDimension implements Cloneable
+public class SRectangle implements Cloneable
 {
 
 
     Dimension d;
     Point p;
 
-    public SDimension(Dimension dimension)
+    public SRectangle(Dimension dimension)
     {
         this.p = new Point(0, 0);
         this.d = dimension;
     }
 
-    public SDimension(Point point, Dimension dimension)
+    public SRectangle(Point point, Dimension dimension)
     {
         this.d = dimension;
         this.p = point;
     }
 
-    public SDimension(int width, int height)
+    public SRectangle(int width, int height)
     {
         p = new Point(0, 0);
         d = new Dimension(width, height);
@@ -38,20 +38,20 @@ public class SDimension implements Cloneable
      * @param heightScale -- to scale the width by.
      * @return -- returns the new Dimension.
      */
-    public SDimension getScaledDimension(double widthScale, double heightScale)
+    public SRectangle getScaledDimension(double widthScale, double heightScale)
     {
-        return new SDimension((int) (d.width * widthScale), (int) (d.height * heightScale));
+        return new SRectangle((int) (d.width * widthScale), (int) (d.height * heightScale));
     }
 
     /**
      * Creates new SDimension half the original size.
      * @return -- return a new Dimension, half of the original.
      */
-    public SDimension getHalvedDimension()
+    public SRectangle getHalvedDimension()
     {
         Point p = this.p;
         Dimension d = new Dimension(this.d.width/2, this.d.height/2);
-        return new SDimension(p, d);
+        return new SRectangle(p, d);
     }
 
     /**
@@ -60,7 +60,7 @@ public class SDimension implements Cloneable
      * @param checkDimension - the dimension to check against.
      * @return - returns whether intersected (true or false).
      */
-    public boolean intersects(SDimension checkDimension)
+    public boolean intersects(SRectangle checkDimension)
     {
         Point p = new Point(checkDimension.getPoint().x, checkDimension.getPoint().y);
         if(this.pointWithin(p))
@@ -113,7 +113,7 @@ public class SDimension implements Cloneable
     @Override
     public Object clone()
     {
-        return new SDimension(p, d);
+        return new SRectangle(p, d);
     }
 
 }

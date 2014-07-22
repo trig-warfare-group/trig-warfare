@@ -1,8 +1,7 @@
 package trig.game.engine;
 
-import trig.game.entity.QTCollision;
 import trig.game.entity.SEntity;
-import trig.utility.SDimension;
+import trig.utility.SRectangle;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,10 +15,10 @@ public class QTNode
     NodeType type = NodeType.LEAF;
     NodeType region;
     private int depth;
-    SDimension space;
+    SRectangle space;
     SEntity[] list;
 
-    public QTNode(SDimension space, SEntity[] list)
+    public QTNode(SRectangle space, SEntity[] list)
     {
         this.space = space;
         this.list = list;
@@ -28,7 +27,7 @@ public class QTNode
         region = NodeType.ROOT;
     }
 
-    protected QTNode(SDimension space, int depth)
+    protected QTNode(SRectangle space, int depth)
     {
         this.space = space;
         this.depth = ++depth;
@@ -117,32 +116,32 @@ public class QTNode
     private QTNode [] createNewNodes()
     {
         QTNode [] newNodes = new QTNode[4];
-        SDimension bax = (SDimension) space.clone();
+        SRectangle bax = (SRectangle) space.clone();
 
         bax = bax.getHalvedDimension();
         Point loc = bax.getPoint();
         Dimension dim = bax.getDimension();
 
         //Give top-left region.
-        newNodes[0] = new QTNode((SDimension) bax.clone(), depth);
+        newNodes[0] = new QTNode((SRectangle) bax.clone(), depth);
         newNodes[0].region = NodeType.TOP_LEFT;
         newNodes[0].list = intersectList(newNodes[0]);
 
         //Give top-right region.
         bax.setPoint(new Point(dim.width, loc.y));
-        newNodes[1] = new QTNode((SDimension) bax.clone(), depth);
+        newNodes[1] = new QTNode((SRectangle) bax.clone(), depth);
         newNodes[1].region = NodeType.TOP_RIGHT;
         newNodes[1].list = intersectList(newNodes[1]);
 
         //Give bottom-left region.
         bax.setPoint(new Point(space.getPoint().x, dim.height));
-        newNodes[2] = new QTNode((SDimension) bax.clone(), depth);
+        newNodes[2] = new QTNode((SRectangle) bax.clone(), depth);
         newNodes[2].region = NodeType.BOTTOM_LEFT;
         newNodes[2].list = intersectList(newNodes[2]);
 
         //Give bottom-right region.
         bax.setPoint(new Point(dim.width, dim.height));
-        newNodes[3] = new QTNode((SDimension) bax.clone(), depth);
+        newNodes[3] = new QTNode((SRectangle) bax.clone(), depth);
         newNodes[3].region = NodeType.BOTTOM_RIGHT;
         newNodes[3].list = intersectList(newNodes[3]);
 
@@ -186,7 +185,7 @@ public class QTNode
         return type;
     }
 
-    public SDimension getSpace()
+    public SRectangle getSpace()
     {
        return space;
     }

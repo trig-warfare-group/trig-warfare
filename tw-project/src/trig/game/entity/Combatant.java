@@ -1,8 +1,8 @@
 package trig.game.entity;
 
 import trig.utility.Constants;
-import trig.utility.SDimension;
-import trig.utility.Triangle;
+import trig.utility.SRectangle;
+
 import java.util.Random;
 import java.awt.*;
 
@@ -114,9 +114,9 @@ public class Combatant extends SEntity
 
 
     @Override
-    public SDimension getCollisionRegion()
+    public SRectangle getCollisionRegion()
     {
-        return new SDimension(new Point(this.x, this.y),
+        return new SRectangle(new Point(this.x, this.y),
                 new Dimension(b.x - this.x, c.y - this.y));
     }
 

@@ -1,6 +1,6 @@
 package trig.game.entity;
 
-import trig.utility.SDimension;
+import trig.utility.SRectangle;
 
 /**
  * Requests a class to respect the Quad-Tree-format, for collision-detection.
@@ -13,5 +13,5 @@ public interface QTCollision extends Collidable
      * so that the Quad-Tree, can easily manipulate the object.
      * @return
      */
-    public abstract SDimension getCollisionRegion();
+    public abstract SRectangle getCollisionRegion();
 }

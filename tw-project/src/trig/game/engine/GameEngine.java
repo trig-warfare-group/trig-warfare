@@ -2,7 +2,7 @@ package trig.game.engine;
 
 import trig.game.entity.*;
 import trig.utility.Constants;
-import trig.utility.SDimension;
+import trig.utility.SRectangle;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -37,8 +37,12 @@ public class GameEngine
                     10));
 
 
-       qt = new QuadTree(new SDimension(Constants.WINDOW_DIMENSION),
+       qt = new QuadTree(new SRectangle(Constants.WINDOW_DIMENSION),
                 entities);
+
+        SRectangle s = new SRectangle(new Point(0,0), new Dimension(100, 100));
+        SRectangle d = new SRectangle(new Point(-1, - 1), new Dimension(100, 100));
+        System.out.println("Intersects : " + s.intersects(d));
     }
 
     /**

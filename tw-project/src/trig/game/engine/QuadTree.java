@@ -1,12 +1,11 @@
 package trig.game.engine;
 
 
-import trig.game.entity.Entity;
 import trig.game.entity.SEntity;
 import trig.utility.Constants;
-import trig.utility.SDimension;
+import trig.utility.SRectangle;
+
 import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 
 /**
@@ -25,13 +24,13 @@ import java.util.ArrayList;
 public class QuadTree
 {
     QTNode root;
-    SDimension space;
+    SRectangle space;
     ArrayList<SEntity> list;
     protected final static short MAX_NODE_DEPTH = 5;
 
-    public QuadTree(SDimension space, ArrayList<SEntity> list)
+    public QuadTree(SRectangle space, ArrayList<SEntity> list)
     {
-        this.space = (SDimension) space;
+        this.space = (SRectangle) space;
         this.list = list;
         root = new QTNode(space, list.toArray(new SEntity[list.size()]));
     }
@@ -59,7 +58,7 @@ public class QuadTree
     {
         //For each node, ask it to draw its self.
         Color colorMemory = g.getColor();
-        SDimension d;
+        SRectangle d;
 
         g.setColor(Color.YELLOW);
 
