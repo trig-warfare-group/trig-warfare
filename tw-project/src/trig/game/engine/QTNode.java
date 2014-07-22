@@ -51,21 +51,15 @@ public class QTNode
             Point p = nodes[i].space.getPoint();
             Dimension d = nodes[i].space.getDimension();
 
-            g.setStroke(new BasicStroke(0.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+            g.setStroke(new BasicStroke(0.1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
 
             if(nodes[i].getNodeType() == NodeType.LEAF)
             {
                 g.setColor(Color.GREEN);
                 g.drawRect(p.x, p.y, d.width, d.height);
-                for(int e = 0; e < list.length; e++) {
-                    Point z = null;
-                    z = list[e].getCollisionRegion().getPoint();
-                    g.drawRect(z.x, z.y, 20, 20);
-                }
             }
             else //Must be Branch, draw it, and its sub-nodes
             {
-
                 displaySubNodes(nodes[i].getNodes(), g);
                 g.drawRect(p.x, p.y, d.width, d.height);
             }
@@ -115,37 +109,55 @@ public class QTNode
 
     private QTNode [] createNewNodes()
     {
+        /*
+                Create 4 new sub-nodes,
+                inform their region.
+                give them entities they need.
+         */
+
         QTNode [] newNodes = new QTNode[4];
-        SRectangle bax = (SRectangle) space.clone();
 
-        bax = bax.getHalvedDimension();
-        Point loc = bax.getPoint();
-        Dimension dim = bax.getDimension();
-
-        //Give top-left region.
-        newNodes[0] = new QTNode((SRectangle) bax.clone(), depth);
-        newNodes[0].region = NodeType.TOP_LEFT;
-        newNodes[0].list = intersectList(newNodes[0]);
-
-        //Give top-right region.
-        bax.setPoint(new Point(dim.width, loc.y));
-        newNodes[1] = new QTNode((SRectangle) bax.clone(), depth);
-        newNodes[1].region = NodeType.TOP_RIGHT;
-        newNodes[1].list = intersectList(newNodes[1]);
-
-        //Give bottom-left region.
-        bax.setPoint(new Point(space.getPoint().x, dim.height));
-        newNodes[2] = new QTNode((SRectangle) bax.clone(), depth);
-        newNodes[2].region = NodeType.BOTTOM_LEFT;
-        newNodes[2].list = intersectList(newNodes[2]);
-
-        //Give bottom-right region.
-        bax.setPoint(new Point(dim.width, dim.height));
-        newNodes[3] = new QTNode((SRectangle) bax.clone(), depth);
-        newNodes[3].region = NodeType.BOTTOM_RIGHT;
-        newNodes[3].list = intersectList(newNodes[3]);
+        for(int region = 0; region < newNodes.length; region++)
+        {
+            newNodes[region] = createNewNode(region);
+            newNodes[region].list = intersectList(newNodes[region]);
+        }
 
         return newNodes;
+    }
+
+    private QTNode createNewNode(int region)
+    {
+        QTNode newNode = null;
+        SRectangle subSpace = space.getHalvedDimension();
+
+        switch (region)
+        {
+            case 0: //Top-left
+                    newNode = new QTNode(subSpace, depth);
+                    newNode.region = NodeType.TOP_LEFT;
+            break;
+            case 1://Top-right
+                subSpace.getPoint().x = subSpace.getDimension().width;
+                newNode = new QTNode(subSpace, depth);
+                newNode.region = NodeType.TOP_RIGHT;
+            break;
+            case 2://Bottom-left
+                subSpace.getPoint().y = subSpace.getDimension().height;
+                newNode = new QTNode(subSpace, depth);
+                newNode.region = NodeType.BOTTOM_LEFT;
+            break;
+            case 3://Bottom-right
+                subSpace.getPoint().x = subSpace.getDimension().width;
+                subSpace.getPoint().y = subSpace.getDimension().height;
+                newNode = new QTNode(subSpace, depth);
+                newNode.region = NodeType.BOTTOM_RIGHT;
+            break;
+            default:
+                new RuntimeException("QTNode.createNewNode() - Invalid option.");
+        }
+
+        return newNode;
     }
 
     public static enum NodeType
