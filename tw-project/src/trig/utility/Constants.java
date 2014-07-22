@@ -34,5 +34,5 @@ public class Constants
 
 
 	
-	public static int FPS = 2000/60;
+	public static int FPS = 1000/1;
 }

@@ -64,11 +64,11 @@ public class SRectangle implements Cloneable
         if(this.pointOutside(checkPoint))
             return false;
 
-        checkPoint.x = checkDimension.getDimension().width;
+        checkPoint.x = checkPoint.x + checkDimension.getDimension().width;
         if(this.pointOutside(checkPoint))
             return false;
 
-        checkPoint.y = checkDimension.getDimension().height;
+        checkPoint.y = checkPoint.y + checkDimension.getDimension().height;
         if(this.pointOutside(checkPoint))
             return false;
 
