@@ -51,9 +51,6 @@ public class QuadTree
         root.sprout();
     }
 
-    //public void
-    //SEntity [] getPossibleCollisions()
-    //QTNode [] getLeaves();
 
     /**
      *  Used to display the QuadTree dividing the space up into nodes.
@@ -82,15 +79,13 @@ public class QuadTree
         //Display all-nodes.
         root.displayNodes(g);
 
-
-
         g.setColor(colorMemory);
 
     }
-    /*
-       TODO - Create small boxes representing each node,
 
-    */
+    /**
+     * Displays a structured-diagram of the QuadTree.
+     */
     public void displayStructure(Graphics2D g)
     {
         Color colorMemory = g.getColor();
@@ -109,6 +104,10 @@ public class QuadTree
         g.setColor(colorMemory);
     }
 
+    /**
+     * Returns a list of all nodes in the current tree.
+     * @return - the list
+     */
     public ArrayList<QTNode> getNodes()
     {
         ArrayList<QTNode> list = new ArrayList<QTNode>();
@@ -124,20 +123,21 @@ public class QuadTree
         return list;
     }
 
+    /**
+     * Recursively tries to collect all the nodes from the tree.
+     */
     private void recursiveCollection(ArrayList theList, QTNode theNode)
     {
         if(theNode.getNodeType() == QTNode.NodeType.LEAF)
         {
             theList.add(theNode);
-            return;
         }
-        else if(theNode.getNodeType() == QTNode.NodeType.BRANCH)
+        else
         {
             theList.add(theNode);
             QTNode subNodes [] = theNode.nodes;
             for(int i = 0; i < subNodes.length; i++)
                     recursiveCollection(theList, subNodes[i]);
-            return;
         }
     }
 
@@ -149,7 +149,6 @@ public class QuadTree
 
         public NodeBox(QTNode n){this.n = n;}
 
-          //TODO Draw box, with the depth, and connection to sub-nodes.
         public void displayNodeBox(Graphics2D g)
         {
 
@@ -161,7 +160,8 @@ public class QuadTree
 
             g.setColor(Color.CYAN);
             g.drawString("Region: " + getNodeRegion(n), offX, offY + 15);
-            g.drawString("Depth: " + n.getDepth(), offX,offY + 25);
+            g.drawString("Type: " + getNodeType(n), offX, offY + 28);
+            g.drawString("Depth: " + n.getDepth(), offX,offY + 41);
             g.setColor(Color.RED);
         }
     }
@@ -173,7 +173,7 @@ public class QuadTree
             case ROOT:
                 return 0;
             case TOP_LEFT:
-                return  -50;
+                return -50;
             case TOP_RIGHT:
                 return 0;
             case BOTTOM_LEFT:

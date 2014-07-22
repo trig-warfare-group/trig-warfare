@@ -34,22 +34,6 @@ public class QTNode
         this.depth = ++depth;
     }
 
-    /**
-     * Obtains a list of entities that are within the bounds of a given node.
-     * @return - the list of entities that intersect a node.
-     */
-    public SEntity [] intersectList(QTNode checkNode)
-    {
-        ArrayList<SEntity> collisions = new ArrayList<SEntity>();
-
-        for(int i = 0; i < list.length; i++)
-            if(checkNode.space.intersects(list[i].getCollisionRegion()))
-                collisions.add(list[i]);
-
-        return collisions.toArray(new SEntity[collisions.size()]);
-    }
-
-
     public void displayNodes(Graphics2D g)
     {
         Point p = space.getPoint();
@@ -91,36 +75,6 @@ public class QTNode
 
     }
 
-    public QTNode getTLNode()
-    {
-        return nodes[0];
-    }
-
-    public QTNode getTRNode()
-    {
-        return nodes[1];
-    }
-
-    public QTNode getBLNode()
-    {
-        return nodes[2];
-    }
-
-    public QTNode getBRNode()
-    {
-        return nodes[3];
-    }
-
-    public QTNode [] getNodes()
-    {
-        return nodes;
-    }
-
-    public NodeType getNodeType()
-    {
-        return type;
-    }
-
     /**
      * Starts building the tree.
      */
@@ -143,6 +97,21 @@ public class QTNode
             for (int i = 0; i < newNodes.length; i++)
                 newNodes[i].sprout();
         }
+    }
+
+    /**
+     * Obtains a list of entities that are within the bounds of a given node.
+     * @return - the list of entities that intersect a node.
+     */
+    public SEntity [] intersectList(QTNode checkNode)
+    {
+        ArrayList<SEntity> collisions = new ArrayList<SEntity>();
+
+        for(int i = 0; i < list.length; i++)
+            if(checkNode.space.intersects(list[i].getCollisionRegion()))
+                collisions.add(list[i]);
+
+        return collisions.toArray(new SEntity[collisions.size()]);
     }
 
     private QTNode [] createNewNodes()
@@ -185,6 +154,36 @@ public class QTNode
         BRANCH, LEAF, ROOT,
         TOP_LEFT, TOP_RIGHT,
         BOTTOM_LEFT, BOTTOM_RIGHT
+    }
+
+    public QTNode getTLNode()
+    {
+        return nodes[0];
+    }
+
+    public QTNode getTRNode()
+    {
+        return nodes[1];
+    }
+
+    public QTNode getBLNode()
+    {
+        return nodes[2];
+    }
+
+    public QTNode getBRNode()
+    {
+        return nodes[3];
+    }
+
+    public QTNode [] getNodes()
+    {
+        return nodes;
+    }
+
+    public NodeType getNodeType()
+    {
+        return type;
     }
 
     public SDimension getSpace()
