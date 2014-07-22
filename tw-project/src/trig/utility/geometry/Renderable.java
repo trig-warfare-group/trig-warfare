@@ -26,7 +26,7 @@ public interface Renderable
      * Draws the object, with the rendered object transformed using the specified AffineTransform
      * @param g the canvas to draw on
      * @param aT an affineTransform to apply to the rendered objected
-     * @see trig.utility.math.vector.Vector
+     * @see trig.utility.math.vector.Cartesian
      */
     abstract public void render(Graphics2D g, AffineTransform aT);
 

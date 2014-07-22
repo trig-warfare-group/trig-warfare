@@ -1,20 +1,17 @@
 package trig.utility.geometry;
 
-import trig.utility.math.vector.Vector;
+import trig.utility.math.vector.Cartesian;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Like a normal Path, but with a colour!
  * sorta a test run, we'll probably need to paste this code into a lot of classes?
- * @see trig.utility.math.vector.Vector
+ * @see trig.utility.math.vector.Cartesian
  * Created by marcos on 18/07/2014.
  */
-public class ColorfulPath<T extends Vector> extends Path<T> implements Colorful
+public class ColorfulPath<T extends Cartesian> extends Path<T> implements Colorful
 {
     protected Color color;
 
@@ -87,7 +84,7 @@ public class ColorfulPath<T extends Vector> extends Path<T> implements Colorful
     /**
      * Produces a completely new Path object with the same data
      * @return a deep clone of the object (no cross-mutation), that can be edited independently.
-     * @see trig.utility.math.vector.Vector
+     * @see trig.utility.math.vector.Cartesian
      * @see T
      */
     @Override

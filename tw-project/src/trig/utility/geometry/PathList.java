@@ -1,17 +1,14 @@
 package trig.utility.geometry;
 
-import trig.game.entity.interfaces.Visible;
-import trig.utility.math.vector.Vector;
-import java.util.ArrayList;
-import java.util.Collection;
+import trig.utility.math.vector.Cartesian;
 
 /**
- * Custom path collection class designed to use my Vector library.
+ * Custom path collection class designed to use my Cartesian library.
  * It is essentially a list of paths that implements trig.utility.geometry.Renderable
  * @see trig.utility.geometry.Path
  * Created by marcos on 17/07/2014.
  */
-public class PathList<P extends Path<V>, V extends Vector> extends RenderableList<P> implements Renderable
+public class PathList<P extends Path<V>, V extends Cartesian> extends RenderableList<P> implements Renderable
 {
     /*
         Misc

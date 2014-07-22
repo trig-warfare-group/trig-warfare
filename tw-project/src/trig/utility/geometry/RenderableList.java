@@ -36,7 +36,7 @@ public class RenderableList<T extends Renderable> extends ArrayList<T> implement
      * Draws the paths at the specified origin, and transforms it using the specified AffineTransform
      * @param g the canvas to draw on
      * @param aT an affineTransform to apply to the rendered path
-     * @see trig.utility.math.vector.Vector
+     * @see trig.utility.math.vector.Cartesian
      */
     @Override
     public void render(Graphics2D g, AffineTransform aT)

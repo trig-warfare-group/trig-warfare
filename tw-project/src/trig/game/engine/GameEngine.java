@@ -1,15 +1,14 @@
 package trig.game.engine;
 
 import trig.game.entity.dummy.DummyCircle;
-import trig.game.entity.dummy.DummyTriangle;
 import trig.game.entity.interfaces.Entity;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
 import trig.utility.DummyMethods;
 import trig.utility.math.QuadTree;
-import trig.utility.math.vector.CartesianForm;
-import trig.utility.math.vector.PolarForm;
+import trig.utility.math.vector.Cartesian;
+import trig.utility.math.vector.Polar;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -70,51 +69,51 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         for (int i = 0; i < 1; i++)
         {
             //quad-tree testing
-            CartesianForm point;
+            Cartesian point;
             float angleAdjustment = ((float) 1 / 4) * (float) Math.PI;
 
-            point = new CartesianForm(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
+            point = new Cartesian(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
                             (int) point.y - 50,
-                            new PolarForm(10, ((float) 9 / 8) * (float) Math.PI)
+                            new Polar(10, ((float) 9 / 8) * (float) Math.PI)
                     )
             );
 
-            point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 1 / 4);
+            point = new Cartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 1 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
                             (int) point.y - 50,
-                            new PolarForm(10, 0)
+                            new Polar(10, 0)
                     )
             );
 
-            point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
+            point = new Cartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
                             (int) point.y - 50,
-                            new PolarForm(10, 0)
+                            new Polar(10, 0)
                     )
             );
 
-            point = new CartesianForm(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
+            point = new Cartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
                             (int) point.y - 50,
-                            new PolarForm(10, (float) 1.5 * (float) Math.PI)
+                            new Polar(10, (float) 1.5 * (float) Math.PI)
                     )
             );
 
-            point = new CartesianForm(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
+            point = new Cartesian(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
                             (int) point.y - 50,
-                            new PolarForm(0, 0)
+                            new Polar(0, 0)
                     )
             );
         }

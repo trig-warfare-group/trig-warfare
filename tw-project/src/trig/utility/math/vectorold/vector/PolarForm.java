@@ -1,0 +1,72 @@
+package trig.utility.math.vectorold.vector;
+
+/**
+ * A vector in the form of Radius, Angle, explicitly starting at the origin
+ * Created by marcos on 11/07/2014.
+ */
+public class PolarForm extends Vector
+{
+    public final float radius, angle;
+
+    //return self, for getting this form back from the vector interface!
+    /**
+     * A helper method used to allow casting to Cartesian
+     * @return this object
+     * @see Vector
+     */
+    @Override
+    public PolarForm inPolar()
+    {
+        return this;
+    }
+
+    /**
+     * @param radius the distance from origin
+     * @param theta an angle expressed in radians, between [-PI, -PI]
+     */
+    public PolarForm(float radius, float theta)
+    {
+        this.radius = radius;
+        this.angle = trig.utility.math.Methods.normalise(theta);
+    }
+
+    /**
+     * Produces a Cartesian equivalent of the given data
+     * @param radius the distance from origin
+     * @param theta an angle expressed in radians, between [-PI, -PI]
+     * @return a vector from given data, in cartesian form
+     */
+    public static CartesianForm toCartesian(float radius, float theta)
+    {
+        //make sure to normalise
+        theta = trig.utility.math.Methods.normalise(theta);
+        return new CartesianForm
+                (
+                        (float) (radius * Math.cos(theta)), //x
+                        (float) (radius * Math.sin(theta)) //y
+                );
+    }
+
+    /**
+     * Produces a cartesian-form equivalent of the vector
+     * @return this vector, represented in cartesian form
+     * @see CartesianForm
+     */
+    public CartesianForm inCartesian()
+    {
+        return toCartesian(radius, angle);
+    }
+
+    @Override
+    public PolarForm translate(float tX, float tY)
+    {
+        return super.translate(tX, tY).inPolar();
+    }
+
+    @Override
+    public PolarForm rotate(float theta)
+    {
+        return super.rotate(theta).inPolar();
+    }
+}
+

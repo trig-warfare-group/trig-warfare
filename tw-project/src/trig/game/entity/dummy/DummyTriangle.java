@@ -7,8 +7,6 @@ import trig.game.entity.interfaces.UpdateListener;
 import trig.utility.Constants;
 import trig.utility.geometry.ColorfulPath;
 import trig.utility.geometry.ColorfulPathList;
-import trig.utility.geometry.Path;
-import trig.utility.geometry.Renderable;
 import trig.utility.math.vector.*;
 
 import java.awt.*;
@@ -22,7 +20,7 @@ import java.util.Random;
  */
 public final class DummyTriangle extends Combatant implements UpdateListener
 {
-    protected ColorfulPathList<ColorfulPath<Vector>, Vector> renderPath;
+    protected ColorfulPathList<ColorfulPath<Cartesian>, Cartesian> renderPath;
 
     protected void makeTriangle() //most java.awt functions use minimum floating-point accuracy, it seems?
     {
@@ -32,20 +30,20 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         float rotationAngle =  ( ( (float) 5 / 7 ) * (float) Math.PI);
 
         float halfSize = (float)hitSize/2;
-        Vector vA = new PolarForm(halfSize, rotationBase);
-        Vector vB = new PolarForm(halfSize, (rotationBase + rotationAngle));
-        Vector vC = new PolarForm(halfSize, (rotationBase - rotationAngle));
+        Cartesian vA = new Polar(halfSize, rotationBase);
+        Cartesian vB = new Polar(halfSize, (rotationBase + rotationAngle));
+        Cartesian vC = new Polar(halfSize, (rotationBase - rotationAngle));
 
-        renderPath = new ColorfulPathList<ColorfulPath<Vector>, Vector>();
-        ColorfulPath<Vector> pA = new ColorfulPath(Color.RED);
+        renderPath = new ColorfulPathList<ColorfulPath<Cartesian>, Cartesian>();
+        ColorfulPath<Cartesian> pA = new ColorfulPath(Color.RED);
         pA.add(vA);
         pA.add(vB);
 
-        ColorfulPath<Vector> pB = new ColorfulPath<Vector>(Color.GREEN);
+        ColorfulPath<Cartesian> pB = new ColorfulPath<Cartesian>(Color.GREEN);
         pB.add(vB);
         pB.add(vC);
 
-        ColorfulPath<Vector> pC = new ColorfulPath<Vector>(Color.BLUE);
+        ColorfulPath<Cartesian> pC = new ColorfulPath<Cartesian>(Color.BLUE);
         pC.add(vC);
         pC.add(vA);
 
@@ -145,7 +143,7 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         //if the loop ends, we can spawn safely
         this.x = newX;
         this.y = newY;
-        setVelocity(new PolarForm(ST_DIST * speed, newDirection));
+        setVelocity(new Polar(ST_DIST * speed, newDirection));
 
     }
 
@@ -205,13 +203,13 @@ public final class DummyTriangle extends Combatant implements UpdateListener
 
             //randomise direction!
             float newDirection = (float) ( ( (r.nextFloat() * 2) - 1 ) * Math.PI ); //between [-1,1], I think
-            setVelocity(new PolarForm(ST_DIST*speed, newDirection));
+            setVelocity(new Polar(ST_DIST*speed, newDirection));
         }
         else
         {
             if(step % 10 == 0)
             {
-                CartesianForm bulletSpawnOffset = PolarForm.toCartesian(hitSize, velocity.inPolar().angle);
+                Cartesian bulletSpawnOffset = Polar.toCartesian(hitSize, velocity.inPolar().angle);
 
                 fireProjectile(new DummyBullet(x+bulletSpawnOffset.getX(), y+bulletSpawnOffset.getY(), velocity.inPolar().angle), engine);
             }

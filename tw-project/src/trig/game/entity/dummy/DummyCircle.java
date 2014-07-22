@@ -5,8 +5,8 @@ import trig.game.entity.GenericMoving;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
-import trig.utility.math.vector.PolarForm;
-import trig.utility.math.vector.Vector;
+import trig.utility.math.vector.Cartesian;
+import trig.utility.math.vector.Polar;
 
 import java.awt.*;
 
@@ -19,7 +19,7 @@ public class DummyCircle extends GenericMoving implements Visible, UpdateListene
     tragectoryA = polarVel;
     tragejectoryB = Math.round(polarVel.angle+Math.PI)
     */
-    public DummyCircle(int x, int y, Vector velocity)
+    public DummyCircle(int x, int y, Cartesian velocity)
     {
         super(x, y, 100, velocity);
     }
@@ -35,8 +35,8 @@ public class DummyCircle extends GenericMoving implements Visible, UpdateListene
             || (y < (Constants.WORLD_COLLISION_PADDING - 1))
         )
         {
-            PolarForm polarVel = velocity.inPolar();
-            velocity = new PolarForm(polarVel.radius,  polarVel.angle+ (float)Math.PI);
+            Polar polarVel = velocity.inPolar();
+            velocity = new Polar(polarVel.radius,  polarVel.angle+ (float)Math.PI);
         }
     }
 

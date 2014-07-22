@@ -5,12 +5,10 @@ import trig.game.entity.Projectile;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
 import trig.utility.geometry.ColorfulPath;
-import trig.utility.geometry.ColorfulPathList;
 import trig.utility.math.vector.*;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.RoundRectangle2D;
 import java.util.Random;
 
 /**
@@ -19,7 +17,7 @@ import java.util.Random;
  */
 public final class DummyBullet extends Projectile implements Visible
 {
-    protected ColorfulPath<Vector> renderPath;
+    protected ColorfulPath<Cartesian> renderPath;
 
     protected void makePath() //most java.awt functions use minimum floating-point accuracy, it seems?
     {
@@ -27,12 +25,12 @@ public final class DummyBullet extends Projectile implements Visible
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
         float rotationBase = (float)1/2* (float) Math.PI;
         float rotationAngle =  ( ( (float) 5 / 7 ) * (float) Math.PI);
-        renderPath = new ColorfulPath<Vector>(color);
+        renderPath = new ColorfulPath<Cartesian>(color);
 
         float halfSize = (float)hitSize/2;
-        Vector vA = new PolarForm(halfSize, rotationBase);
-        Vector vB = new PolarForm(halfSize, (rotationBase + rotationAngle));
-        Vector vC = new PolarForm(halfSize, (rotationBase - rotationAngle));
+        Cartesian vA = new Polar(halfSize, rotationBase);
+        Cartesian vB = new Polar(halfSize, (rotationBase + rotationAngle));
+        Cartesian vC = new Polar(halfSize, (rotationBase - rotationAngle));
 
         renderPath.add(vA);
         renderPath.add(vB);
@@ -68,7 +66,7 @@ public final class DummyBullet extends Projectile implements Visible
 
         super(/*id,*/ x, y,
                 3, //hitSize,
-                new PolarForm(7, direction) //velocity
+                new Polar(7, direction) //velocity
         );
         name = "DBullet_" + id;
         color = new Color(

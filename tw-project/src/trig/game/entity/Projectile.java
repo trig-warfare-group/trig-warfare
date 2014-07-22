@@ -10,7 +10,7 @@ import trig.utility.math.vector.*;
  */
 public abstract class Projectile extends GenericMoving implements UpdateListener
 {
-    public Projectile(/*int id,*/ int x, int y, int hitSize, Vector vector) {
+    public Projectile(/*int id,*/ int x, int y, int hitSize, Cartesian vector) {
         super(/*id,*/ x, y, hitSize, vector);
     }
     /**

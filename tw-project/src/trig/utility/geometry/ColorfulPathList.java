@@ -1,8 +1,6 @@
 package trig.utility.geometry;
 
-import trig.utility.math.vector.Vector;
-
-import java.util.ArrayList;
+import trig.utility.math.vector.Cartesian;
 
 /**
  * Similar to PathList, but contains ColorfulPaths
@@ -11,7 +9,7 @@ import java.util.ArrayList;
  * @see PathList
  * @see trig.utility.geometry.ColorfulPath
  */
-public class ColorfulPathList<P extends ColorfulPath<V>, V extends Vector> extends PathList<P, V> implements Colorful
+public class ColorfulPathList<P extends ColorfulPath<V>, V extends Cartesian> extends PathList<P, V> implements Colorful
 {
     /*
         Misc
