@@ -35,32 +35,30 @@ public class QTNode
 
     public void displayNodes(Graphics2D g)
     {
-
         g.drawRect(space.x, space.y, space.width, space.height);
+        g.setColor(Color.YELLOW);
+        g.setStroke(new BasicStroke(0.1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
         displaySubNodes(nodes, g);
     }
 
-    private void displaySubNodes(QTNode [] nodes, Graphics2D g)
+    /**
+     * Recursively draws sub-nodes.
+     */
+    private void displaySubNodes(QTNode [] subNodes, Graphics2D g)
     {
-        SRectangle sb = null;
-        for(int i = 0; i < nodes.length; i++)
+        for(int i = 0; i < subNodes.length; i++)
         {
-            sb = nodes[i].space;
-            g.setStroke(new BasicStroke(0.1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+            SRectangle sb = subNodes[i].space;
 
-            if(nodes[i].getNodeType() == NodeType.LEAF)
-            {
-                g.setColor(Color.GREEN);
-                g.drawRect(sb.x, sb.y, sb.width, sb.height);
-            }
-            else //Must be Branch, draw it, and its sub-nodes
-            {
-                displaySubNodes(nodes[i].getNodes(), g);
-                g.drawRect(sb.x, sb.y, sb.width, sb.height);
-            }
+            g.setColor(Color.CYAN);
+            g.drawRect(sb.x, sb.y, 15, 15);
+            g.drawString(getNodeRegion() + "X:" + space.x + " Y: " + space.y, sb.x, sb.y);
+            g.setColor(Color.YELLOW);
 
+            g.drawRect(sb.x, sb.y, sb.width, sb.height);
+            if(subNodes[i].getNodeType() == NodeType.BRANCH)
+                subNodes[i].displaySubNodes(subNodes[i].nodes, g);
         }
-
     }
 
     /**
@@ -124,7 +122,11 @@ public class QTNode
     private QTNode createNewNode(int region)
     {
         QTNode newNode = null;
-        SRectangle subSpace = space.getHalvedDimension();
+        SRectangle subSpace = new SRectangle();
+        subSpace.x = space.x;
+        subSpace.y = space.y;
+        subSpace.width = space.width / 2;
+        subSpace.height = space.height / 2;
 
         switch (region)
         {
@@ -151,8 +153,59 @@ public class QTNode
             default:
                 new RuntimeException("QTNode.createNewNode() - Invalid option.");
         }
-
+        System.out.println(subSpace + "\t" + getNodeRegion() +"\t\t["  + depth + "]");
         return newNode;
+    }
+    private String getNodeRegion()
+    {
+        switch (this.region)
+        {
+            case ROOT:
+                return "ROOT";
+            case TOP_LEFT:
+                return "TOP_LEFT";
+            case TOP_RIGHT:
+                return "TOP_RIGHT";
+            case BOTTOM_LEFT:
+                return "BOTTOM_LEFT";
+            case BOTTOM_RIGHT:
+                return "BOTTOM_RIGHT";
+        }
+        return null;
+    }
+    /**
+     * Returns a list of all nodes in the current tree.
+     * @return - the list
+     */
+    public ArrayList<QTNode> getAllSubNodes()
+    {
+        ArrayList<QTNode> list = new ArrayList<QTNode>();
+        list.add(this);
+
+        for(int i = 0; i < nodes.length; i++)
+        {
+            list.add(nodes[i]);
+            recursiveCollection(list, nodes[i]);
+        }
+        return list;
+    }
+
+    /**
+     * Recursively tries to collect all the nodes from the tree.
+     */
+    private void recursiveCollection(ArrayList theList, QTNode theNode)
+    {
+        if(theNode.getNodeType() == QTNode.NodeType.LEAF)
+        {
+            theList.add(theNode);
+        }
+        else
+        {
+            theList.add(theNode);
+            QTNode subNodes [] = theNode.nodes;
+            for(int i = 0; i < subNodes.length; i++)
+                recursiveCollection(theList, subNodes[i]);
+        }
     }
 
     public static enum NodeType

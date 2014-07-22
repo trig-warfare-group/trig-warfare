@@ -86,7 +86,7 @@ public class QuadTree
         Color colorMemory = g.getColor();
         g.setColor(Color.RED);
         //Get list of sub-nodes - create an array of NodeBox's each.
-        ArrayList<QTNode> list = getNodes();
+        ArrayList<QTNode> list = root.getAllSubNodes();
         QTNode [] treeStruct = list.toArray(new QTNode[list.size()]);
         NodeBox [] boxes = new NodeBox[treeStruct.length];
 
@@ -99,42 +99,7 @@ public class QuadTree
         g.setColor(colorMemory);
     }
 
-    /**
-     * Returns a list of all nodes in the current tree.
-     * @return - the list
-     */
-    public ArrayList<QTNode> getNodes()
-    {
-        ArrayList<QTNode> list = new ArrayList<QTNode>();
-        QTNode [] subNodes = root.nodes;
 
-        list.add(root);
-
-        for(int i = 0; i < subNodes.length; i++)
-        {
-            list.add(subNodes[i]);
-            recursiveCollection(list, subNodes[i]);
-        }
-        return list;
-    }
-
-    /**
-     * Recursively tries to collect all the nodes from the tree.
-     */
-    private void recursiveCollection(ArrayList theList, QTNode theNode)
-    {
-        if(theNode.getNodeType() == QTNode.NodeType.LEAF)
-        {
-            theList.add(theNode);
-        }
-        else
-        {
-            theList.add(theNode);
-            QTNode subNodes [] = theNode.nodes;
-            for(int i = 0; i < subNodes.length; i++)
-                    recursiveCollection(theList, subNodes[i]);
-        }
-    }
 
     private class NodeBox
     {
@@ -149,7 +114,6 @@ public class QuadTree
 
             int offX = Constants.WINDOW_DIMENSION.width/2 + getOffX(n) * n.getDepth() + getOffX(n);
             int offY = 5 + (width * n.getDepth());
-
 
             g.drawRect(offX, offY, width, height);
 

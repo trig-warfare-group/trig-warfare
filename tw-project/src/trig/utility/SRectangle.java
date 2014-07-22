@@ -8,6 +8,7 @@ import java.awt.*;
 public class SRectangle extends Rectangle
 {
 
+    public SRectangle(){super();}
     public SRectangle(Dimension dimension)
     {
         this.x = 0;
@@ -17,7 +18,10 @@ public class SRectangle extends Rectangle
     }
     public SRectangle(int x, int y, int width, int height)
     {
-        super(x, y, width, height);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     /**
@@ -28,4 +32,11 @@ public class SRectangle extends Rectangle
     {
         return new SRectangle(x, y, width/2, height/2);
     }
+
+    @Override
+    public String toString()
+    {
+        return "X:" + x + " \tY:" + y + " \tWidth:" + width + " \tHeight: " + height;
+    }
+
 }

@@ -4,7 +4,7 @@ import trig.game.engine.GameEngine;
 
 /**
  * Denotes a marker class for an Entity in the game.
- *  @author marcos
+ * @author marcos
  * @author brody
  * Created by marcos on 8/07/2014.
  */
