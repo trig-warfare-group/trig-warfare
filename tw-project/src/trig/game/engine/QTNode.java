@@ -23,7 +23,7 @@ public class QTNode
     {
         this.space = space;
         this.list = list;
-        this.depth = 1;
+        this.depth = 0;
         type = NodeType.ROOT;
         region = NodeType.ROOT;
     }

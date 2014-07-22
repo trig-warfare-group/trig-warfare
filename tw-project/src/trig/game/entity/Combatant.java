@@ -77,7 +77,7 @@ public class Combatant extends SEntity
                 || this.y < 0 || this.y > Constants.WINDOW_DIMENSION.height))
             move(x, y);
         else
-            this.setLocation(x, y);
+            this.setLocation(600, 300);
 
 
     }

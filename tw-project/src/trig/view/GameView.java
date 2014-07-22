@@ -29,7 +29,7 @@ public class GameView
         frame.setSize(Constants.WINDOW_DIMENSION);
         panel.setBackground(new Color(5, 10, 0));
         frame.getContentPane().add(panel);
-        frame.setResizable(false);
+        //frame.setResizable(false);
         frame.setVisible(true);
     }
 

@@ -3,6 +3,7 @@ package trig.game.engine;
 
 import trig.game.entity.Entity;
 import trig.game.entity.SEntity;
+import trig.utility.Constants;
 import trig.utility.SDimension;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -92,17 +93,127 @@ public class QuadTree
     */
     public void displayStructure(Graphics2D g)
     {
+        Color colorMemory = g.getColor();
+        g.setColor(Color.RED);
+        //Get list of sub-nodes - create an array of NodeBox's each.
+        ArrayList<QTNode> list = getNodes();
+        QTNode [] treeStruct = list.toArray(new QTNode[list.size()]);
+        NodeBox [] boxes = new NodeBox[treeStruct.length];
 
+        for(int i = 0; i < treeStruct.length; i++)
+        {
+            boxes[i] = new NodeBox(treeStruct[i]);
+            boxes[i].displayNodeBox(g);
+        }
+
+        g.setColor(colorMemory);
+    }
+
+    public ArrayList<QTNode> getNodes()
+    {
+        ArrayList<QTNode> list = new ArrayList<QTNode>();
+        QTNode [] subNodes = root.nodes;
+
+        list.add(root);
+
+        for(int i = 0; i < subNodes.length; i++)
+        {
+            list.add(subNodes[i]);
+            recursiveCollection(list, subNodes[i]);
+        }
+        return list;
+    }
+
+    private void recursiveCollection(ArrayList theList, QTNode theNode)
+    {
+        if(theNode.getNodeType() == QTNode.NodeType.LEAF)
+        {
+            theList.add(theNode);
+            return;
+        }
+        else if(theNode.getNodeType() == QTNode.NodeType.BRANCH)
+        {
+            theList.add(theNode);
+            QTNode subNodes [] = theNode.nodes;
+            for(int i = 0; i < subNodes.length; i++)
+                    recursiveCollection(theList, subNodes[i]);
+            return;
+        }
     }
 
     private class NodeBox
     {
         public QTNode n;
+        final int width = 95;
+        final int height = 50;
+
+        public NodeBox(QTNode n){this.n = n;}
 
           //TODO Draw box, with the depth, and connection to sub-nodes.
         public void displayNodeBox(Graphics2D g)
         {
 
+            int offX = Constants.WINDOW_DIMENSION.width/2 + getOffX(n) * n.getDepth() + getOffX(n);
+            int offY = 5 + (width * n.getDepth());
+
+
+            g.drawRect(offX, offY, width, height);
+
+            g.setColor(Color.CYAN);
+            g.drawString("Region: " + getNodeRegion(n), offX, offY + 15);
+            g.drawString("Depth: " + n.getDepth(), offX,offY + 25);
+            g.setColor(Color.RED);
         }
+    }
+
+    private int getOffX(QTNode node)
+    {
+        switch (node.region)
+        {
+            case ROOT:
+                return 0;
+            case TOP_LEFT:
+                return  -50;
+            case TOP_RIGHT:
+                return 0;
+            case BOTTOM_LEFT:
+                return 50;
+            case BOTTOM_RIGHT:
+                return 100;
+        }
+        return 0;
+    }
+
+
+    private String getNodeRegion(QTNode node)
+    {
+        switch (node.region)
+        {
+            case ROOT:
+                return "ROOT";
+            case TOP_LEFT:
+                return "TOP_LEFT";
+            case TOP_RIGHT:
+                return "TOP_RIGHT";
+            case BOTTOM_LEFT:
+                return "BOTTOM_LEFT";
+            case BOTTOM_RIGHT:
+                return "BOTTOM_RIGHT";
+        }
+        return null;
+    }
+
+    private String getNodeType(QTNode node)
+    {
+        switch (node.getNodeType())
+        {
+            case LEAF:
+                return "LEAF";
+            case BRANCH:
+                return "BRANCH";
+            case ROOT:
+                return "ROOT";
+        }
+        return null;
     }
 }

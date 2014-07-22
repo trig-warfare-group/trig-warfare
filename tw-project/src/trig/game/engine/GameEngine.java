@@ -71,7 +71,7 @@ public class GameEngine
         for(SEntity e : entities)
             e.render(g);
 
-        //qt.displayTree(g);
+        qt.displayTree(g);
         qt.displayStructure(g);
 
         g.setColor(new Color(74, 198, 36));
