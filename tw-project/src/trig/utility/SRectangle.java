@@ -61,22 +61,22 @@ public class SRectangle implements Cloneable
     public boolean intersects(SRectangle checkDimension)
     {
         Point checkPoint = new Point(checkDimension.getPoint().x, checkDimension.getPoint().y);
-        if(!this.pointOutside(checkPoint))
-            return true;
+        if(this.pointOutside(checkPoint))
+            return false;
 
         checkPoint.x = checkDimension.getDimension().width;
-        if(!this.pointOutside(checkPoint))
-            return true;
+        if(this.pointOutside(checkPoint))
+            return false;
 
         checkPoint.y = checkDimension.getDimension().height;
-        if(!this.pointOutside(checkPoint))
-            return true;
+        if(this.pointOutside(checkPoint))
+            return false;
 
         checkPoint.x = checkDimension.getPoint().x;
-        if(!this.pointOutside(checkPoint))
-            return true;
+        if(this.pointOutside(checkPoint))
+            return false;
 
-        return false;
+        return true;
     }
 
     /**
