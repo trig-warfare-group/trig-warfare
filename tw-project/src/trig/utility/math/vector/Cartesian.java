@@ -14,6 +14,11 @@ public class Cartesian implements Vector2D
         return x;
     }
 
+    public float getY()
+    {
+        return y;
+    }
+
     /**
      * @param x a distance from origin along the x-axis
      * @param y a distance from origin along the y-axis
@@ -46,15 +51,19 @@ public class Cartesian implements Vector2D
      */
     public void translate(float tX, float tY){
         this.x += tX;
-        this.y += tY);
+        this.y += tY;
     };
 
     /**
      * Produces a new Cartesian object, rotated by the provided amount
      * @return the Cartesian resulting from applying the rotation to this vector
      */
-    public Cartesian rotate(float theta){
-        (float) (radius * Math.cos(theta)), //x
-        (float) (radius * Math.sin(theta)) //y
+    public void rotate(float theta){
+
+        float rx = (float) Math.cos(theta);
+        float ry = (float) Math.sin(theta);
+
+        x = x * rx - y * ry;
+        y = x * ry + y * rx;
     }
 }

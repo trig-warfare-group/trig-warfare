@@ -7,7 +7,7 @@ public class Methods
 {
     /**
      * Normalises a randian angle to be between [-PI,PI]
-     * Note: [-PI,PI] is the domain (or is it range?) I believe we will need most? May need to update, or overload with multiple domains (ranges?)
+     * Note: [-PI,PI] is the domain (or is it range?) of atan2 I believe we will need most? May need to update, or overload with multiple domains (ranges?)
      * @param theta
      * Created by marcos on 11/07/2014.
      */

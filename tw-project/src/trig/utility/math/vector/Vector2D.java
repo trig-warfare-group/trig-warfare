@@ -21,10 +21,10 @@ public interface Vector2D
 //     */
 //    abstract public Polar inPolar();
 
-    abstract public Vector2D translate(float tX, float tY);
+    abstract public void translate(float tX, float tY);
 
 
-    abstract public Vector2D rotate(float theta);
+    abstract public void rotate(float theta);
 
     //todo: add some other math functions? (as they become used?) such as the dot and cross product
 }

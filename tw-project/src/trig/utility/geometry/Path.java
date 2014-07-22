@@ -45,21 +45,21 @@ public class Path<T extends Cartesian> extends LinkedList<T> implements Renderab
             height = highY-lowY;
          */
 
-        Cartesian each = get(0).inCartesian();
-        lowX = each.x;
-        highX = each.x;
-        lowY = each.y;
-        highY = each.y;
+        Cartesian each = get(0);
+        lowX = each.getX();
+        highX = each.getX();
+        lowY = each.getY();
+        highY = each.getY();
 
         for(int i = 1; i < size(); i++)
         {
-            each = get(i).inCartesian();
+            each = get(i);
 
-            if(each.x < lowX)
+            if(each.getY() < lowX)
             {
-                lowX = each.x;
+                lowX = each.getX();
             }
-            else if (each.x > highX)
+            else if (each.getX() > highX)
             {
                 highX = each.x;
             }
@@ -103,8 +103,8 @@ public class Path<T extends Cartesian> extends LinkedList<T> implements Renderab
         GeneralPath pen = new GeneralPath();
         if(this.size() > 0)
         {
-            Cartesian cartPoint = getFirst().inCartesian();
-            pen.moveTo(cartPoint.x, cartPoint.y);
+            Cartesian first = getFirst();
+            pen.moveTo(first.x, cartPoint.y);
             for (int i=0; i < this.size(); i++)
             {
                 cartPoint = get(i).inCartesian();
