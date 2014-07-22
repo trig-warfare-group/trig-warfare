@@ -17,7 +17,7 @@ public class Constants
     public static Dimension WORLD_DIM = new Dimension(960,540);
 
     //The boundary of movement is a little smaller than the actual viewport, which will be based on WORLD_DIM
-    //we only really need to know how far inwards it is?, since we'd need to shift our 0,0 by that amount if we wanted to go to the trouble of mapping ourself in this space anyway, it saves no time?
+    //we only really need to know how far inwards it is?, since we'dimension need to shift our 0,0 by that amount if we wanted to go to the trouble of mapping ourself in this space anyway, it saves no time?
     //public static int WORLD_MOVE_PADDING = 2;
 
     //by allowing entities to move slightly beyond the point where edge collision would be detected,

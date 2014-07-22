@@ -76,7 +76,7 @@ public class GameEngine
             e.render(g);
 
         qt.displayTree(g);
-        qt.displayStructure(g);
+        //qt.displayStructure(g);
 
         g.setColor(new Color(74, 198, 36));
         end = System.nanoTime();

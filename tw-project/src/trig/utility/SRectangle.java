@@ -7,27 +7,25 @@ import java.awt.*;
  */
 public class SRectangle implements Cloneable
 {
-
-
-    Dimension d;
-    Point p;
+    Dimension dimension;
+    Point point;
 
     public SRectangle(Dimension dimension)
     {
-        this.p = new Point(0, 0);
-        this.d = dimension;
+        this.point = new Point(0, 0);
+        this.dimension = dimension;
     }
 
     public SRectangle(Point point, Dimension dimension)
     {
-        this.d = dimension;
-        this.p = point;
+        this.dimension = dimension;
+        this.point = point;
     }
 
     public SRectangle(int width, int height)
     {
-        p = new Point(0, 0);
-        d = new Dimension(width, height);
+        point = new Point(0, 0);
+        dimension = new Dimension(width, height);
     }
 
 
@@ -40,7 +38,7 @@ public class SRectangle implements Cloneable
      */
     public SRectangle getScaledDimension(double widthScale, double heightScale)
     {
-        return new SRectangle((int) (d.width * widthScale), (int) (d.height * heightScale));
+        return new SRectangle((int) (dimension.width * widthScale), (int) (dimension.height * heightScale));
     }
 
     /**
@@ -49,8 +47,8 @@ public class SRectangle implements Cloneable
      */
     public SRectangle getHalvedDimension()
     {
-        Point p = this.p;
-        Dimension d = new Dimension(this.d.width/2, this.d.height/2);
+        Point p = this.point;
+        Dimension d = new Dimension(this.dimension.width/2, this.dimension.height/2);
         return new SRectangle(p, d);
     }
 
@@ -62,29 +60,33 @@ public class SRectangle implements Cloneable
      */
     public boolean intersects(SRectangle checkDimension)
     {
-        Point p = new Point(checkDimension.getPoint().x, checkDimension.getPoint().y);
-        if(this.pointWithin(p))
+        Point checkPoint = new Point(checkDimension.getPoint().x, checkDimension.getPoint().y);
+        if(!this.pointOutside(checkPoint))
             return true;
 
-        p.x = checkDimension.getDimension().width;
-        if(this.pointWithin(p))
+        checkPoint.x = checkDimension.getDimension().width;
+        if(!this.pointOutside(checkPoint))
             return true;
 
-        p.y = checkDimension.getDimension().height;
-        if(this.pointWithin(p))
+        checkPoint.y = checkDimension.getDimension().height;
+        if(!this.pointOutside(checkPoint))
             return true;
 
-        p.x = checkDimension.getPoint().x;
-        if(this.pointWithin(p))
+        checkPoint.x = checkDimension.getPoint().x;
+        if(!this.pointOutside(checkPoint))
             return true;
 
         return false;
     }
 
-    private boolean pointWithin(Point pc)
+    /**
+     * returns true, if the given parameter it outside this SDimension.
+     * @param pointCheck -- point to checkOutside
+     */
+    private boolean pointOutside(Point pointCheck)
     {
-        if(pc.x > p.x && pc.x < d.width
-                && pc.y > p.y && pc.y < d.height)
+        if(pointCheck.x < point.x || pointCheck.x > (point.x + dimension.width)
+                || pointCheck.y < point.y || pointCheck.y > (point.y + dimension.height))
             return true;
         else
             return false;
@@ -92,28 +94,28 @@ public class SRectangle implements Cloneable
 
     public Dimension getDimension()
     {
-        return d;
+        return dimension;
     }
 
     public void setDimension(Dimension dimension)
     {
-        this.d = dimension;
+        this.dimension = dimension;
     }
 
     public Point getPoint()
     {
-        return p;
+        return point;
     }
 
     public void setPoint(Point point)
     {
-        this.p = point;
+        this.point = point;
     }
 
     @Override
     public Object clone()
     {
-        return new SRectangle(p, d);
+        return new SRectangle(point, dimension);
     }
 
 }
