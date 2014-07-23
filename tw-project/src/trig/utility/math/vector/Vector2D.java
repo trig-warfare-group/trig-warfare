@@ -10,9 +10,9 @@ public interface Vector2D
 //    /**
 //     * Produces a cartesian-form equivalent of the vector
 //     * @return this vector, represented in cartesian form
-//     * @see Cartesian
+//     * @see FloatCartesian
 //     */
-//    abstract public Cartesian inCartesian();
+//    abstract public FloatCartesian inCartesian();
 //
 //    /**
 //     * Produces a polar-form equivalent of the vector
@@ -21,10 +21,10 @@ public interface Vector2D
 //     */
 //    abstract public Polar inPolar();
 
-    abstract public void translate(float tX, float tY);
-
-
-    abstract public void rotate(float theta);
+//    abstract public void translate(float tX, float tY);
+//
+//
+//    abstract public void rotate(float theta);
 
     //todo: add some other math functions? (as they become used?) such as the dot and cross product
 }

@@ -4,7 +4,7 @@ package trig.utility.math.vector;
  * A vector in the form of Radius, Angle, explicitly starting at the origin
  * Created by marcos on 11/07/2014.
  */
-public class Polar extends Vector2D
+public class Polar implements Vector2D
 {
     public float radius, angle;
 
@@ -19,16 +19,16 @@ public class Polar extends Vector2D
     }
 
     /**
-     * Produces a Cartesian equivalent of the given data
+     * Produces a FloatCartesian equivalent of the given data
      * @param radius the distance from origin
      * @param theta an angle expressed in radians, between [-PI, -PI]
      * @return a vector from given data, in cartesian form
      */
-    public static Cartesian getCartesianForm(float radius, float theta)
+    public static FloatCartesian getCartesianForm(float radius, float theta)
     {
         //make sure to normalise
         theta = trig.utility.math.Methods.normalise(theta);
-        return new Cartesian
+        return new FloatCartesian
                 (
                         (float) (radius * Math.cos(theta)), //x
                         (float) (radius * Math.sin(theta)) //y
@@ -38,9 +38,9 @@ public class Polar extends Vector2D
     /**
      * Produces a cartesian-form equivalent of the vector
      * @return this vector, represented in cartesian form
-     * @see Cartesian
+     * @see FloatCartesian
      */
-    public Cartesian inCartesian()
+    public FloatCartesian inCartesian()
     {
         return toCartesian(radius, angle);
     }

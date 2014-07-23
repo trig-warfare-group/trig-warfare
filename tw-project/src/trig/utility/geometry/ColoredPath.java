@@ -1,12 +1,14 @@
 package trig.utility.geometry;
 
+import trig.utility.math.vector.FloatCartesian;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 /**
  * Like a normal Path, but with a colour!
  * sorta a test run, we'll probably need to paste this code into a lot of classes?
- * @see trig.utility.math.vector.Cartesian
+ * @see trig.utility.math.vector.FloatCartesian
  * Created by marcos on 18/07/2014.
  */
 public class ColoredPath extends Path implements Colored
@@ -35,6 +37,17 @@ public class ColoredPath extends Path implements Colored
     public ColoredPath()
     {
         this(Color.BLACK);
+    }
+
+    /**
+     * Creates a new ColoredPath with the same values as the provided path.
+     * Note: the resulting object is a deep copy, and does not share points.
+     * @param path a Path object to construct the ColoredPath from
+     */
+    public ColoredPath(Path path)
+    {
+        this();
+        addAll(path.clone());
     }
     /*
         Renderable implementation
@@ -82,12 +95,15 @@ public class ColoredPath extends Path implements Colored
     /**
      * Produces a completely new Path object with the same data
      * @return a deep clone of the object (no cross-mutation), that can be edited independently.
-     * @see trig.utility.math.vector.Cartesian
+     * @see trig.utility.math.vector.FloatCartesian
      */
     @Override
     public ColoredPath clone(){
         ColoredPath newPath = new ColoredPath();
-        newPath.addAll(this);
+        for(FloatCartesian each : this)
+        {
+            newPath.add(each.clone());
+        }
         return newPath;
     }
 }

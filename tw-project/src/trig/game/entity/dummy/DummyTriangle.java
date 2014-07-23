@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public final class DummyTriangle extends Combatant implements UpdateListener
 {
-    protected ColorfulPathList<ColoredPath<Cartesian>, Cartesian> renderPath;
+    protected ColorfulPathList<ColoredPath<FloatCartesian>, FloatCartesian> renderPath;
 
     protected void makeTriangle() //most java.awt functions use minimum floating-point accuracy, it seems?
     {
@@ -29,20 +29,20 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         float rotationAngle =  ( ( (float) 5 / 7 ) * (float) Math.PI);
 
         float halfSize = (float)hitSize/2;
-        Cartesian vA = new Polar(halfSize, rotationBase);
-        Cartesian vB = new Polar(halfSize, (rotationBase + rotationAngle));
-        Cartesian vC = new Polar(halfSize, (rotationBase - rotationAngle));
+        FloatCartesian vA = new Polar(halfSize, rotationBase);
+        FloatCartesian vB = new Polar(halfSize, (rotationBase + rotationAngle));
+        FloatCartesian vC = new Polar(halfSize, (rotationBase - rotationAngle));
 
-        renderPath = new ColorfulPathList<ColoredPath<Cartesian>, Cartesian>();
-        ColoredPath<Cartesian> pA = new ColoredPath(Color.RED);
+        renderPath = new ColorfulPathList<ColoredPath<FloatCartesian>, FloatCartesian>();
+        ColoredPath<FloatCartesian> pA = new ColoredPath(Color.RED);
         pA.add(vA);
         pA.add(vB);
 
-        ColoredPath<Cartesian> pB = new ColoredPath<Cartesian>(Color.GREEN);
+        ColoredPath<FloatCartesian> pB = new ColoredPath<FloatCartesian>(Color.GREEN);
         pB.add(vB);
         pB.add(vC);
 
-        ColoredPath<Cartesian> pC = new ColoredPath<Cartesian>(Color.BLUE);
+        ColoredPath<FloatCartesian> pC = new ColoredPath<FloatCartesian>(Color.BLUE);
         pC.add(vC);
         pC.add(vA);
 
@@ -151,13 +151,6 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         //POSSIBLY REDUCE AMMO STOCK OR CHECK SOME COOLDOWN IDK
         engine.addEntity(munition);
 
-        /*
-            NOTE/TODO: DOES NOT ADD TO THE ENTITY LIST, THIS IS IMPORTANT,
-            also need way to limit the number of projectiles fired
-            probably can't really other than by fire rate or A COOLDOWN MECHANISM!!
-         */
-    }
-
     /*
     @Override
     public void draw(Graphics2D g)
@@ -208,7 +201,7 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         {
             if(step % 10 == 0)
             {
-                Cartesian bulletSpawnOffset = Polar.toCartesian(hitSize, velocity.inPolar().angle);
+                FloatCartesian bulletSpawnOffset = Polar.toCartesian(hitSize, velocity.inPolar().angle);
 
                 fireProjectile(new DummyBullet(x+bulletSpawnOffset.getX(), y+bulletSpawnOffset.getY(), velocity.inPolar().angle), engine);
             }

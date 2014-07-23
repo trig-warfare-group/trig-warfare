@@ -7,7 +7,7 @@
 package trig.game.entity;
 import trig.game.entity.interfaces.Living;
 import trig.game.entity.interfaces.Visible;
-import trig.utility.math.vector.Cartesian;
+import trig.utility.math.vector.FloatCartesian;
 import trig.utility.math.vector.Polar;
 
 import java.awt.Color;
@@ -140,7 +140,7 @@ public abstract class Combatant extends GenericMoving implements Living, Visible
                 0, //x
                 0, //y
                 hitSize, //hitSize
-                new Cartesian(0,0) //vector
+                new FloatCartesian(0,0) //vector
         );
 
         this.name = name; // "Dummy_"+id;

@@ -27,7 +27,7 @@ public class misc
             Support subpaths (for colour object and ther data inheritance purposes)
             use Vectors for nodes/points (makes transforms such as rotation and translation easy?)
             May not be enclosed:
-                (this could however be achieved: by referencing the first Cartesian as the last Cartesian, for example)
+                (this could however be achieved: by referencing the first FloatCartesian as the last FloatCartesian, for example)
          */
 
         /*

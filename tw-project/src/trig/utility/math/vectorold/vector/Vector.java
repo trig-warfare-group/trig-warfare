@@ -21,8 +21,8 @@ public abstract class Vector
     abstract public PolarForm inPolar();
 
     /**
-     * Produces a new Cartesian of the same type, translated by the provided amounts
-     * @return the Cartesian resulting from applying the rotation to this vector
+     * Produces a new FloatCartesian of the same type, translated by the provided amounts
+     * @return the FloatCartesian resulting from applying the rotation to this vector
      */
     public Vector translate(float tX, float tY){
         CartesianForm cartForm = this.inCartesian();
@@ -30,8 +30,8 @@ public abstract class Vector
     };
 
     /**
-     * Produces a new Cartesian object, rotated by the provided amount
-     * @return the Cartesian resulting from applying the rotation to this vector
+     * Produces a new FloatCartesian object, rotated by the provided amount
+     * @return the FloatCartesian resulting from applying the rotation to this vector
      */
     public Vector rotate(float theta){
         PolarForm polarForm = this.inPolar();

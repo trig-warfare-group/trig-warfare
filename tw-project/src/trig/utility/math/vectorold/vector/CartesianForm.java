@@ -33,7 +33,7 @@ public class CartesianForm extends Vector
     //return self, for getting this form back from the vector interface!
 
     /**
-     * A helper method used to allow casting to Cartesian
+     * A helper method used to allow casting to FloatCartesian
      * @return this object
      * @see trig.utility.math.vectorold.vector.Vector
      */

@@ -7,7 +7,7 @@ import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
 import trig.utility.DummyMethods;
 import trig.utility.math.QuadTree;
-import trig.utility.math.vector.Cartesian;
+import trig.utility.math.vector.FloatCartesian;
 import trig.utility.math.vector.Polar;
 
 import java.awt.*;
@@ -69,10 +69,10 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         for (int i = 0; i < 1; i++)
         {
             //quad-tree testing
-            Cartesian point;
+            FloatCartesian point;
             float angleAdjustment = ((float) 1 / 4) * (float) Math.PI;
 
-            point = new Cartesian(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
+            point = new FloatCartesian(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
@@ -81,7 +81,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                     )
             );
 
-            point = new Cartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 1 / 4);
+            point = new FloatCartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 1 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
@@ -90,7 +90,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                     )
             );
 
-            point = new Cartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
+            point = new FloatCartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
@@ -99,7 +99,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                     )
             );
 
-            point = new Cartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
+            point = new FloatCartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,
@@ -108,7 +108,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                     )
             );
 
-            point = new Cartesian(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
+            point = new FloatCartesian(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
             addEntity(
                     new DummyCircle(
                             (int) point.x - 50,

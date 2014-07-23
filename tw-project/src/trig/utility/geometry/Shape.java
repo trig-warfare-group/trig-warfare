@@ -1,6 +1,6 @@
 package trig.utility.geometry;
 
-import trig.utility.math.vector.Cartesian;
+import trig.utility.math.vector.FloatCartesian;
 
 import java.awt.*;
 
@@ -25,13 +25,13 @@ public interface Shape
      * gets the coordinate of the top-left corner of the shape
      * @return the top-left corner of
      */
-    abstract Cartesian getLocation();
+    abstract FloatCartesian getLocation();
 
     /**
      * Sets the coordinate of the location of the shape
-     * @param TLCorner a vector in Cartesian form, representing the coordinates of the new top left corner of the shape
+     * @param TLCorner a vector in FloatCartesian form, representing the coordinates of the new top left corner of the shape
      */
-    abstract void setLocation(Cartesian TLCorner);
+    abstract void setLocation(FloatCartesian TLCorner);
 
     /**
      * Sets the coordinate of the location of the shape

@@ -1,7 +1,5 @@
 package trig.utility.geometry;
 
-import trig.utility.math.vector.Cartesian;
-
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
@@ -19,7 +17,13 @@ public interface Renderable
      */
     abstract public Path2D getPath2D();
 
-    abstract public Rectangle getBounds(); //could SRectangle be used instead? (decide later?)
+    /**
+     * Gets a Rectangle representing a box that completely contains the shape rendered by the object.
+     * Note: in this case, "contains" just means that no portion of the shape lies outside of the box, there may be portions on the exact edge,
+     *  these portions may technically render beyond the container, depending on the style of stroke used to render them.
+     * @return a Rectangle that completely
+     */
+    abstract public Rectangle getBounds(); //TODO: NOT SURE IF TO USE RECTANGLE OR SRECTANGLE OR WHAT, DECIDE, DON'T DELETE ME UNTIL THEN
 
     /**
      * draws the object using 0,0 as the origin.
@@ -30,7 +34,7 @@ public interface Renderable
      * Draws the object, with the rendered object transformed using the specified AffineTransform
      * @param g the canvas to draw on
      * @param aT an affineTransform to apply to the rendered objected
-     * @see trig.utility.math.vector.Cartesian
+     * @see trig.utility.math.vector.FloatCartesian
      */
     abstract public void render(Graphics2D g, AffineTransform aT);
 

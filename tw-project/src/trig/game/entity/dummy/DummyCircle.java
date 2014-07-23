@@ -5,7 +5,7 @@ import trig.game.entity.GenericMoving;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
-import trig.utility.math.vector.Cartesian;
+import trig.utility.math.vector.FloatCartesian;
 import trig.utility.math.vector.Polar;
 
 import java.awt.*;
@@ -19,7 +19,7 @@ public class DummyCircle extends GenericMoving implements Visible, UpdateListene
     tragectoryA = polarVel;
     tragejectoryB = Math.round(polarVel.angle+Math.PI)
     */
-    public DummyCircle(int x, int y, Cartesian velocity)
+    public DummyCircle(int x, int y, FloatCartesian velocity)
     {
         super(x, y, 100, velocity);
     }

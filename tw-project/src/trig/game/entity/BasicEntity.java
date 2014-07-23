@@ -2,7 +2,7 @@ package trig.game.entity;
 
 import trig.game.entity.interfaces.Entity;
 import trig.utility.DummyMethods;
-import trig.utility.math.vector.Cartesian;
+import trig.utility.math.vector.FloatCartesian;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -18,7 +18,7 @@ public abstract class BasicEntity implements Entity
      * @param points a 2d array of x,y coordinates.
      * @return a Shape object, to be drawn
      */
-    public static Shape makeDrawableShape(Cartesian[] points){ //todo: make possible to add multiple shapes maybe? seems a simple task to do so.
+    public static Shape makeDrawableShape(FloatCartesian[] points){ //todo: make possible to add multiple shapes maybe? seems a simple task to do so.
         final GeneralPath path = new GeneralPath();
         path.moveTo(points[0].x, points[0].y);
         for(int i = 1; i < points.length; i++)

@@ -10,7 +10,7 @@ public class PolarForm extends Vector
 
     //return self, for getting this form back from the vector interface!
     /**
-     * A helper method used to allow casting to Cartesian
+     * A helper method used to allow casting to FloatCartesian
      * @return this object
      * @see Vector
      */
@@ -31,7 +31,7 @@ public class PolarForm extends Vector
     }
 
     /**
-     * Produces a Cartesian equivalent of the given data
+     * Produces a FloatCartesian equivalent of the given data
      * @param radius the distance from origin
      * @param theta an angle expressed in radians, between [-PI, -PI]
      * @return a vector from given data, in cartesian form

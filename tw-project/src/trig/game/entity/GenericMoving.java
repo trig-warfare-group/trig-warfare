@@ -10,19 +10,19 @@ import trig.utility.math.vector.*;
 public abstract class GenericMoving extends BasicEntity implements Ambulant
 {
     //the distance by which to move each tick
-    protected Cartesian velocity;
+    protected FloatCartesian velocity;
 
-    public Cartesian getVelocity()
+    public FloatCartesian getVelocity()
     {
         return velocity;
     }
 
-    public void setVelocity(Cartesian velocity)
+    public void setVelocity(FloatCartesian velocity)
     {
         this.velocity = velocity;
     }
 
-    public GenericMoving(/*int id,*/ int x, int y, int hitSize, Cartesian vector)
+    public GenericMoving(/*int id,*/ int x, int y, int hitSize, FloatCartesian vector)
     {
         //pipe these straight to the BasicEntity constructor.
         super(/*id,*/ x, y, hitSize);

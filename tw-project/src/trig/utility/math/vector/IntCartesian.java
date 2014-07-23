@@ -1,32 +1,33 @@
 package trig.utility.math.vector;
 /**
  * a vector, A vector, that is: a quantity containing both magnitude and direction.
- * @see Cartesian
+ * Note: this is a floating-point precision version, for the integer precision version, see IntCartesian
+ * @see IntCartesian
  * Created by marcos on 11/07/2014.
  */
-public class Cartesian implements Vector2D
+public class IntCartesian implements Vector2D
 {
     //for now going to be a float for slightly better accuracy converting to and from Polar
-    public float x, y;
+    public int x, y;
 
     public int getX()
     {
-        return (int) x;
+        return x;
     }
 
     public int getY()
     {
-        return (int) y;
+        return y;
     }
 
-    public Cartesian clone(){
-        return new Cartesian(this.x, this.y);
+    public IntCartesian clone(){
+        return new IntCartesian(this.x, this.y);
     }
      /**
      * @param x a distance from origin along the x-axis
      * @param y a distance from origin along the y-axis
      */
-    public Cartesian(float x, float y)
+    public IntCartesian(int x, int y)
     {
         this.x = x;
         this.y = y;
@@ -35,7 +36,7 @@ public class Cartesian implements Vector2D
     /**
      * Produces a polar-form equivalent of the vector
      * @return this vector, represented in polar form
-     * @see Polar
+     * @see trig.utility.math.vector.Polar
      */
     public Polar getPolarForm()
     {
@@ -49,24 +50,24 @@ public class Cartesian implements Vector2D
 
 
     /**
-     * Produces a new Cartesian of the same type, translated by the provided amounts
-     * @return the Cartesian resulting from applying the rotation to this vector
+     * Produces a new FloatCartesian of the same type, translated by the provided amounts
+     * @return the FloatCartesian resulting from applying the rotation to this vector
      */
-    public void translate(float tX, float tY){
+    public void translate(int tX, int tY){
         this.x += tX;
         this.y += tY;
     };
 
     /**
-     * Produces a new Cartesian object, rotated by the provided amount
-     * @return the Cartesian resulting from applying the rotation to this vector
+     * Produces a new FloatCartesian object, rotated by the provided amount
+     * @return the FloatCartesian resulting from applying the rotation to this vector
      */
     public void rotate(float theta){
 
-        float rx = (float) Math.cos(theta);
-        float ry = (float) Math.sin(theta);
+        float rx = (int) Math.cos(theta);
+        float ry = (int) Math.sin(theta);
 
-        x = x * rx - y * ry;
-        y = x * ry + y * rx;
+        x = (int) (x * rx - y * ry);
+        y = (int) (x * ry + y * rx);
     }
 }

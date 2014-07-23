@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public final class DummyBullet extends Projectile implements Visible
 {
-    protected ColoredPath<Cartesian> renderPath;
+    protected ColoredPath<FloatCartesian> renderPath;
 
     protected void makePath() //most java.awt functions use minimum floating-point accuracy, it seems?
     {
@@ -25,12 +25,12 @@ public final class DummyBullet extends Projectile implements Visible
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
         float rotationBase = (float)1/2* (float) Math.PI;
         float rotationAngle =  ( ( (float) 5 / 7 ) * (float) Math.PI);
-        renderPath = new ColoredPath<Cartesian>(color);
+        renderPath = new ColoredPath<FloatCartesian>(color);
 
         float halfSize = (float)hitSize/2;
-        Cartesian vA = new Polar(halfSize, rotationBase);
-        Cartesian vB = new Polar(halfSize, (rotationBase + rotationAngle));
-        Cartesian vC = new Polar(halfSize, (rotationBase - rotationAngle));
+        FloatCartesian vA = new Polar(halfSize, rotationBase);
+        FloatCartesian vB = new Polar(halfSize, (rotationBase + rotationAngle));
+        FloatCartesian vC = new Polar(halfSize, (rotationBase - rotationAngle));
 
         renderPath.add(vA);
         renderPath.add(vB);
