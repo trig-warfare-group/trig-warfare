@@ -1,5 +1,7 @@
 package trig.utility.geometry;
 
+import trig.utility.math.vector.Cartesian;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
@@ -17,6 +19,8 @@ public interface Renderable
      */
     abstract public Path2D getPath2D();
 
+    abstract public Rectangle getBounds(); //could SRectangle be used instead? (decide later?)
+
     /**
      * draws the object using 0,0 as the origin.
      * @param g the canvas to draw on
@@ -33,4 +37,13 @@ public interface Renderable
     abstract public void translate(float tX, float tY);
 
     public void rotate(float theta);
+
+
+    /**
+     * Rotates the object about the specified center, instead of it's normal origin
+     * @param theta the angle to rotate by, in radians.
+     * @param cX the x-coordinate of the center to rotate about.
+     * @param cY the y-coordinate of the center to rotate about.
+     */
+    public void rotateAbout(float theta, float cX, float cY);
 }

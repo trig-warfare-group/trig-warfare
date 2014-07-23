@@ -73,4 +73,10 @@ public class RenderableList<T extends Renderable> extends ArrayList<T> implement
             each.rotate(theta);
         }
     }
+
+    public void rotateAbout(float theta, float cX, float cY){
+        for(T each: this){
+            each.rotateAbout(theta, cX, cY);
+        }
+    }
 }

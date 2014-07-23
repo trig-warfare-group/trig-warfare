@@ -7,19 +7,22 @@ package trig.utility.math.vector;
 public class Cartesian implements Vector2D
 {
     //for now going to be a float for slightly better accuracy converting to and from Polar
-    protected float x, y;
+    public float x, y;
 
-    public float getX()
+    public int getX()
     {
-        return x;
+        return (int) x;
     }
 
-    public float getY()
+    public int getY()
     {
-        return y;
+        return (int) y;
     }
 
-    /**
+    public Cartesian clone(){
+        return new Cartesian(this.x, this.y);
+    }
+     /**
      * @param x a distance from origin along the x-axis
      * @param y a distance from origin along the y-axis
      */

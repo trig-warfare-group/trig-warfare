@@ -8,11 +8,9 @@ import java.util.Collections;
 /**
  * Created by marcos on 17/07/2014.
  */
-public class misc extends ArrayList
+public class misc
 {
-   public static void reverseOrder(){
 
-   }
     /*Each entity that can be drawn will pass forward an object containing data needed to draw it, including:
     *          a CustomPath as the basic polygon/image asset of the object
     *          The x and y coordinates to which to translate the RenderPaths

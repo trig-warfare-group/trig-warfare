@@ -5,8 +5,7 @@ import trig.game.engine.GameEngine;
 import trig.game.entity.*;
 import trig.game.entity.interfaces.UpdateListener;
 import trig.utility.Constants;
-import trig.utility.geometry.ColorfulPath;
-import trig.utility.geometry.ColorfulPathList;
+import trig.utility.geometry.ColoredPath;
 import trig.utility.math.vector.*;
 
 import java.awt.*;
@@ -20,7 +19,7 @@ import java.util.Random;
  */
 public final class DummyTriangle extends Combatant implements UpdateListener
 {
-    protected ColorfulPathList<ColorfulPath<Cartesian>, Cartesian> renderPath;
+    protected ColorfulPathList<ColoredPath<Cartesian>, Cartesian> renderPath;
 
     protected void makeTriangle() //most java.awt functions use minimum floating-point accuracy, it seems?
     {
@@ -34,16 +33,16 @@ public final class DummyTriangle extends Combatant implements UpdateListener
         Cartesian vB = new Polar(halfSize, (rotationBase + rotationAngle));
         Cartesian vC = new Polar(halfSize, (rotationBase - rotationAngle));
 
-        renderPath = new ColorfulPathList<ColorfulPath<Cartesian>, Cartesian>();
-        ColorfulPath<Cartesian> pA = new ColorfulPath(Color.RED);
+        renderPath = new ColorfulPathList<ColoredPath<Cartesian>, Cartesian>();
+        ColoredPath<Cartesian> pA = new ColoredPath(Color.RED);
         pA.add(vA);
         pA.add(vB);
 
-        ColorfulPath<Cartesian> pB = new ColorfulPath<Cartesian>(Color.GREEN);
+        ColoredPath<Cartesian> pB = new ColoredPath<Cartesian>(Color.GREEN);
         pB.add(vB);
         pB.add(vC);
 
-        ColorfulPath<Cartesian> pC = new ColorfulPath<Cartesian>(Color.BLUE);
+        ColoredPath<Cartesian> pC = new ColoredPath<Cartesian>(Color.BLUE);
         pC.add(vC);
         pC.add(vA);
 

@@ -4,7 +4,7 @@ import trig.game.engine.GameEngine;
 import trig.game.entity.Projectile;
 import trig.game.entity.interfaces.Visible;
 import trig.utility.Constants;
-import trig.utility.geometry.ColorfulPath;
+import trig.utility.geometry.ColoredPath;
 import trig.utility.math.vector.*;
 
 import java.awt.*;
@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public final class DummyBullet extends Projectile implements Visible
 {
-    protected ColorfulPath<Cartesian> renderPath;
+    protected ColoredPath<Cartesian> renderPath;
 
     protected void makePath() //most java.awt functions use minimum floating-point accuracy, it seems?
     {
@@ -25,7 +25,7 @@ public final class DummyBullet extends Projectile implements Visible
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
         float rotationBase = (float)1/2* (float) Math.PI;
         float rotationAngle =  ( ( (float) 5 / 7 ) * (float) Math.PI);
-        renderPath = new ColorfulPath<Cartesian>(color);
+        renderPath = new ColoredPath<Cartesian>(color);
 
         float halfSize = (float)hitSize/2;
         Cartesian vA = new Polar(halfSize, rotationBase);
