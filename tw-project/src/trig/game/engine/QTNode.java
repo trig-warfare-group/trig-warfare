@@ -17,6 +17,7 @@ public class QTNode
     private int depth;
     SRectangle space;
     SEntity[] list;
+    final static int SPROUT_REQUIREMENT = 2;
 
     public QTNode(SRectangle space, SEntity[] list)
     {
@@ -35,10 +36,10 @@ public class QTNode
 
     public void displayNodes(Graphics2D g)
     {
-        g.drawRect(space.x, space.y, space.width, space.height);
-        g.setColor(Color.YELLOW);
-        g.setStroke(new BasicStroke(0.1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
-        displaySubNodes(nodes, g);
+        //g.drawRect(space.x, space.y, space.width, space.height);
+        g.setColor(new Color(32, 105, 26));
+        if(nodes != null)
+            displaySubNodes(nodes, g);
     }
 
     /**
@@ -49,14 +50,9 @@ public class QTNode
         for(int i = 0; i < subNodes.length; i++)
         {
             SRectangle sb = subNodes[i].space;
-
-            g.setColor(Color.CYAN);
-            g.drawRect(sb.x, sb.y, 15, 15);
-            g.drawString(getNodeRegion() + "X:" + space.x + " Y: " + space.y, sb.x, sb.y);
-            g.setColor(Color.YELLOW);
-
-            g.drawRect(sb.x, sb.y, sb.width, sb.height);
-            if(subNodes[i].getNodeType() == NodeType.BRANCH)
+            if(subNodes[i].type == NodeType.LEAF)
+                g.drawRect(sb.x, sb.y, sb.width, sb.height);
+            else
                 subNodes[i].displaySubNodes(subNodes[i].nodes, g);
         }
     }
@@ -74,7 +70,7 @@ public class QTNode
             Otherwise, if the right requirements,
             create the nodes, and sprout them.
          */
-        if(list.length > 2)
+        if(list.length > SPROUT_REQUIREMENT)
         {
             QTNode[] newNodes = this.createNewNodes();
             this.nodes = newNodes;
@@ -135,44 +131,29 @@ public class QTNode
                 newNode.region = NodeType.TOP_LEFT;
             break;
             case 1://Top-right
-                subSpace.x = subSpace.width;
+                subSpace.x += subSpace.width;
                 newNode = new QTNode(subSpace, depth);
                 newNode.region = NodeType.TOP_RIGHT;
             break;
             case 2://Bottom-left
-                subSpace.y = subSpace.height;
+                subSpace.y += subSpace.height;
                 newNode = new QTNode(subSpace, depth);
                 newNode.region = NodeType.BOTTOM_LEFT;
             break;
             case 3://Bottom-right
-                subSpace.x = subSpace.width;
-                subSpace.y = subSpace.height;
+                subSpace.x += subSpace.width;
+                subSpace.y += subSpace.height;
                 newNode = new QTNode(subSpace, depth);
                 newNode.region = NodeType.BOTTOM_RIGHT;
             break;
             default:
                 new RuntimeException("QTNode.createNewNode() - Invalid option.");
         }
-        System.out.println(subSpace + "\t" + getNodeRegion() +"\t\t["  + depth + "]");
+
+        //System.out.println(subSpace + "\t" + newNode.getNodeRegion() +"\t\t\t["  + newNode.depth + "]");
         return newNode;
     }
-    private String getNodeRegion()
-    {
-        switch (this.region)
-        {
-            case ROOT:
-                return "ROOT";
-            case TOP_LEFT:
-                return "TOP_LEFT";
-            case TOP_RIGHT:
-                return "TOP_RIGHT";
-            case BOTTOM_LEFT:
-                return "BOTTOM_LEFT";
-            case BOTTOM_RIGHT:
-                return "BOTTOM_RIGHT";
-        }
-        return null;
-    }
+
     /**
      * Returns a list of all nodes in the current tree.
      * @return - the list
@@ -208,11 +189,67 @@ public class QTNode
         }
     }
 
+    private ArrayList collectNode(NodeType typeOfNode, QTNode startNode)
+    {
+        ArrayList<QTNode> nodeList = new ArrayList<QTNode>();
+
+        if(startNode.type == typeOfNode)
+            nodeList.add(startNode);
+
+        recursiveCollection(nodeList, startNode.nodes, typeOfNode);
+        return nodeList;
+    }
+
+    private void recursiveCollection(ArrayList theList, QTNode [] subNodes, NodeType typeOfNode)
+    {
+        for(int i = 0; i < subNodes.length; i++)
+        {
+            if(subNodes[i].getNodeType() == typeOfNode)
+                theList.add(subNodes[i]);
+            if(subNodes[i].getNodeType() == NodeType.BRANCH)
+                recursiveCollection(theList, subNodes[i].nodes, typeOfNode);
+        }
+    }
+
     public static enum NodeType
     {
         BRANCH, LEAF, ROOT,
         TOP_LEFT, TOP_RIGHT,
         BOTTOM_LEFT, BOTTOM_RIGHT
+    }
+
+
+    public String getNodeRegion()
+    {
+        switch (this.region)
+        {
+            case ROOT:
+                return "ROOT";
+            case TOP_LEFT:
+                return "TOP_LEFT";
+            case TOP_RIGHT:
+                return "TOP_RIGHT";
+            case BOTTOM_LEFT:
+                return "BOTTOM_LEFT";
+            case BOTTOM_RIGHT:
+                return "BOTTOM_RIGHT";
+        }
+        return null;
+    }
+
+
+    public String getNodeTypeName()
+    {
+        switch (type)
+        {
+            case LEAF:
+                return "LEAF";
+            case BRANCH:
+                return "BRANCH";
+            case ROOT:
+                return "ROOT";
+        }
+        return null;
     }
 
     public QTNode getTLNode()
@@ -254,7 +291,6 @@ public class QTNode
     {
         return depth;
     }
-
 
     @Override
     public String toString()

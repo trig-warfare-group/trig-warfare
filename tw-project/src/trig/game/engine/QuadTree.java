@@ -60,7 +60,8 @@ public class QuadTree
         Color colorMemory = g.getColor();
         SRectangle d;
 
-        g.setColor(Color.YELLOW);
+        g.setStroke(new BasicStroke(0.1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
+        g.setColor(Color.RED);
 
         for(SEntity e : list)
         {
@@ -69,8 +70,10 @@ public class QuadTree
             g.drawRect(col.x, col.y, col.width, col.height);
 
         }
-        g.setStroke(new BasicStroke(15));
-        g.setColor(Color.DARK_GRAY);
+        g.setStroke(new BasicStroke(0.1f));
+
+        g.setColor(new Color(86, 43, 5));
+
         //Display all-nodes.
         root.displayNodes(g);
 
@@ -118,61 +121,30 @@ public class QuadTree
             g.drawRect(offX, offY, width, height);
 
             g.setColor(Color.CYAN);
-            g.drawString("Region: " + getNodeRegion(n), offX, offY + 15);
-            g.drawString("Type: " + getNodeType(n), offX, offY + 28);
+            g.drawString("Region: " + n.getNodeRegion(), offX, offY + 15);
+            g.drawString("Type: " + n.getNodeTypeName(), offX, offY + 28);
             g.drawString("Depth: " + n.getDepth(), offX,offY + 41);
             g.setColor(Color.RED);
         }
-    }
 
-    private int getOffX(QTNode node)
-    {
-        switch (node.region)
+        private int getOffX(QTNode node)
         {
-            case ROOT:
-                return 0;
-            case TOP_LEFT:
-                return -50;
-            case TOP_RIGHT:
-                return 0;
-            case BOTTOM_LEFT:
-                return 50;
-            case BOTTOM_RIGHT:
-                return 100;
+            switch (node.region)
+            {
+                case ROOT:
+                    return 0;
+                case TOP_LEFT:
+                    return -50;
+                case TOP_RIGHT:
+                    return 0;
+                case BOTTOM_LEFT:
+                    return 50;
+                case BOTTOM_RIGHT:
+                    return 100;
+            }
+            return 0;
         }
-        return 0;
     }
 
 
-    private String getNodeRegion(QTNode node)
-    {
-        switch (node.region)
-        {
-            case ROOT:
-                return "ROOT";
-            case TOP_LEFT:
-                return "TOP_LEFT";
-            case TOP_RIGHT:
-                return "TOP_RIGHT";
-            case BOTTOM_LEFT:
-                return "BOTTOM_LEFT";
-            case BOTTOM_RIGHT:
-                return "BOTTOM_RIGHT";
-        }
-        return null;
-    }
-
-    private String getNodeType(QTNode node)
-    {
-        switch (node.getNodeType())
-        {
-            case LEAF:
-                return "LEAF";
-            case BRANCH:
-                return "BRANCH";
-            case ROOT:
-                return "ROOT";
-        }
-        return null;
-    }
 }

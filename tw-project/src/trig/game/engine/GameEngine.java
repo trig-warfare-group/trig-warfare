@@ -21,7 +21,7 @@ public class GameEngine
     int collisions = 0;
 
     QuadTree qt;
-
+    long updateTime;
     /**
      * Initialisation of the engine
      */
@@ -30,7 +30,7 @@ public class GameEngine
         entities = new ArrayList<SEntity>();
         Random r = new Random();
 
-        for(int i = 0; i < 6; i ++)
+        for(int i = 0; i < 4; i ++)
             entities.add(new Combatant(
                     r.nextInt(Constants.WINDOW_DIMENSION.width),
                     r.nextInt(Constants.WINDOW_DIMENSION.height),
@@ -48,9 +48,14 @@ public class GameEngine
     public void update()
     {
         qt.clear();
+        long start = System.nanoTime();
+
         for(SEntity e : entities)
             e.update();
         qt.plantSeed();
+
+
+        updateTime = (System.nanoTime() - start);
     }
 
 
@@ -77,10 +82,13 @@ public class GameEngine
 
         g.setColor(new Color(74, 198, 36));
         end = System.nanoTime();
-        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "µs" + "|   Collision: " + Integer.toString(collisions),
+        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "µs" + "  Collisions: " + Integer.toString(collisions),
                 5,
                 15);
 
+        g.drawString("Update time:  " + Long.toString(updateTime / 1000) + "µs",
+                5,
+                35);
     }
 
     public void addEntity(SEntity e)
