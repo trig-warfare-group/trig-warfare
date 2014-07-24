@@ -1,6 +1,7 @@
 package trig.utility.geometry;
 
 import org.w3c.dom.css.Rect;
+import trig.utility.math.vector.FloatCartesian;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -38,7 +39,8 @@ public class RenderableList<T extends Renderable> extends ArrayList<T> implement
      * Gets a Rectangle representing a box that completely contains the shape rendered by the object.
      * Note: in this case, "contains" just means that no portion of the shape lies outside of the box, there may be portions on the exact edge,
      *  these portions may technically render beyond the container, depending on the style of stroke used to render them.
-     * @return a Rectangle that completely
+     * Note: this function guarantees that the returned Rectangles contains the shape, but not that it is the smallest possible containing box.
+     * @return a Rectangle that completely contains the shape rendered by the object.
      */
     @Override
     public Rectangle getBounds(){
@@ -117,6 +119,13 @@ public class RenderableList<T extends Renderable> extends ArrayList<T> implement
         }
     }
 
+    public void translate(FloatCartesian tVector)
+    {
+        for(T each: this){
+            each.translate(tVector);
+        }
+    }
+
     @Override
     public void rotate(float theta){
         for(T each: this){
@@ -124,9 +133,36 @@ public class RenderableList<T extends Renderable> extends ArrayList<T> implement
         }
     }
 
+    @Override
     public void rotateAbout(float theta, float cX, float cY){
         for(T each: this){
             each.rotateAbout(theta, cX, cY);
         }
     }
+
+    /**
+     * Rotates the object about the specified center, instead of it's normal origin
+     *
+     * @param theta   the angle to rotate by, in radians.
+     * @param tVector the x and y coordinates of the rotation-center
+     */
+    @Override
+    public void rotateAbout(float theta, FloatCartesian tVector)
+    {
+        for(T each: this){
+            each.rotateAbout(theta, tVector);
+        }
+    }
+
+    @Override
+    public RenderableList<T> clone()
+    {
+        RenderableList<T> result = new RenderableList<T>();
+        for(T each : this)
+        {
+            result.add((T) each.clone());
+        }
+        return result;
+    }
+
 }

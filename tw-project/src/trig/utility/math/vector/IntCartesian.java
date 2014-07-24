@@ -20,6 +20,16 @@ public class IntCartesian implements Vector2D
         return y;
     }
 
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
+    public void setY(int y)
+    {
+        this.y = y;
+    }
+
     public IntCartesian clone(){
         return new IntCartesian(this.x, this.y);
     }
@@ -50,8 +60,7 @@ public class IntCartesian implements Vector2D
 
 
     /**
-     * Produces a new FloatCartesian of the same type, translated by the provided amounts
-     * @return the FloatCartesian resulting from applying the rotation to this vector
+     * Translates the vector by the provided amounts
      */
     public void translate(int tX, int tY){
         this.x += tX;
@@ -59,8 +68,7 @@ public class IntCartesian implements Vector2D
     };
 
     /**
-     * Produces a new FloatCartesian object, rotated by the provided amount
-     * @return the FloatCartesian resulting from applying the rotation to this vector
+     * Rotates the vector by the provided amount
      */
     public void rotate(float theta){
 

@@ -6,7 +6,7 @@ package trig.utility.math.vector;
  * @see IntCartesian
  * Created by marcos on 11/07/2014.
  */
-public class FloatCartesian extends IntCartesian
+public class FloatCartesian implements Vector2D
 {
     //for now going to be a float for slightly better accuracy converting to and from Polar
     public float x, y;
@@ -21,9 +21,16 @@ public class FloatCartesian extends IntCartesian
         return y;
     }
 
-    public FloatCartesian clone(){
-        return new FloatCartesian(this.x, this.y);
+    public void setX(float x)
+    {
+        this.x = x;
     }
+
+    public void setY(float y)
+    {
+        this.y = y;
+    }
+
      /**
      * @param x a distance from origin along the x-axis
      * @param y a distance from origin along the y-axis
@@ -51,8 +58,7 @@ public class FloatCartesian extends IntCartesian
 
 
     /**
-     * Produces a new FloatCartesian of the same type, translated by the provided amounts
-     * @return the FloatCartesian resulting from applying the rotation to this vector
+     * Translates the vector by the provided amounts
      */
     public void translate(float tX, float tY){
         this.x += tX;
@@ -60,8 +66,7 @@ public class FloatCartesian extends IntCartesian
     };
 
     /**
-     * Produces a new FloatCartesian object, rotated by the provided amount
-     * @return the FloatCartesian resulting from applying the rotation to this vector
+     * Rotates the vector by the provided amount
      */
     public void rotate(float theta){
 
@@ -70,5 +75,9 @@ public class FloatCartesian extends IntCartesian
 
         x = x * rx - y * ry;
         y = x * ry + y * rx;
+    }
+
+    public FloatCartesian clone(){
+        return new FloatCartesian(this.x, this.y);
     }
 }

@@ -1,6 +1,7 @@
 package trig.utility.geometry;
 
 import trig.utility.math.vector.FloatCartesian;
+import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
 
@@ -12,33 +13,35 @@ import java.awt.*;
  */
 public interface Shape
 {
-    abstract public float getHeight();
-    abstract public float getWidth();
+    abstract public int getHeight();
+    abstract public int getWidth();
 
-    abstract public float getX();
-    abstract public float getY();
+    abstract public Dimension getSize();
 
-    abstract public void setX();
-    abstract public void setY();
+    abstract public int getX();
+    abstract public int getY();
+
+    abstract public void setX(int x);
+    abstract public void setY(int y);
 
     /**
      * gets the coordinate of the top-left corner of the shape
      * @return the top-left corner of
      */
-    abstract FloatCartesian getLocation();
+    abstract IntCartesian getLocation();
 
     /**
      * Sets the coordinate of the location of the shape
      * @param TLCorner a vector in FloatCartesian form, representing the coordinates of the new top left corner of the shape
      */
-    abstract void setLocation(FloatCartesian TLCorner);
+    abstract void setLocation(IntCartesian TLCorner);
 
     /**
      * Sets the coordinate of the location of the shape
      * @param x the x-coordinate of the new top-left corner for the shape
      * @param y the y-coordinate of the new top-left corner for the shape
      */
-    abstract void setLocation(float x, float y);
+    abstract void setLocation(int x, int y);
 
     /**
      * Sets the coordinate of the location of the shape
@@ -46,5 +49,13 @@ public interface Shape
      */
     abstract void setLocation(Point TLCorner);
 
+    /*
+        Renderable override
+     */
 
+    /**
+     * Rotates the object about it's own center, as defined by it's boundaries, rather than about the 0,0 default origin.
+     * @param theta
+     */
+    abstract public void centeredRotate(float theta);
 }

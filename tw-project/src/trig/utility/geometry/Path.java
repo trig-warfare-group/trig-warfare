@@ -45,10 +45,11 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
     }
 
     /**
-     * Gets a Rectangle representing an integer-precision box that completely contains the shape rendered by the path.
+     * Gets a Rectangle representing a box that completely contains the shape rendered by the object.
      * Note: in this case, "contains" just means that no portion of the shape lies outside of the box, there may be portions on the exact edge,
      *  these portions may technically render beyond the container, depending on the style of stroke used to render them.
-     * @return a Rectangle that completely
+     * Note: this function guarantees that the returned Rectangles contains the shape, but not that it is the smallest possible containing box.
+     * @return a Rectangle that completely contains the shape rendered by the object.
      */
     @Override
     public Rectangle getBounds()
@@ -126,6 +127,12 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
     }
 
     @Override
+    public void translate(FloatCartesian tVector)
+    {
+        translate(tVector.x, tVector.y);
+    }
+
+    @Override
     public void rotate(float theta){
         for(FloatCartesian each : this)
         {
@@ -147,6 +154,18 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
             each.rotate(theta);
             each.translate(-cX, -cY);
         }
+    }
+
+    /**
+     * Rotates the object about the specified center, instead of it's normal origin
+     *
+     * @param theta   the angle to rotate by, in radians.
+     * @param tVector the x and y coordinates of the rotation-center
+     */
+    @Override
+    public void rotateAbout(float theta, FloatCartesian tVector)
+    {
+        rotateAbout(theta, tVector.x, tVector.y);
     }
 
     /*
