@@ -87,10 +87,10 @@ public class Ship extends SMovable implements Visible, Collidable
         float centerY = (float) hitRect.getCenterY();
 
         Polygon tempB = tempA.clone();
-        tempB.rotateAbout(rotationAngle, centerX, centerY);
+        tempB.rotateAbout(rotationAngle, x-centerX, y-centerY);
 
         Polygon tempC = tempA.clone();
-        tempC.rotateAbout(-rotationAngle, centerX, centerY);
+        tempC.rotateAbout(-rotationAngle, -centerX, -centerY);
 
         components.add(tempA);
         components.add(tempB);
@@ -140,12 +140,15 @@ public class Ship extends SMovable implements Visible, Collidable
     @Override
     public void setLocation(int x, int y)
     {
-        super.setLocation(x, y);
 
         components.translate(
                 x-this.x,
                 y-this.y
         );
+
+        super.setLocation(x, y);
+
+        return;
     }
 
     /**
@@ -154,7 +157,7 @@ public class Ship extends SMovable implements Visible, Collidable
      */
     public void rotate(float theta){
         Rectangle hitRect = hitbox.getBounds();
-        components.rotateAbout(theta, (float) hitRect.getCenterX(), (float) hitRect.getCenterY());
+        components.rotateAbout( theta, -(hitRect.x-(float) hitRect.getCenterX()), -(hitRect.x-(float) hitRect.getCenterY()) );
     }
 
     public void kill(){

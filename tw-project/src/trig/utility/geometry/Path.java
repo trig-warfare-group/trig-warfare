@@ -67,22 +67,22 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
         {
             each = get(i);
 
-            if(each.getY() < lowX)
+            if(each.x < lowX)
             {
                 lowX = each.x;
             }
-            else if (each.getX() > highX)
+            else if (each.x > highX)
             {
                 highX = each.x;
             }
 
             if(each.y < lowY)
             {
-                lowX = each.y;
+                lowY = each.y;
             }
-            else if (each.x > highX)
+            else if (each.y > highY)
             {
-                highX = each.y;
+                highY = each.y;
             }
         }
 

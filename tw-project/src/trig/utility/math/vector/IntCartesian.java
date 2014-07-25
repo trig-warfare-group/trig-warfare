@@ -44,22 +44,6 @@ public class IntCartesian implements Vector2D
     }
 
     /**
-     * Produces a polar-form equivalent of the vector
-     * @return this vector, represented in polar form
-     * @see trig.utility.math.vector.Polar
-     */
-    public Polar getPolarForm()
-    {
-        return new Polar
-        (
-                (float) Math.sqrt((x * x) + (y * y)), //radius
-                (float) Math.atan2(y, x) //theta
-        );
-    }
-
-
-
-    /**
      * Translates the vector by the provided amounts
      */
     public void translate(int tX, int tY){

@@ -4,6 +4,7 @@ import trig.utility.math.vector.FloatCartesian;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 
 /**
@@ -16,11 +17,18 @@ public class Polygon extends Path
     @Override
     public Path2D.Float getPath2D()
     {
-        Path2D.Float pen = super.getPath2D();
-
-        FloatCartesian first = getFirst();
-
-        pen.lineTo(first.x, first.y);
+        GeneralPath pen = new GeneralPath();
+        if(this.size() > 0)
+        {
+            FloatCartesian first = getFirst();
+            pen.moveTo(first.x, first.y);
+            for (int i=0; i < this.size(); i++)
+            {
+                FloatCartesian each = get(i);
+                pen.lineTo(each.x, each.y);
+            }
+            pen.lineTo(first.x, first.y);
+        }
         return pen;
     }
 

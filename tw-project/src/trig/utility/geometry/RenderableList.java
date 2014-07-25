@@ -70,11 +70,11 @@ public class RenderableList<T extends Renderable> extends ArrayList<T> implement
 
             if(eachLowY < lowY)
             {
-                lowX = eachLowY;
+                lowY = eachLowY;
             }
             else if(eachHighY > highX)
             {
-                highX = eachHighY;
+                highY = eachHighY;
             }
         }
 

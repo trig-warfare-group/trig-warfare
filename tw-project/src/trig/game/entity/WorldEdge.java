@@ -3,10 +3,6 @@ package trig.game.entity;
 import trig.utility.Constants;
 import trig.utility.geometry.Polygon;
 import trig.utility.math.vector.FloatCartesian;
-import trig.utility.math.vector.IntCartesian;
-
-import java.awt.*;
-
 /**
  * Dummy class to be
  * Created by marcos on 25/07/2014.
@@ -35,7 +31,7 @@ public class WorldEdge implements Collidable
     @Override
     public Polygon getHitbox()
     {
-        return null;
+        return hitbox;
     }
 
     /**
@@ -43,8 +39,9 @@ public class WorldEdge implements Collidable
      *
      * @param colliders
      */
+
     @Override
-    public void onCollision(Entity[] colliders)
+    public void onCollision(Collidable[] colliders)
     {
 
     }

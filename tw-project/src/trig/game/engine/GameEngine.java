@@ -37,8 +37,8 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     private Font bigFont, lilFont;
 
-    protected static WorldEdge worldsEdge = new WorldEdge();
-    protected static Rectangle worldBounds = worldsEdge.getHitbox().getBounds();
+    public static final WorldEdge worldsEdge = new WorldEdge();
+    public static final Rectangle worldBounds = worldsEdge.getHitbox().getBounds();
 
     /*
         note: perhaps we could implement destruction more often and generalise the process of entity death a bit if we gave players a new craft each time they died?
@@ -61,8 +61,10 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
         lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 
+        Rectangle bouds = worldBounds;
         Ship ship = new Ship("AA", Color.GREEN, 10);
-        ship.setLocation(250, 250);
+        ship.setLocation(250,250);
+        //ship.rotate(-(float)Math.PI/2);
         addEntity(ship);
     }
 
@@ -197,6 +199,12 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             if (e instanceof Visible)
             {
                 ((Visible) e).render(g);
+            }
+
+            if (e instanceof Collidable)
+            {
+                g.setColor(Color.RED);
+                g.draw(((Collidable) e).getHitbox().getBounds());
             }
         }
     }

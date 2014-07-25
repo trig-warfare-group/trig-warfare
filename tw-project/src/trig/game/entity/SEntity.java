@@ -15,7 +15,7 @@ public abstract class SEntity implements Entity
      * @return a triangular Polygon.
      */
     public static Polygon constructGenericTriangle(float size){
-        float halfSize = size/2;
+        float halfSize = size/(float) 2.0;
 
         //absolute of the angle to rotate by against point A, to get points B and C
         //equilateral and isosceles triangle can be produced using +- this one angle, I think..
@@ -24,13 +24,13 @@ public abstract class SEntity implements Entity
 
         Polygon triangle = new Polygon();
 
-        FloatCartesian vA = new FloatCartesian(halfSize, 0);
+        FloatCartesian vA = new FloatCartesian(size, 0);
 
         FloatCartesian vB = vA.clone();
         vB.rotate(rotationAngle);
 
         FloatCartesian vC = vA.clone();
-        vB.rotate(-rotationAngle);
+        vC.rotate(-rotationAngle);
 
         triangle.add(vA);
         triangle.add(vB);
