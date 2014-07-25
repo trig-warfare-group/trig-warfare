@@ -5,6 +5,8 @@ import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
 
+//TODO: MAY NOT USE TBH
+
 /**
  * A shape, etc, intended to be used with renderable
  * Note: The inner renderable components that make up a shape must become static once entering the shape,

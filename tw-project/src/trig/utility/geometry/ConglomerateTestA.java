@@ -5,7 +5,6 @@ import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 
 //TODO: TEST?
@@ -23,11 +22,13 @@ import java.awt.geom.Path2D;
  *
  * Note: Would it be better to do the opposite, and update the bounds only on request for the data?
  *
+ * One interesting observation I made whilst writing this is that the rectangle
+ *
  * Note: We really should test that the way bounds is calculated in this class is consistent in accuracy and remains the same as the internal one, but we do not guarantee it.
  * Note: We should also test the actual efficiency, probably
  * Created by marcos on 22/07/2014.
  */
-public class Conglomerate implements Shape, Renderable
+public abstract class ConglomerateTestA implements Shape, Renderable
 {
 
 
@@ -40,7 +41,7 @@ public class Conglomerate implements Shape, Renderable
 
     protected RenderableList<Renderable> components;
 
-    public Conglomerate(RenderableList<Renderable> components){
+    public ConglomerateTestA(RenderableList<Renderable> components){
         this.components = components.clone();
         Rectangle tempBounds = components.getBounds();
         boundsPath = new Path();
@@ -69,7 +70,7 @@ public class Conglomerate implements Shape, Renderable
      * @param components
      * @param boundsPath
      */
-    protected Conglomerate(RenderableList<Renderable> components, Path boundsPath){
+    protected ConglomerateTestA(RenderableList<Renderable> components, Path boundsPath){
         this.components = components;
         this.boundsPath = boundsPath;
         updateBounds(boundsPath.getBounds());
@@ -340,7 +341,8 @@ public class Conglomerate implements Shape, Renderable
     @Override
     public Renderable clone()
     {
-        return new Conglomerate(components, boundsPath);
+        return null;
+        //new ConglomerateTestA(components, boundsPath);
     }
 
 

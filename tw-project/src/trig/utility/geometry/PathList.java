@@ -6,7 +6,7 @@ package trig.utility.geometry;
  * @see trig.utility.geometry.Path
  * Created by marcos on 17/07/2014.
  */
-public class PathList<T extends Path> extends RenderableList<T> implements Renderable
+public class PathList<T extends Path> extends RenderableList<T>
 {
     /**
      * Produces a new, colourless version of the provided path list
