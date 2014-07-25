@@ -33,4 +33,70 @@ public class Polygon extends Path
         }
         return newPolygon;
     }
+    public boolean intersects(Rectangle target)
+    {
+        return getBounds().intersects(target.getBounds());
+    }
+
+    public boolean intersects(Polygon target)
+    {
+        return intersects(target.getBounds());
+    }
+
+    /**
+     * Determines how far out the furthest point outside of the provided box is
+     * @return a FloatCartesian vector representing how far the polygon is out from the box at the furthest point.
+     */
+    public FloatCartesian getOverflowDistance(Rectangle target){
+        float furthestX, furthestY, furthestDistance, eachDistance;
+        furthestX = 0;
+        furthestY = 0;
+        furthestDistance = 0;
+
+        double distX, distY, overX, underX, overY, underY;
+
+        for (FloatCartesian each : this)
+        {
+            overX = each.x - target.getMaxX();
+            if(overX < 0)
+            {
+                overX = 0;
+            }
+
+            underX = each.x - target.getMinX();
+            if(underX > 0)
+            {
+                underX = 0;
+            }
+
+            overY = each.y - target.getMaxY();
+            if(overY < 0)
+            {
+                overY = 0;
+            }
+
+            underY = each.y - target.getMinY();
+            if(underY > 0)
+            {
+                underY = 0;
+            }
+
+            distX = Math.abs(underX) > overX ? underX : overX;
+
+            distY = Math.abs(underY) > overY ? underY : overY;
+
+
+
+            eachDistance = (float) Math.sqrt( Math.abs(distX*distX) + Math.abs(distY*distY) );
+
+            if(eachDistance > furthestDistance)
+            {
+                furthestDistance = eachDistance;
+                furthestX = (float) distX;
+                furthestY = (float) distY;
+            }
+        }
+
+        return new FloatCartesian(furthestX, furthestY);
+    }
 }

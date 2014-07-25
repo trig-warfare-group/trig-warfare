@@ -1,10 +1,5 @@
 package trig.utility.geometry;
 
-import trig.game.entity.interfaces.Entity;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  * Created by marcos on 17/07/2014.
  */

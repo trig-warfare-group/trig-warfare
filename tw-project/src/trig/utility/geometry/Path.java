@@ -186,7 +186,4 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
         }
         return newPath;
     }
-
-
-
 }

@@ -1,14 +1,10 @@
 package trig.game.engine;
 
-import trig.game.entity.dummy.DummyCircle;
-import trig.game.entity.interfaces.Entity;
-import trig.game.entity.interfaces.UpdateListener;
-import trig.game.entity.interfaces.Visible;
+import trig.game.entity.*;
 import trig.utility.Constants;
 import trig.utility.DummyMethods;
-import trig.utility.math.QuadTree;
 import trig.utility.math.vector.FloatCartesian;
-import trig.utility.math.vector.Polar;
+import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -30,6 +26,8 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     private QuadTree quadTree;
     private ArrayList<Entity> entities;
 
+    //fake entity to use as a flaf
+    private
     /*
         collisionPossible: whether or not the quadTree returned one or more entities with neighbours() for each entity in each frame
         collisionOccurred: whether or not a collision actually occurred for each entity in each frame
@@ -38,6 +36,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     boolean[] collisionPossible, collisionOccurred;
 
     private Font bigFont, lilFont;
+
+    protected static WorldEdge worldsEdge = new WorldEdge();
+    protected static Rectangle worldBounds = worldsEdge.getHitbox().getBounds();
 
     /*
         note: perhaps we could implement destruction more often and generalise the process of entity death a bit if we gave players a new craft each time they died?
@@ -60,62 +61,96 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
         lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 
-//        for(int i = 0; i < 5; i++)
-//        {
-//            addEntity(
-//                    new DummyTriangle()
-//            );
-//        }
-        for (int i = 0; i < 1; i++)
+        Ship ship = new Ship("AA", Color.GREEN, 10);
+        ship.setLocation(250, 250);
+        addEntity(ship);
+    }
+
+    /**
+     * Remove "trash" entities
+     * Note: this only removes the reference to an entity from it's list, nothing fancy.
+     * Seemed a "clean" way to remove entities, keeps encapsulation, etc.
+     */
+    public void clean()
+    {
+        for(int i = 0; i < entities.size(); i++)
         {
-            //quad-tree testing
-            FloatCartesian point;
-            float angleAdjustment = ((float) 1 / 4) * (float) Math.PI;
+            if(entities.get(i).isTrash())
+            {
+                removeEntity(i);
+            }
+        }
+    }
 
-            point = new FloatCartesian(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
-            addEntity(
-                    new DummyCircle(
-                            (int) point.x - 50,
-                            (int) point.y - 50,
-                            new Polar(10, ((float) 9 / 8) * (float) Math.PI)
-                    )
-            );
+    public void processCollisions(ArrayList<Collidable> collidables)
+    {
+        Collidable each;
+        ArrayList<ArrayList<Collidable>> possibleCollisions = quadTree.processList(collidables);
 
-            point = new FloatCartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 1 / 4);
-            addEntity(
-                    new DummyCircle(
-                            (int) point.x - 50,
-                            (int) point.y - 50,
-                            new Polar(10, 0)
-                    )
-            );
+        //second pass, closer precision test
+        collisionPossible = new boolean[entities.size()];
+        collisionOccurred = new boolean[entities.size()];
 
-            point = new FloatCartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
-            addEntity(
-                    new DummyCircle(
-                            (int) point.x - 50,
-                            (int) point.y - 50,
-                            new Polar(10, 0)
-                    )
-            );
+        ArrayList<Collidable> actualCollisions;
+        ArrayList<Collidable> neighboursOfEach;
 
-            point = new FloatCartesian(Constants.WORLD_DIM.width * 1 / 4, Constants.WORLD_DIM.height * 3 / 4);
-            addEntity(
-                    new DummyCircle(
-                            (int) point.x - 50,
-                            (int) point.y - 50,
-                            new Polar(10, (float) 1.5 * (float) Math.PI)
-                    )
-            );
+        Rectangle eachBounds;
 
-            point = new FloatCartesian(Constants.WORLD_DIM.width * 3 / 4, Constants.WORLD_DIM.height * 3 / 4);
-            addEntity(
-                    new DummyCircle(
-                            (int) point.x - 50,
-                            (int) point.y - 50,
-                            new Polar(0, 0)
-                    )
-            );
+        Collidable[] collisionArray;
+
+        int i;
+        for (i = 0; i < possibleCollisions.size(); i++)
+        {
+            each = collidables.get(i);
+            trig.utility.geometry.Polygon eachHitbox = each.getHitbox();
+            neighboursOfEach = possibleCollisions.get(i);
+            actualCollisions = new ArrayList<Collidable>();
+
+            if (neighboursOfEach.size() > 0)
+            {
+                collisionPossible[i] = true;
+                for (Collidable neighbour : neighboursOfEach)
+                {
+                    if (neighbour.getHitbox().intersects(eachHitbox))
+                    {
+                        collisionOccurred[i] = true;
+                        actualCollisions.add(neighbour);
+                    }
+                }
+            }
+
+            FloatCartesian pointOutside = eachHitbox.getOverflowDistance(worldBounds);
+
+            if (Math.abs(pointOutside.x) > 0 || Math.abs(pointOutside.y) > 0)
+            {
+                actualCollisions.add(worldsEdge);
+                if (each instanceof Movable)
+                {
+                    int shiftX, shiftY;
+                    if(pointOutside.x < 0)
+                    {
+                        shiftX = (int) Math.floor(pointOutside.x);
+                    }
+                    else
+                    {
+                        shiftX = (int) Math.ceil(pointOutside.x);
+                    }
+
+                    if(pointOutside.y < 0)
+                    {
+                        shiftY = (int) Math.floor(pointOutside.y);
+                    }
+                    else
+                    {
+                        shiftY = (int) Math.ceil(pointOutside.y);
+                    }
+                   ((Movable) each).move(shiftX, shiftY);
+                }
+            }
+
+            collisionArray = new Collidable[actualCollisions.size()];
+            actualCollisions.toArray(collisionArray);
+            each.onCollision(collisionArray);
         }
     }
 
@@ -126,43 +161,25 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     {
 
         Entity e;
+
+        ArrayList<Collidable> collidables = new ArrayList<Collidable>();
+
         for (int i = 0; i < entities.size(); i++)
         {
             e = entities.get(i);
-            if (e instanceof UpdateListener)
+            if (e instanceof Automata)
             {
-                ((UpdateListener) e).update(this);
+                ((Automata) e).update(this);
+            }
+
+            if(e instanceof Collidable)
+            {
+                collidables.add( (Collidable) e );
             }
         }
-        ArrayList<ArrayList<Entity>> possibleCollisions = quadTree.processList(entities);
+        processCollisions(collidables);
 
-        //second pass, closer precision test
-        collisionPossible = new boolean[entities.size()];
-        collisionOccurred = new boolean[entities.size()];
-        float distX, distY, distH;
-
-        for (int i = 0; i < collisionPossible.length; i++)
-        {
-            e = entities.get(i);
-            ArrayList<Entity> neighboursOfE = possibleCollisions.get(i);
-            if(neighboursOfE.size() > 0)
-            {
-                collisionPossible[i] = true;
-                for (Entity each : neighboursOfE)
-                {
-
-                    distX = Math.abs(e.getX() + each.getX());
-                    distY = Math.abs(e.getY() + each.getY());
-                    distH = Math.round(Math.sqrt((distX * distX) + (distY * distY)));
-                    if (distH < e.getHitSize())
-                    {
-                        collisionOccurred[i] = true;
-                    }
-                }
-            }
-        }
-
-        //normally do it here quadTree.clear();
+        clean();
     }
 
 
@@ -180,16 +197,12 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             if (e instanceof Visible)
             {
                 ((Visible) e).render(g);
-                int size = e.getHitSize();
-
-                g.setColor( collisionPossible[i] ? Color.RED : Color.GREEN );
-                g.drawRect(e.getX(), e.getY(), size, size);
-
-                g.setColor( collisionOccurred[i] ? Color.RED : Color.GREEN );
-                g.drawOval(e.getX(), e.getY(), size, size);
             }
         }
     }
+
+
+
     public void render(Graphics2D g)
     {
         long start;
@@ -264,5 +277,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     public synchronized void removeEntity(Entity e){
         entities.remove(e);
+    }
+
+    public synchronized void removeEntity(int i){
+        entities.remove(i);
     }
 }
