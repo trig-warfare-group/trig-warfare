@@ -1,11 +1,8 @@
 package trig.game.entity;
 
-import org.w3c.dom.css.Rect;
 import trig.utility.geometry.Polygon;
 import trig.utility.math.vector.FloatCartesian;
 import trig.utility.math.vector.IntCartesian;
-
-import java.awt.*;
 
 /**
  * Base class for in game entities, should we be directly implimenting some of the aspects of entity here, or delete this class and do it repeatedly in others? IMO: here, less code
@@ -38,6 +35,9 @@ public abstract class SEntity implements Entity
         triangle.add(vA);
         triangle.add(vB);
         triangle.add(vC);
+
+        //translate it to the correct position;
+        triangle.translate(halfSize, halfSize);
 
         return triangle;
     }
