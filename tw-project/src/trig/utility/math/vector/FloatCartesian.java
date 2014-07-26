@@ -56,9 +56,10 @@ public class FloatCartesian implements Vector2D
 
         float rx = (float) Math.cos(theta);
         float ry = (float) Math.sin(theta);
+        float tempX = x * rx - y * ry;
 
-        x = x * rx - y * ry;
         y = x * ry + y * rx;
+        x = tempX;
     }
 
     public FloatCartesian clone(){

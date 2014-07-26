@@ -56,10 +56,14 @@ public class IntCartesian implements Vector2D
      */
     public void rotate(float theta){
 
-        float rx = (int) Math.cos(theta);
-        float ry = (int) Math.sin(theta);
+        float rx = (float) Math.cos(theta);
+        float ry = (float) Math.sin(theta);
+        int tempX;
 
-        x = (int) (x * rx - y * ry);
-        y = (int) (x * ry + y * rx);
+
+
+        tempX = (int) Math.ceil(x * rx - y * ry);
+        y = (int) Math.ceil(x * ry + y * rx);
+        x = tempX;
     }
 }

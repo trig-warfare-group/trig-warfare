@@ -8,7 +8,7 @@ import trig.utility.geometry.Polygon;
  *
  * Created by marcos on 8/07/2014.
  */
-public interface Collidable //may not stay an interface, might though
+public interface Collidable extends Entity //may not stay an interface, might though
 {
     /**
      * Note that returned hitbox may not be a clone (should be static later?)

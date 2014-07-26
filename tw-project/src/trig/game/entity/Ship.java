@@ -5,9 +5,8 @@
  */
 
 package trig.game.entity;
+import trig.utility.geometry.*;
 import trig.utility.geometry.Polygon;
-import trig.utility.geometry.Renderable;
-import trig.utility.geometry.RenderableList;
 
 import java.awt.*;
 
@@ -47,6 +46,16 @@ public class Ship extends SMovable implements Visible, Collidable
         }
     }
 
+    public int getMaxHp()
+    {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp)
+    {
+        this.maxHp = maxHp;
+    }
+
     public String getName()
     {
         return name;
@@ -79,18 +88,31 @@ public class Ship extends SMovable implements Visible, Collidable
 
         Rectangle hitRect = hitbox.getBounds();
 
-        Polygon tempA = SEntity.constructGenericTriangle((float) 50 / 3);
-        tempA.translate(50/6, 50/6);
-        components.add(tempA);
-        float rotationAngle =  ( ( (float) 5 / 7 ) * (float) Math.PI);
+        ColoredPolygon tempA = new ColoredPolygon(SEntity.constructGenericTriangle((float) 50 / 10) );
+
+        float rotationAngle =  ( ( (float) 8/6) * (float) Math.PI);
         float centerX = (float) hitRect.getCenterX();
         float centerY = (float) hitRect.getCenterY();
 
-        Polygon tempB = tempA.clone();
-        tempB.rotateAbout(rotationAngle, x-centerX, y-centerY);
+        tempA.rotate((float) (24/18.0*Math.PI));
 
-        Polygon tempC = tempA.clone();
-        tempC.rotateAbout(-rotationAngle, -centerX, -centerY);
+        tempA.translate(6, 10);
+
+        ColoredPolygon tempB = tempA.clone();
+        tempB.rotateAbout(rotationAngle, centerX, centerY);
+
+        tempB.translate(-25, -15);
+
+        ColoredPolygon tempC = tempA.clone();
+        tempC.rotateAbout(-rotationAngle, centerX, centerY);
+
+        tempC.translate(-15, 15);
+
+        tempA.setColor(Color.CYAN);
+        tempB.setColor(Color.ORANGE);
+        tempC.setColor(Color.MAGENTA);
+
+
 
         components.add(tempA);
         components.add(tempB);
@@ -157,7 +179,7 @@ public class Ship extends SMovable implements Visible, Collidable
      */
     public void rotate(float theta){
         Rectangle hitRect = hitbox.getBounds();
-        components.rotateAbout( theta, -(hitRect.x-(float) hitRect.getCenterX()), -(hitRect.x-(float) hitRect.getCenterY()) );
+        components.rotateAbout( theta, (float) hitRect.getCenterX(), (float) hitRect.getCenterY() );
     }
 
     public void kill(){
@@ -188,9 +210,6 @@ public class Ship extends SMovable implements Visible, Collidable
     @Override
     public boolean isTrash()
     {
-        return hp > 0;
+        return !(hp > 0);
     }
 }
-
-
-//new DummyBullet(x+bulletSpawnOffset.getX(), y+bulletSpawnOffset.getY(), velocity.inPolar().angle)

@@ -62,8 +62,14 @@ public abstract class SEntity implements Entity
         return new IntCartesian(x,y);
     }
 
-    SEntity(/*int id,*/ int x, int y){
+    SEntity(int x, int y){
         this.x = x;
         this.y = y;
+    }
+
+    SEntity(IntCartesian location)
+    {
+        x = location.x;
+        y = location.y;
     }
 }

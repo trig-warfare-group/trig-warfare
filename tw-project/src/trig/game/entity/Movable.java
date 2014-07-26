@@ -7,7 +7,7 @@ import trig.utility.math.vector.IntCartesian;
  * Note: not sure where we will actually use this?
  * @author marcos
  */
-public interface Movable //may not stay an interface, might though
+public interface Movable extends Entity //may not stay an interface, might though
 {
     /**
      * Moves an entity by the provided amount

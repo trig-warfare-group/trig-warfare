@@ -23,8 +23,13 @@ public abstract class Projectile extends SMovable implements Automata
 
     public Projectile(/*int id,*/ int x, int y, IntCartesian velocity) {
         super(x, y);
+        setVelocity(velocity);
+    }
 
-        this.velocity = velocity.clone();
+    public Projectile(IntCartesian location, IntCartesian velocity)
+    {
+        super(location);
+        setVelocity(velocity);
     }
     /**
      * Usable template for how projectiles should behave onTick?

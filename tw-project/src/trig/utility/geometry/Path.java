@@ -148,12 +148,9 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
      */
     @Override
     public void rotateAbout(float theta, float cX, float cY){
-        for(FloatCartesian each : this)
-        {
-            each.translate(cX, cY);
-            each.rotate(theta);
-            each.translate(-cX, -cY);
-        }
+       translate(-cX, -cY);
+       rotate(theta);
+       translate(cX, cY);
     }
 
     /**

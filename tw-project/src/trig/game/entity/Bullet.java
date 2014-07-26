@@ -20,7 +20,7 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
     protected Polygon hitbox;
     public Bullet(int x, int y, float direction)
     {
-        super(x, y, BASE_VELOCITY.clone());
+        super(x, y, BASE_VELOCITY);
 
 
         //rotate the velocity to the right direction.
@@ -28,6 +28,9 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
 
         hitbox = SEntity.constructGenericTriangle(5); //size: 50
         hitbox.rotate(direction);
+        hitbox.translate(x, y);
+
+
 
         Random r = new Random();
         color = new Color(
@@ -36,6 +39,11 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
                 r.nextInt((250 - 75) + 1) + 75
         );
 
+    }
+
+    public Bullet(IntCartesian location, float direction)
+    {
+        this(location.x, location.y, direction);
     }
 
     @Override

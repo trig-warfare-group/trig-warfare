@@ -6,12 +6,9 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 /**
- * Like a normal Path, but with a colour!
- * sorta a test run, we'll probably need to paste this code into a lot of classes?
- * @see trig.utility.math.vector.FloatCartesian
- * Created by marcos on 18/07/2014.
+ * Created by marcos on 26/07/2014.
  */
-public class ColoredPath extends Path implements Colored
+public class ColoredPolygon extends Polygon implements Colored
 {
     protected Color color;
 
@@ -23,6 +20,7 @@ public class ColoredPath extends Path implements Colored
     {
         return color;
     }
+
     @Override
     public void setColor(Color color)
     {
@@ -32,30 +30,30 @@ public class ColoredPath extends Path implements Colored
     /*
         Constructors
      */
-    public ColoredPath(Color color){
+    public ColoredPolygon(Color color){
         this.color = color;
     }
 
-    public ColoredPath()
+    public ColoredPolygon()
     {
         this(Color.BLACK);
     }
 
-    public ColoredPath(Color color, Path path)
+    public ColoredPolygon(Color color, Polygon polygon)
     {
         this(color);
-        addAll(path.clone());
+        addAll(polygon.clone());
     }
 
     /**
      * Creates a new ColoredPath with the same values as the provided path.
      * Note: the resulting object is a deep copy, and does not share points.
-     * @param path a Path object to construct the ColoredPath from
+     * @param polygon a Polygon object to construct the ColoredPath from
      */
-    public ColoredPath(Path path)
+    public ColoredPolygon(Polygon polygon)
     {
         this();
-        addAll(path.clone());
+        addAll(polygon.clone());
     }
     /*
         Renderable implementation
@@ -88,7 +86,7 @@ public class ColoredPath extends Path implements Colored
      */
 
     /**
-     * Produces a new, colourless version of the path
+     * Produces a new, colourless version of the polygon
      * @return a deep copy of this object, without the colour
      */
     @Override
@@ -106,12 +104,12 @@ public class ColoredPath extends Path implements Colored
      * @see trig.utility.math.vector.FloatCartesian
      */
     @Override
-    public ColoredPath clone(){
-        ColoredPath newPath = new ColoredPath();
+    public ColoredPolygon clone(){
+        ColoredPolygon newPolygon = new ColoredPolygon();
         for(FloatCartesian each : this)
         {
-            newPath.add(each.clone());
+            newPolygon.add(each.clone());
         }
-        return newPath;
+        return newPolygon;
     }
 }

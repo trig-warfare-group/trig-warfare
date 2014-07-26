@@ -12,6 +12,9 @@ public abstract class SMovable extends SEntity implements Movable
     {
         super(x, y);
     }
+    SMovable(IntCartesian location){
+        super(location);
+    }
 
     /**
      * Moves the entity by the specified amounts.

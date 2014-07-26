@@ -65,33 +65,33 @@ public class Polygon extends Path
 
         for (FloatCartesian each : this)
         {
-            overX = each.x - target.getMaxX();
-            if(overX < 0)
+            overX = target.getMaxX() - each.x;
+            if(overX > 0)
             {
                 overX = 0;
             }
 
-            underX = each.x - target.getMinX();
-            if(underX > 0)
+            underX = target.getMinX() - each.x;
+            if(underX < 0)
             {
                 underX = 0;
             }
 
-            overY = each.y - target.getMaxY();
-            if(overY < 0)
+            overY = target.getMaxY() - each.y;
+            if(overY > 0)
             {
                 overY = 0;
             }
 
-            underY = each.y - target.getMinY();
-            if(underY > 0)
+            underY = target.getMinY() - each.y;
+            if(underY < 0)
             {
                 underY = 0;
             }
 
-            distX = Math.abs(underX) > overX ? underX : overX;
+            distX = underX > Math.abs(overX) ? underX : overX;
 
-            distY = Math.abs(underY) > overY ? underY : overY;
+            distY = underY > Math.abs(overY) ? underY : overY;
 
 
 

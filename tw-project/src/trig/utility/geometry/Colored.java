@@ -1,5 +1,7 @@
 package trig.utility.geometry;
 
+import java.awt.*;
+
 /**
  * An interface for colourful editions of geometric class, which must all have the capacity to be stripped of their colour.
  * @see trig.utility.geometry.Renderable
@@ -12,4 +14,8 @@ public interface Colored
      * @return a deep copy of the object, excluding any colour data
      */
     public Renderable stripColor();
+
+    public Color getColor();
+
+    public void setColor(Color color);
 }

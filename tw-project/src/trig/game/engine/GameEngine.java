@@ -1,5 +1,6 @@
 package trig.game.engine;
 
+import trig.game.Player;
 import trig.game.entity.*;
 import trig.utility.Constants;
 import trig.utility.DummyMethods;
@@ -7,7 +8,9 @@ import trig.utility.math.vector.FloatCartesian;
 import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -23,11 +26,11 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     */
 
+    private int entitiesCreated = 0;
+
     private QuadTree quadTree;
     private ArrayList<Entity> entities;
 
-    //fake entity to use as a flaf
-    private
     /*
         collisionPossible: whether or not the quadTree returned one or more entities with neighbours() for each entity in each frame
         collisionOccurred: whether or not a collision actually occurred for each entity in each frame
@@ -60,12 +63,6 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         entities = new ArrayList<Entity>();
         bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
         lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-
-        Rectangle bouds = worldBounds;
-        Ship ship = new Ship("AA", Color.GREEN, 10);
-        ship.setLocation(250,250);
-        //ship.rotate(-(float)Math.PI/2);
-        addEntity(ship);
     }
 
     /**
@@ -77,9 +74,10 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     {
         for(int i = 0; i < entities.size(); i++)
         {
-            if(entities.get(i).isTrash())
+            if( entities.get(i).isTrash() )
             {
                 removeEntity(i);
+                i--; //decrement i since entities got re-indexed
             }
         }
     }
@@ -161,7 +159,6 @@ public class GameEngine //may extend some GameState interface I think, not an ex
      */
     public void update()
     {
-
         Entity e;
 
         ArrayList<Collidable> collidables = new ArrayList<Collidable>();
@@ -234,7 +231,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
         g.drawString
         (
-                "Entities Created: "+Long.toString(DummyMethods.DummyVars.getLastEntityId())
+                "Entities Created: "+entitiesCreated
                         + " Entities living: "+Long.toString(entities.size()),
                 5, Constants.WINDOW_DIMENSION.height - 10
         );
@@ -281,6 +278,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     public synchronized void addEntity(Entity e)
     {
         entities.add(e);
+        entitiesCreated++;
     }
 
     public synchronized void removeEntity(Entity e){
@@ -289,5 +287,19 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     public synchronized void removeEntity(int i){
         entities.remove(i);
+    }
+
+    public synchronized int indexOfEntity(Entity e)
+    {
+        return entities.indexOf(e);
+    }
+
+    public synchronized Entity getEntity(int i)
+    {
+        return entities.get(i);
+    }
+
+    public boolean containsEntity(Entity e){
+        return entities.contains(e);
     }
 }

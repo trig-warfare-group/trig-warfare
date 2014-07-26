@@ -15,12 +15,12 @@ public class Methods
     {
         float dubPiEst = (float) Math.PI*2;
 
-        while (theta <= -Math.PI)
+        while (theta <= dubPiEst)
         {
             theta += dubPiEst;
         }
 
-        while (theta > Math.PI)
+        while (theta > dubPiEst)
         {
             theta -= dubPiEst;
         }
