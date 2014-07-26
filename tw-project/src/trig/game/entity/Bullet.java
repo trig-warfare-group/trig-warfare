@@ -13,7 +13,7 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
 {
     public static final IntCartesian BASE_VELOCITY = new IntCartesian(4, 0); //velocity: 4 in whatever direction: (4,0) is right
 
-    protected int dmg = 4;
+    protected int dmg = 1;
     protected boolean spent = false;
     protected Color color;
 
