@@ -80,33 +80,35 @@ public class Ship extends SMovable implements Visible, Collidable
             Construct the hitbox, etc
          */
 
-        hitbox = SEntity.constructGenericTriangle(50); //size: 50
+        hitbox = SEntity.constructGenericTriangle(30); //size: 50
+        //translate it to the correct position;
+        Rectangle bounds = hitbox.getBounds();
 
-        hitbox.translate(x, y);
+        hitbox.translate(x-(int) bounds.getMinX(), y-(int) bounds.getMinY());
 
         components.add(hitbox);
 
         Rectangle hitRect = hitbox.getBounds();
 
-        ColoredPolygon tempA = new ColoredPolygon(SEntity.constructGenericTriangle((float) 50 / 10) );
+        ColoredPolygon tempA = new ColoredPolygon(SEntity.constructGenericTriangle((float) 30 / 10) );
 
         float rotationAngle =  ( ( (float) 8/6) * (float) Math.PI);
         float centerX = (float) hitRect.getCenterX();
-        float centerY = (float) hitRect.getCenterY();
+         float centerY = (float) hitRect.getCenterY();
 
         tempA.rotate((float) (24/18.0*Math.PI));
 
-        tempA.translate(6, 10);
+        tempA.translate(1, 20);
 
         ColoredPolygon tempB = tempA.clone();
         tempB.rotateAbout(rotationAngle, centerX, centerY);
 
-        tempB.translate(-25, -15);
+        tempB.translate(-15, -9);
 
         ColoredPolygon tempC = tempA.clone();
         tempC.rotateAbout(-rotationAngle, centerX, centerY);
 
-        tempC.translate(-15, 15);
+        tempC.translate(-7, 10);
 
         tempA.setColor(Color.CYAN);
         tempB.setColor(Color.ORANGE);
@@ -136,7 +138,10 @@ public class Ship extends SMovable implements Visible, Collidable
         for(Collidable each : colliders)
         {
             if(each instanceof Bullet){
-                damage(((Bullet) each).getDmg());
+                Bullet bullet = ((Bullet) each);
+                damage(bullet.getDmg());
+                bullet.spend();
+
             }
         }
     }
@@ -146,6 +151,10 @@ public class Ship extends SMovable implements Visible, Collidable
     {
         g.setColor(color);
         components.render(g);
+
+        g.drawString(name, x+12, y-28);
+
+        g.drawString("HP: "+hp, x+3, y-12);
     }
 
     /*
@@ -180,6 +189,10 @@ public class Ship extends SMovable implements Visible, Collidable
     public void rotate(float theta){
         Rectangle hitRect = hitbox.getBounds();
         components.rotateAbout( theta, (float) hitRect.getCenterX(), (float) hitRect.getCenterY() );
+
+        //get the new corner from the hitbox
+        hitRect = hitbox.getBounds();
+        super.setLocation(hitRect.x, hitRect.y);
     }
 
     public void kill(){
