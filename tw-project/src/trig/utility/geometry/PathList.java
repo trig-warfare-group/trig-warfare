@@ -1,32 +1,33 @@
 package trig.utility.geometry;
 
-import trig.game.entity.interfaces.Visible;
-import trig.utility.math.vector.Vector;
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
- * Custom path collection class designed to use my Vector library.
+ * Custom path collection class designed to use my FloatCartesian library.
  * It is essentially a list of paths that implements trig.utility.geometry.Renderable
  * @see trig.utility.geometry.Path
  * Created by marcos on 17/07/2014.
  */
-public class PathList<P extends Path<V>, V extends Vector> extends RenderableList<P> implements Renderable
+public class PathList<T extends Path> extends RenderableList<T>
 {
+    /**
+     * Produces a new, colourless version of the provided path list
+     * @return a deep copy of the, without the colours
+     */
+    public static PathList<Path> stripColor(PathList<ColoredPath> colouredList){
+        PathList<Path> plainList = new PathList<Path>();
+        for(ColoredPath each : colouredList){
+            plainList.add(each.stripColor());
+        }
+        return plainList;
+    }
     /*
         Misc
      */
     @Override
-    public PathList<P, V> clone(){
-        PathList<P, V> newPathList = new PathList<P, V>();
-        for(P each : this)
+    public PathList clone(){
+        PathList newPathList = new PathList();
+        for(Path each : this)
         {
-            /*
-                it says it may be an unchecked cast, but I'm not even sure why it even needs to cast
-                says add(P) cannot be applied to Path<V>
-                isn't P castable to Path<V>??
-             */
-            newPathList.add((P) each.clone());
+            newPathList.add(each.clone());
         }
         return newPathList;
     }

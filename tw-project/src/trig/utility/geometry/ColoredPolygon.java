@@ -1,30 +1,27 @@
 package trig.utility.geometry;
 
-import trig.utility.math.vector.Vector;
+import trig.utility.math.vector.FloatCartesian;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
- * Like a normal Path, but with a colour!
- * sorta a test run, we'll probably need to paste this code into a lot of classes?
- * @see trig.utility.math.vector.Vector
- * Created by marcos on 18/07/2014.
+ * Created by marcos on 26/07/2014.
  */
-public class ColorfulPath<T extends Vector> extends Path<T> implements Colorful
+public class ColoredPolygon extends Polygon implements Colored
 {
     protected Color color;
 
     /*
         getters and setters
      */
+    @Override
     public Color getColor()
     {
         return color;
     }
+
+    @Override
     public void setColor(Color color)
     {
         this.color = color;
@@ -33,13 +30,30 @@ public class ColorfulPath<T extends Vector> extends Path<T> implements Colorful
     /*
         Constructors
      */
-    public ColorfulPath(Color color){
+    public ColoredPolygon(Color color){
         this.color = color;
     }
 
-    public ColorfulPath()
+    public ColoredPolygon()
     {
         this(Color.BLACK);
+    }
+
+    public ColoredPolygon(Color color, Polygon polygon)
+    {
+        this(color);
+        addAll(polygon.clone());
+    }
+
+    /**
+     * Creates a new ColoredPath with the same values as the provided path.
+     * Note: the resulting object is a deep copy, and does not share points.
+     * @param polygon a Polygon object to construct the ColoredPath from
+     */
+    public ColoredPolygon(Polygon polygon)
+    {
+        this();
+        addAll(polygon.clone());
     }
     /*
         Renderable implementation
@@ -68,15 +82,15 @@ public class ColorfulPath<T extends Vector> extends Path<T> implements Colorful
     }
 
     /*
-        Colorful implementation
+        Colored implementation
      */
 
     /**
-     * Produces a new, colourless version of the path
+     * Produces a new, colourless version of the polygon
      * @return a deep copy of this object, without the colour
      */
     @Override
-    public Path<T> stripColor(){
+    public Path stripColor(){
         return super.clone();
     }
 
@@ -87,13 +101,15 @@ public class ColorfulPath<T extends Vector> extends Path<T> implements Colorful
     /**
      * Produces a completely new Path object with the same data
      * @return a deep clone of the object (no cross-mutation), that can be edited independently.
-     * @see trig.utility.math.vector.Vector
-     * @see T
+     * @see trig.utility.math.vector.FloatCartesian
      */
     @Override
-    public ColorfulPath<T> clone(){
-        ColorfulPath<T> newPath = new ColorfulPath<T>();
-        newPath.addAll(this);
-        return newPath;
+    public ColoredPolygon clone(){
+        ColoredPolygon newPolygon = new ColoredPolygon();
+        for(FloatCartesian each : this)
+        {
+            newPolygon.add(each.clone());
+        }
+        return newPolygon;
     }
 }

@@ -1,18 +1,11 @@
 package trig.utility.geometry;
 
-import trig.game.entity.interfaces.Entity;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  * Created by marcos on 17/07/2014.
  */
-public class misc extends ArrayList
+public class misc
 {
-   public static void reverseOrder(){
 
-   }
     /*Each entity that can be drawn will pass forward an object containing data needed to draw it, including:
     *          a CustomPath as the basic polygon/image asset of the object
     *          The x and y coordinates to which to translate the RenderPaths
@@ -29,7 +22,7 @@ public class misc extends ArrayList
             Support subpaths (for colour object and ther data inheritance purposes)
             use Vectors for nodes/points (makes transforms such as rotation and translation easy?)
             May not be enclosed:
-                (this could however be achieved: by referencing the first Vector as the last Vector, for example)
+                (this could however be achieved: by referencing the first FloatCartesian as the last FloatCartesian, for example)
          */
 
         /*

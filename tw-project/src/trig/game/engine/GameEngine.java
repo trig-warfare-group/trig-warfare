@@ -1,14 +1,16 @@
 package trig.game.engine;
 
-import trig.game.entity.dummy.DummyTriangle;
-import trig.game.entity.interfaces.Entity;
-import trig.game.entity.interfaces.UpdateListener;
-import trig.game.entity.interfaces.Visible;
+import trig.game.Player;
+import trig.game.entity.*;
 import trig.utility.Constants;
 import trig.utility.DummyMethods;
+import trig.utility.math.vector.FloatCartesian;
+import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -24,16 +26,22 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     */
 
+    private int entitiesCreated = 0;
 
-    //vector/cheap engine-demo stuff
-    private ArrayList<Entity> entities = new ArrayList<Entity>(); //may use hashSet instead, idk;
-    private Font bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
-    private Font lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    private int step = 0;
+    private QuadTree quadTree;
+    private ArrayList<Entity> entities;
+
     /*
-    todo: probably put the move and draw functions in here, tbh, and player control reaction. Not sure about the hp/stats functions, though?
-    todo: HOWEVER, before putting movement here, we need to think about how to facilitate special movement patterns, such as arcs!
-    */
+        collisionPossible: whether or not the quadTree returned one or more entities with neighbours() for each entity in each frame
+        collisionOccurred: whether or not a collision actually occurred for each entity in each frame
+
+     */
+    boolean[] collisionPossible, collisionOccurred;
+
+    private Font bigFont, lilFont;
+
+    public static final WorldEdge worldsEdge = new WorldEdge();
+    public static final Rectangle worldBounds = worldsEdge.getHitbox().getBounds();
 
     /*
         note: perhaps we could implement destruction more often and generalise the process of entity death a bit if we gave players a new craft each time they died?
@@ -45,10 +53,105 @@ public class GameEngine //may extend some GameState interface I think, not an ex
      */
     public GameEngine()
     {
-        for(int i = 0; i < 5; i++)
-            addEntity(
-                    new DummyTriangle()
-            );
+        quadTree = new QuadTree
+                (
+                        Constants.WORLD_DIM.width,
+                        Constants.WORLD_DIM.height,
+                        new float[]{0, 0}
+                );
+
+        entities = new ArrayList<Entity>();
+        bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
+        lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+    }
+
+    /**
+     * Remove "trash" entities
+     * Note: this only removes the reference to an entity from it's list, nothing fancy.
+     * Seemed a "clean" way to remove entities, keeps encapsulation, etc.
+     */
+    public void clean()
+    {
+        for(int i = 0; i < entities.size(); i++)
+        {
+            if( entities.get(i).isTrash() )
+            {
+                removeEntity(i);
+                i--; //decrement i since entities got re-indexed
+            }
+        }
+    }
+
+    public void processCollisions(ArrayList<Collidable> collidables)
+    {
+        Collidable each;
+        ArrayList<ArrayList<Collidable>> possibleCollisions = quadTree.processList(collidables);
+
+        //second pass, closer precision test
+        collisionPossible = new boolean[entities.size()];
+        collisionOccurred = new boolean[entities.size()];
+
+        ArrayList<Collidable> actualCollisions;
+        ArrayList<Collidable> neighboursOfEach;
+
+        Rectangle eachBounds;
+
+        Collidable[] collisionArray;
+
+        int i;
+        for (i = 0; i < possibleCollisions.size(); i++)
+        {
+            each = collidables.get(i);
+            trig.utility.geometry.Polygon eachHitbox = each.getHitbox();
+            neighboursOfEach = possibleCollisions.get(i);
+            actualCollisions = new ArrayList<Collidable>();
+
+            if (neighboursOfEach.size() > 0)
+            {
+                collisionPossible[i] = true;
+                for (Collidable neighbour : neighboursOfEach)
+                {
+                    if (neighbour.getHitbox().intersects(eachHitbox))
+                    {
+                        collisionOccurred[i] = true;
+                        actualCollisions.add(neighbour);
+                    }
+                }
+            }
+
+            FloatCartesian pointOutside = eachHitbox.getOverflowDistance(worldBounds);
+
+            if (Math.abs(pointOutside.x) > 0 || Math.abs(pointOutside.y) > 0)
+            {
+                actualCollisions.add(worldsEdge);
+                if (each instanceof Movable)
+                {
+                    int shiftX, shiftY;
+                    if(pointOutside.x < 0)
+                    {
+                        shiftX = (int) Math.floor(pointOutside.x);
+                    }
+                    else
+                    {
+                        shiftX = (int) Math.ceil(pointOutside.x);
+                    }
+
+                    if(pointOutside.y < 0)
+                    {
+                        shiftY = (int) Math.floor(pointOutside.y);
+                    }
+                    else
+                    {
+                        shiftY = (int) Math.ceil(pointOutside.y);
+                    }
+                   ((Movable) each).move(shiftX, shiftY);
+                }
+            }
+
+            collisionArray = new Collidable[actualCollisions.size()];
+            actualCollisions.toArray(collisionArray);
+            each.onCollision(collisionArray);
+        }
     }
 
     /**
@@ -57,14 +160,25 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     public void update()
     {
         Entity e;
+
+        ArrayList<Collidable> collidables = new ArrayList<Collidable>();
+
         for (int i = 0; i < entities.size(); i++)
         {
             e = entities.get(i);
-            if (e instanceof UpdateListener)
+            if (e instanceof Automata)
             {
-                ((UpdateListener) e).update(this);
+                ((Automata) e).update(this);
+            }
+
+            if(e instanceof Collidable)
+            {
+                collidables.add( (Collidable) e );
             }
         }
+        processCollisions(collidables);
+
+        clean();
     }
 
 
@@ -74,14 +188,26 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             we'll possibly keep a drawable list in the entities list
             (and handle this via the add/removeEntity functions) eventually?
          */
-        for (Entity e : entities)
+        Entity e;
+        for (int i = 0; i < entities.size(); i++)
         {
+            e = entities.get(i);
+
             if (e instanceof Visible)
             {
                 ((Visible) e).render(g);
             }
+
+            if (e instanceof Collidable)
+            {
+                g.setColor(Color.RED);
+                g.draw(((Collidable) e).getHitbox().getBounds());
+            }
         }
     }
+
+
+
     public void render(Graphics2D g)
     {
         long start;
@@ -89,10 +215,11 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
         start = System.nanoTime();
 
+        g.setColor(Color.YELLOW);
+        quadTree.render(g);
+
         renderEntities(g);
         Random r = new Random();
-        for(int i = 0; i < 100; i++)
-            g.drawOval(r.nextInt(800),r.nextInt(600),r.nextInt(22),r.nextInt(22));
         //important: we must always render entities first, then the HUD over the top
         g.setFont(bigFont);
         g.setColor(Color.DARK_GRAY);
@@ -102,15 +229,20 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         g.setColor(new Color(74, 198, 36));
         g.setFont(lilFont);
 
-        g.drawString(
-                "Entities Created: "+Long.toString(DummyMethods.DummyVars.getLastEntityId())
+        g.drawString
+        (
+                "Entities Created: "+entitiesCreated
                         + " Entities living: "+Long.toString(entities.size()),
-                5, Constants.WINDOW_DIMENSION.height - 10);
-        g.drawOval(r.nextInt(800),r.nextInt(600),r.nextInt(22),r.nextInt(22));
+                5, Constants.WINDOW_DIMENSION.height - 10
+        );
+
         end = System.nanoTime();
-        g.drawString("Render time: " + Long.toString((end - start) / 1000) + "µs",
+        g.drawString
+        (
+                "Render time: " + Long.toString((end - start) / 1000) + "µs",
                 5,
-                15);
+                15
+        );
 
         /*
             TODO: FIGURE OUT HOW THE DEBUG VIEW FITS INTO THIS:
@@ -146,9 +278,28 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     public synchronized void addEntity(Entity e)
     {
         entities.add(e);
+        entitiesCreated++;
     }
 
     public synchronized void removeEntity(Entity e){
         entities.remove(e);
+    }
+
+    public synchronized void removeEntity(int i){
+        entities.remove(i);
+    }
+
+    public synchronized int indexOfEntity(Entity e)
+    {
+        return entities.indexOf(e);
+    }
+
+    public synchronized Entity getEntity(int i)
+    {
+        return entities.get(i);
+    }
+
+    public boolean containsEntity(Entity e){
+        return entities.contains(e);
     }
 }

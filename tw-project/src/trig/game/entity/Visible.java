@@ -1,4 +1,4 @@
-package trig.game.entity.interfaces;
+package trig.game.entity;
 //NOTE: probably better to have some class with draw methods corresponding to each object or something rather than these imports in lots of places? idk.
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -9,6 +9,5 @@ import java.awt.geom.GeneralPath;
  */
 public interface Visible {
 
-    abstract public void render(Graphics2D graphics2D);
-    abstract public boolean isVisible();
+    abstract public void render(Graphics2D g);
 }
