@@ -98,7 +98,7 @@ public class Ship extends SMovable implements Visible, Collidable
 
         tempA.rotate((float) (24/18.0*Math.PI));
 
-        tempA.translate(1, 20);
+        tempA.translate((float) 10.5, (float) 17.5);
 
         ColoredPolygon tempB = tempA.clone();
         tempB.rotateAbout(rotationAngle, centerX, centerY);
