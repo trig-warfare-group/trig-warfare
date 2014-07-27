@@ -171,8 +171,6 @@ public class Player
 
         activeCommands[REVIVE] = inputCommands[REVIVE];
 
-        activeCommands[KILL] = inputCommands[KILL];
-
         if(isAlive())
         {
             activeCommands[MOVE_FORWARD] = inputCommands[MOVE_FORWARD] && !inputCommands[MOVE_BACKWARD];
@@ -184,6 +182,21 @@ public class Player
             activeCommands[TURN_ANTICLOCKWISE] = !inputCommands[TURN_CLOCKWISE] && inputCommands[TURN_ANTICLOCKWISE];
 
             activeCommands[FIRE_BULLET] = inputCommands[FIRE_BULLET];
+
+            activeCommands[KILL] = inputCommands[KILL];
+        }else{
+
+            activeCommands[KILL] = false;
+
+            activeCommands[MOVE_FORWARD] = false;
+
+            activeCommands[MOVE_BACKWARD] = false;
+
+            activeCommands[TURN_CLOCKWISE] = false;
+
+            activeCommands[TURN_ANTICLOCKWISE] = false;
+
+            activeCommands[FIRE_BULLET] = false;
         }
         return;
     }

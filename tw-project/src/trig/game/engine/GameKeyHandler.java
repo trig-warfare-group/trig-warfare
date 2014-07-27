@@ -18,41 +18,10 @@ public class GameKeyHandler implements KeyListener
     protected Player player;
     protected HashMap<Integer, Integer> bindingMap;
 
-
-
-//    protected class GameCommands {
-//        public boolean moveForward, moveBackward, turnClockwise, turnAntiClockwise, fireBullet;
-//
-//        public GameCommands()
-//        {
-//            moveForward = false;
-//            moveBackward = false;
-//            turnClockwise = false;
-//            turnAntiClockwise = false;
-//            fireBullet = false;
-//        }
-//    }
-
     public GameKeyHandler(Player player, HashMap bindingMap){
         this.player = player;
         this.bindingMap = bindingMap;
     }
-
-//    /**
-//     * The commands should maybe be reset on death? (no?)
-//     */
-//    public void reset(){
-//        activeCommands.moveForward = false;
-//
-//        activeCommands.moveBackward = false;
-//
-//        activeCommands.turnClockwise = false;
-//
-//        activeCommands.turnAntiClockwise = false;
-//
-//        activeCommands.fireBullet = false;
-//    }
-
 
     /**
      * Invoked when a key has been typed.
@@ -80,7 +49,7 @@ public class GameKeyHandler implements KeyListener
         int keyCode =  e.getKeyCode();
         if(bindingMap.containsKey(keyCode))
         {
-            player.setInputValue(bindingMap .get(keyCode), true);
+            player.setInputValue(bindingMap.get(keyCode), true);
         }
     }
 

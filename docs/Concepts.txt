@@ -1,7 +1,9 @@
 
 ||Misc entities and mechanics notes||
-TODO: move collision-reaction determination etc to the engine?
-
+TODO:
+	move collision-reaction determination etc to the engine?
+		Prevent duplication of entity reactions caused by references to each other.
+	revisit integer velocity usage, inconsistency in speed is too high?
 
 ||NOTE||
 Perhaps I should stop assuming vectors are all immutable? IDK

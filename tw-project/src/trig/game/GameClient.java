@@ -68,8 +68,10 @@ public class GameClient
         gameView.init();
         thread.start();
     }
+
     public void updateGame()
     {
+        player.executeCommands();
         gameEngine.update();
     }
 
@@ -99,7 +101,6 @@ public class GameClient
         {
             while(gameRunning)
             {
-                player.executeCommands();
                 updateGame();
                 gameView.render();
                 delayGame();
