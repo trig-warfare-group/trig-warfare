@@ -14,7 +14,7 @@ import java.awt.*;
  * Base class for combatants, such as the player, AI.
  * @author marcos
  */
-public class Ship extends SMovable implements Visible, Collidable
+public class Ship extends MovableEntity implements Visible, Collidable
 {
 
     //vars

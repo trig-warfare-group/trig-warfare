@@ -1,16 +1,11 @@
 package trig.game.engine;
 
-import trig.game.Player;
 import trig.game.entity.*;
 import trig.utility.Constants;
-import trig.utility.DummyMethods;
 import trig.utility.math.vector.FloatCartesian;
-import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -111,7 +106,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 collisionPossible[i] = true;
                 for (Collidable neighbour : neighboursOfEach)
                 {
-                    if (neighbour.getHitbox().intersects(eachHitbox))
+                    if ( eachHitbox.intersects(neighbour.getHitbox()) )
                     {
                         collisionOccurred[i] = true;
                         actualCollisions.add(neighbour);
@@ -166,9 +161,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         for (int i = 0; i < entities.size(); i++)
         {
             e = entities.get(i);
-            if (e instanceof Automata)
+            if (e instanceof Automaton)
             {
-                ((Automata) e).update(this);
+                ((Automaton) e).update();
             }
 
             if(e instanceof Collidable)

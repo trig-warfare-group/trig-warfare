@@ -1,13 +1,12 @@
 package trig.game.entity;
 
-import trig.game.engine.GameEngine;
 import trig.utility.math.vector.IntCartesian;
 
 /**
  * Base class for objects that mostly move in a straight line, such as bullets
  * Created by marcos on 10/07/14.
  */
-public abstract class Projectile extends SMovable implements Automata
+public abstract class Projectile extends MovableEntity implements Automaton
 {
     protected IntCartesian velocity;
 
@@ -35,7 +34,7 @@ public abstract class Projectile extends SMovable implements Automata
      * Usable template for how projectiles should behave onTick?
      */
     @Override
-    public void update(GameEngine engine)
+    public void update()
     {
         move(velocity);
     }

@@ -1,3 +1,8 @@
+
+||Misc entities and mechanics notes||
+TODO: move collision-reaction determination etc to the engine?
+
+
 ||NOTE||
 Perhaps I should stop assuming vectors are all immutable? IDK
 
