@@ -1,0 +1,10 @@
+Miscellaneous notes about possible changes to be considered (may not be confirmed), grouped by author, such . Actual todos should be placed in todo.txt:
+
+Marcos:
+- the "translate/add" function in the Cartesian vector class should possibly be a restructured or overloaded with a static version that it can take 2 vectors and returns a third?
+- re-implement "rotate-about" using a graphics-transformation matrix? (concatenate them right-to-left?)
+- think about other places graphics-transformation matrices might be useful.
+- consider figuring out how to apply a transformation directly to the width and height values of Polygons, rather than re-calculating them each time.
+	to do this, Polygon can no longer be allowed to extend path (its vector-points can't be publicly mutable, no external variables can be permitted to reference the internal vector-points).
+- find out if static data can be non-final in Java (it can in c++) and consider this as a way to generate unique IDs for entities, (incrementing the static data on creation), although getting the object's hashcode might suitable (check if the hash is guaranteed to be unique).
+- if even possible, perhaps use matrices for Polygons, not just vectors? (this seems to be uncommon. so maybe not)

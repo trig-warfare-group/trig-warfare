@@ -1,0 +1,9 @@
+Immediate To Do:
+- the "translate" function in the Cartesian vector class is technically just "add" and should be renamed accordingly
+- move collision-reaction determination, etc to the engine
+	Prevent duplication of entity reactions caused by references to each other.
+- reconsider integer velocity usage (and therefore we have to reconsider using integer coordinates): the inconsistency in speed at various angles is too high for .
+	possible solution
+- re-factor the getOverflowDistance function into the Path class, and possibly to have a better name.
+- complete the main state machine such that it includes: the main-menu screen/state, the main in-game state, and a credits state.
+- impliment a pause-menu substate for the main in-game state (this will give insight on how sub-states should generally be done).
