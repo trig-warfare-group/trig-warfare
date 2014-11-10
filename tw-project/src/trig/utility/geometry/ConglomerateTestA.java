@@ -1,7 +1,6 @@
 package trig.utility.geometry;
 
 import trig.utility.math.vector.FloatCartesian;
-import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -32,8 +31,8 @@ public abstract class ConglomerateTestA implements Shape, Renderable
 {
 
 
-    protected IntCartesian location;
-    protected IntCartesian center;
+    protected FloatCartesian location;
+    protected FloatCartesian center;
     protected int width;
     protected int height;
 
@@ -54,7 +53,7 @@ public abstract class ConglomerateTestA implements Shape, Renderable
         float tempCenterX = (float) tempBounds.getCenterX();
         float tempCenterY = (float) tempBounds.getCenterY();
 
-        center = new IntCartesian((int) tempCenterX, (int) tempCenterY);
+        center = new FloatCartesian((int) tempCenterX, (int) tempCenterY);
 
         components.translate(-tempCenterX, -tempCenterY);
 
@@ -80,7 +79,7 @@ public abstract class ConglomerateTestA implements Shape, Renderable
         Helpers
      */
     protected void updateBounds(Rectangle bounds){
-        location = new IntCartesian(bounds.x, bounds.y);
+        location = new FloatCartesian(bounds.x, bounds.y);
         width = bounds.width;
         height = bounds.height;
     }
@@ -116,13 +115,13 @@ public abstract class ConglomerateTestA implements Shape, Renderable
     }
 
     @Override
-    public int getX()
+    public float getX()
     {
         return location.x;
     }
 
     @Override
-    public int getY()
+    public float getY()
     {
         return location.y;
     }
@@ -151,10 +150,10 @@ public abstract class ConglomerateTestA implements Shape, Renderable
     /**
      * gets the coordinate of the top-left corner of the shape
      *
-     * @return the coordinates of the top-left corner of the shape, in IntCartesian vector form.
+     * @return the coordinates of the top-left corner of the shape, in FloatCartesian vector form.
      */
     @Override
-    public IntCartesian getLocation()
+    public FloatCartesian getLocation()
     {
         return location.clone();
     }
@@ -166,7 +165,7 @@ public abstract class ConglomerateTestA implements Shape, Renderable
      * @param y the y-coordinate of the new top-left corner for the shape
      */
     @Override
-    public void setLocation(int x, int y)
+    public void setLocation(float x, float y)
     {
         boundsPath.translate(location.x-x, location.y-y);
         updateBounds();
@@ -184,7 +183,7 @@ public abstract class ConglomerateTestA implements Shape, Renderable
      * @param TLCorner a vector in FloatCartesian form, representing the coordinates of the new top left corner of the shape
      */
     @Override
-    public void setLocation(IntCartesian TLCorner)
+    public void setLocation(FloatCartesian TLCorner)
     {
         setLocation(TLCorner.x, TLCorner.y);
     }
@@ -239,7 +238,7 @@ public abstract class ConglomerateTestA implements Shape, Renderable
     @Override
     public Rectangle getBounds()
     {
-        return new Rectangle(location.x, location.y, width, height);
+        return new Rectangle((int)location.x, (int)location.y, width, height);
     }
 
     /**
@@ -311,9 +310,9 @@ public abstract class ConglomerateTestA implements Shape, Renderable
     @Override
     public void rotateAbout(float theta, float cX, float cY)
     {
-        location.translate((int) cX, (int) cY);
+        location.translate(cX, cY);
         location.rotate(theta);
-        location.translate((int) -cX, (int) -cY);
+        location.translate(-cX, -cY);
 
         components.rotate(theta);
 

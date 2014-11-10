@@ -1,7 +1,6 @@
 package trig.utility.geometry;
 
 import trig.utility.math.vector.FloatCartesian;
-import trig.utility.math.vector.IntCartesian;
 
 import java.awt.*;
 
@@ -20,8 +19,8 @@ public interface Shape
 
     abstract public Dimension getSize();
 
-    abstract public int getX();
-    abstract public int getY();
+    abstract public float getX();
+    abstract public float getY();
 
     abstract public void setX(int x);
     abstract public void setY(int y);
@@ -30,20 +29,20 @@ public interface Shape
      * gets the coordinate of the top-left corner of the shape
      * @return the top-left corner of
      */
-    abstract IntCartesian getLocation();
+    abstract FloatCartesian getLocation();
 
     /**
      * Sets the coordinate of the location of the shape
      * @param TLCorner a vector in FloatCartesian form, representing the coordinates of the new top left corner of the shape
      */
-    abstract void setLocation(IntCartesian TLCorner);
+    abstract void setLocation(FloatCartesian TLCorner);
 
     /**
      * Sets the coordinate of the location of the shape
      * @param x the x-coordinate of the new top-left corner for the shape
      * @param y the y-coordinate of the new top-left corner for the shape
      */
-    abstract void setLocation(int x, int y);
+    abstract void setLocation(float x, float y);
 
     /**
      * Sets the coordinate of the location of the shape

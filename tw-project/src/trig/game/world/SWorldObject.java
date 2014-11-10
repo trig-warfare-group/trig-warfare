@@ -1,17 +1,13 @@
-package trig.game.entity;
+package trig.game.world;
 
-import org.w3c.dom.css.Rect;
 import trig.utility.geometry.Polygon;
 import trig.utility.math.vector.FloatCartesian;
-import trig.utility.math.vector.IntCartesian;
-
-import java.awt.*;
 
 /**
- * Base class for in game entities, should we be directly implimenting some of the aspects of entity here, or delete this class and do it repeatedly in others? IMO: here, less code
+ * Base class for in game entities, should we be directly implimenting some of the aspects of world here, or delete this class and do it repeatedly in others? IMO: here, less code
  * Created by marcos on 10/07/14.
  */
-public abstract class SEntity implements Entity
+public abstract class SWorldObject implements WorldObject
 {
     /**
      * Possibly a temporary method, but both Bullets and Ships use it for now, so yeh.
@@ -42,32 +38,32 @@ public abstract class SEntity implements Entity
         return triangle;
     }
 
-    protected int x;
-    protected int y;
+    protected float x;
+    protected float y;
 
 
     @Override
-    public int getX() {
+    public float getX() {
         return x;
     }
 
     @Override
-    public int getY() {
+    public float getY() {
         return y;
     }
 
     @Override
-    public IntCartesian getLocation()
+    public FloatCartesian getLocation()
     {
-        return new IntCartesian(x,y);
+        return new FloatCartesian(x,y);
     }
 
-    SEntity(int x, int y){
+    SWorldObject(float x, float y){
         this.x = x;
         this.y = y;
     }
 
-    SEntity(IntCartesian location)
+    SWorldObject(FloatCartesian location)
     {
         x = location.x;
         y = location.y;

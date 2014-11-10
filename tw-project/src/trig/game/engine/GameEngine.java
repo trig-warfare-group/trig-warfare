@@ -1,6 +1,6 @@
 package trig.game.engine;
 
-import trig.game.entity.*;
+import trig.game.world.*;
 import trig.utility.Constants;
 import trig.utility.math.vector.FloatCartesian;
 
@@ -24,11 +24,11 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     private int entitiesCreated = 0;
 
     private QuadTree quadTree;
-    private ArrayList<Entity> entities;
+    private ArrayList<WorldObject> entities;
 
     /*
-        collisionPossible: whether or not the quadTree returned one or more entities with neighbours() for each entity in each frame
-        collisionOccurred: whether or not a collision actually occurred for each entity in each frame
+        collisionPossible: whether or not the quadTree returned one or more entities with neighbours() for each world in each frame
+        collisionOccurred: whether or not a collision actually occurred for each world in each frame
 
      */
     boolean[] collisionPossible, collisionOccurred;
@@ -39,7 +39,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     public static final Rectangle worldBounds = worldsEdge.getHitbox().getBounds();
 
     /*
-        note: perhaps we could implement destruction more often and generalise the process of entity death a bit if we gave players a new craft each time they died?
+        note: perhaps we could implement destruction more often and generalise the process of world death a bit if we gave players a new craft each time they died?
         player death kinda needs a animation, IMO
     */
 
@@ -55,14 +55,14 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                         new float[]{0, 0}
                 );
 
-        entities = new ArrayList<Entity>();
+        entities = new ArrayList<WorldObject>();
         bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
         lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     }
 
     /**
      * Remove "trash" entities
-     * Note: this only removes the reference to an entity from it's list, nothing fancy.
+     * Note: this only removes the reference to an world from it's list, nothing fancy.
      * Seemed a "clean" way to remove entities, keeps encapsulation, etc.
      */
     public void clean()
@@ -154,7 +154,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
      */
     public void update()
     {
-        Entity e;
+        WorldObject e;
 
         ArrayList<Collidable> collidables = new ArrayList<Collidable>();
 
@@ -183,7 +183,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
             we'll possibly keep a drawable list in the entities list
             (and handle this via the add/removeEntity functions) eventually?
          */
-        Entity e;
+        WorldObject e;
         for (int i = 0; i < entities.size(); i++)
         {
             e = entities.get(i);
@@ -263,20 +263,20 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 //        {
 //            if (e instanceof Visible)
 //            {
-//                ((Visible) e).renderDebug(g); //will render the entity's debug info, but maybe the engine should handle that itself
+//                ((Visible) e).renderDebug(g); //will render the world's debug info, but maybe the engine should handle that itself
 //            }
 //        }
 
 
     }
 
-    public synchronized void addEntity(Entity e)
+    public synchronized void addEntity(WorldObject e)
     {
         entities.add(e);
         entitiesCreated++;
     }
 
-    public synchronized void removeEntity(Entity e){
+    public synchronized void removeEntity(WorldObject e){
         entities.remove(e);
     }
 
@@ -284,17 +284,17 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         entities.remove(i);
     }
 
-    public synchronized int indexOfEntity(Entity e)
+    public synchronized int indexOfEntity(WorldObject e)
     {
         return entities.indexOf(e);
     }
 
-    public synchronized Entity getEntity(int i)
+    public synchronized WorldObject getEntity(int i)
     {
         return entities.get(i);
     }
 
-    public boolean containsEntity(Entity e){
+    public boolean containsEntity(WorldObject e){
         return entities.contains(e);
     }
 }

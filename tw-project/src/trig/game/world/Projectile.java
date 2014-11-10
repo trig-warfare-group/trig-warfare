@@ -1,31 +1,31 @@
-package trig.game.entity;
+package trig.game.world;
 
-import trig.utility.math.vector.IntCartesian;
+import trig.utility.math.vector.FloatCartesian;
 
 /**
  * Base class for objects that mostly move in a straight line, such as bullets
  * Created by marcos on 10/07/14.
  */
-public abstract class Projectile extends MovableEntity implements Automaton
+public abstract class Projectile extends MovableWorldObject implements Automaton
 {
-    protected IntCartesian velocity;
+    protected FloatCartesian velocity;
 
-    public IntCartesian getVelocity()
+    public FloatCartesian getVelocity()
     {
         return velocity.clone();
     }
 
-    public void setVelocity(IntCartesian velocity)
+    public void setVelocity(FloatCartesian velocity)
     {
         this.velocity = velocity.clone();
     }
 
-    public Projectile(/*int id,*/ int x, int y, IntCartesian velocity) {
+    public Projectile(/*int id,*/ float x, float y, FloatCartesian velocity) {
         super(x, y);
         setVelocity(velocity);
     }
 
-    public Projectile(IntCartesian location, IntCartesian velocity)
+    public Projectile(FloatCartesian location, FloatCartesian velocity)
     {
         super(location);
         setVelocity(velocity);

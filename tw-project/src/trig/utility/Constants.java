@@ -25,7 +25,7 @@ public class Constants
     //whilst also ensuring that the event gets raised successfully as-a-collision, OR alternatively, allowing entities to react to that special location on their own
     //QUESTION: WHICH IS BETTER?,
     //
-    // OR should it be handled only by collision event, and ignore in the entity's move function? PROBABLY THIS
+    // OR should it be handled only by collision event, and ignore in the world's move function? PROBABLY THIS
 
     public static int WORLD_COLLISION_PADDING = 4;
 

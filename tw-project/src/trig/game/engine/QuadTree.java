@@ -1,7 +1,6 @@
 package trig.game.engine;
 
-import trig.game.entity.Collidable;
-import trig.game.entity.Entity;
+import trig.game.world.Collidable;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -194,9 +193,9 @@ public class QuadTree
         }
 
         /**
-         * Determines which child nodes/quadrants the provided entity is fully or partially inside of
-         * @param subject an entity to determine the location of
-         * @return an array integers, with up to 4 elements each of which are the index of a child node the entity is inside
+         * Determines which child nodes/quadrants the provided world is fully or partially inside of
+         * @param subject an world to determine the location of
+         * @return an array integers, with up to 4 elements each of which are the index of a child node the world is inside
          */
         public int[] getLocation(Collidable subject)
         {
@@ -244,7 +243,7 @@ public class QuadTree
 
         /**
          * Places the object within the node, or it's sub nodes, depending on where it fits
-         * @param subject an entity to place within the tree
+         * @param subject an world to place within the tree
          * Note: this modifies the provided locations list, adding the location index(s) to it
          * @return a set of int[] that can be used as a path to get all the guests a subject may collide with.
          */
@@ -269,7 +268,7 @@ public class QuadTree
                 split();
                 for(int i = 0; i < guestCount; i++) //can't have two enhanced for loops occuring at the same time or in a nested fashion
                 {
-                    Collidable each = guests.get(0); //when removing an entity, it resizes it!
+                    Collidable each = guests.get(0); //when removing an world, it resizes it!
                     int[] location = getLocation(each);
                     if (location.length == 1)
                     {
@@ -282,7 +281,7 @@ public class QuadTree
         }
 
         /**
-         * Produces a list of all guests the subject entity might collide with
+         * Produces a list of all guests the subject world might collide with
          * (note: the return list includes the subject)
          *
          * @return

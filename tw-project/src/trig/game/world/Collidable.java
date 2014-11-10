@@ -1,6 +1,5 @@
-package trig.game.entity;
+package trig.game.world;
 
-import trig.game.entity.Entity;
 import trig.utility.geometry.Polygon;
 
 /**
@@ -8,7 +7,7 @@ import trig.utility.geometry.Polygon;
  *
  * Created by marcos on 8/07/2014.
  */
-public interface Collidable extends Entity //may not stay an interface, might though
+public interface Collidable extends WorldObject //may not stay an interface, might though
 {
     /**
      * Note that returned hitbox may not be a clone (should be static later?)
@@ -18,7 +17,7 @@ public interface Collidable extends Entity //may not stay an interface, might th
 
 
     /**
-     * Gives the entity a list of entities it has collided with, so that it can handle type-specific collision responses?
+     * Gives the world a list of entities it has collided with, so that it can handle type-specific collision responses?
      * @param colliders
      */
     abstract public void onCollision(Collidable[] colliders);

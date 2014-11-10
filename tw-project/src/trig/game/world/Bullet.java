@@ -1,7 +1,7 @@
-package trig.game.entity;
+package trig.game.world;
 
 import trig.utility.geometry.Polygon;
-import trig.utility.math.vector.IntCartesian;
+import trig.utility.math.vector.FloatCartesian;
 
 import java.awt.*;
 import java.util.Random;
@@ -11,14 +11,14 @@ import java.util.Random;
  */
 public class Bullet extends Projectile implements Harmful, Collidable, Visible
 {
-    public static final IntCartesian BASE_VELOCITY = new IntCartesian(4, 0); //velocity: 4 in whatever direction: (4,0) is right
+    public static final FloatCartesian BASE_VELOCITY = new FloatCartesian(4, 0); //velocity: 4 in whatever direction: (4,0) is right
 
     protected int dmg = 1;
     protected boolean spent = false;
     protected Color color;
 
     protected Polygon hitbox;
-    public Bullet(int x, int y, float direction)
+    public Bullet(float x, float y, float direction)
     {
         super(x, y, BASE_VELOCITY);
 
@@ -26,7 +26,7 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
         //rotate the velocity to the right direction.
         velocity.rotate(direction);
 
-        hitbox = SEntity.constructGenericTriangle(5); //size: 50
+        hitbox = SWorldObject.constructGenericTriangle(5); //size: 50
         hitbox.rotate(direction);
         hitbox.translate(x, y);
 
@@ -41,7 +41,7 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
 
     }
 
-    public Bullet(IntCartesian location, float direction)
+    public Bullet(FloatCartesian location, float direction)
     {
         this(location.x, location.y, direction);
     }
@@ -64,7 +64,7 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
     }
 
     /**
-     * Gives the entity a list of entities it has collided with, so that it can handle type-specific collision responses?
+     * Gives the world a list of entities it has collided with, so that it can handle type-specific collision responses?
      *
      * @param colliders
      */
@@ -90,7 +90,7 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
     }
 
     /**
-     * Bullets can only collide with a maximum of 1 entity!
+     * Bullets can only collide with a maximum of 1 world!
      * Note: internally, we could give bullets penetration by using an integer instead of a boolean?
      * Note: currently bullets cannot be un-spent.
      */
@@ -107,10 +107,10 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
 
 
     /*
-        Must override move() and setLocation() so the hitbox can be moved with the entity!
+        Must override move() and setLocation() so the hitbox can be moved with the world!
      */
     @Override
-    public void move(int dX, int dY)
+    public void move(float dX, float dY)
     {
         super.move(dX, dY);
 
@@ -118,7 +118,7 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
     }
 
     @Override
-    public void setLocation(int x, int y)
+    public void setLocation(float x, float y)
     {
         super.setLocation(x, y);
 

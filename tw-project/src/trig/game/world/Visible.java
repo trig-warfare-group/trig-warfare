@@ -1,7 +1,6 @@
-package trig.game.entity;
+package trig.game.world;
 //NOTE: probably better to have some class with draw methods corresponding to each object or something rather than these imports in lots of places? idk.
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 
 /**
  * Entities that are visible and can be drawn on the map.

@@ -6,7 +6,7 @@ package trig.utility.geometry;
 public class misc
 {
 
-    /*Each entity that can be drawn will pass forward an object containing data needed to draw it, including:
+    /*Each world that can be drawn will pass forward an object containing data needed to draw it, including:
     *          a CustomPath as the basic polygon/image asset of the object
     *          The x and y coordinates to which to translate the RenderPaths
     *          The angle, in radians within the domain [-pi,pi] by which to rotate the points in the RenderPaths

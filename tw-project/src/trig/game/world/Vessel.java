@@ -4,17 +4,17 @@
  * and open the template in the editor.
  */
 
-package trig.game.entity;
+package trig.game.world;
 import trig.utility.geometry.*;
 import trig.utility.geometry.Polygon;
 
 import java.awt.*;
 
 /**
- * Base class for combatants, such as the player, AI.
+ * Base class for an actor's (e.g. the player's) vessel in the world. (the WorldObject that represents them)
  * @author marcos
  */
-public class Ship extends MovableEntity implements Visible, Collidable
+public class Vessel extends MovableWorldObject implements Visible, Collidable
 {
 
     //vars
@@ -66,7 +66,7 @@ public class Ship extends MovableEntity implements Visible, Collidable
         return color;
     }
 
-    public Ship(String name, Color color, int maxHp)
+    public Vessel(String name, Color color, int maxHp)
     {
         super(0,0);
 
@@ -80,7 +80,7 @@ public class Ship extends MovableEntity implements Visible, Collidable
             Construct the hitbox, etc
          */
 
-        hitbox = SEntity.constructGenericTriangle(30); //size: 50
+        hitbox = SWorldObject.constructGenericTriangle(30); //size: 50
         //translate it to the correct position;
         Rectangle bounds = hitbox.getBounds();
 
@@ -90,7 +90,7 @@ public class Ship extends MovableEntity implements Visible, Collidable
 
         Rectangle hitRect = hitbox.getBounds();
 
-        ColoredPolygon tempA = new ColoredPolygon(SEntity.constructGenericTriangle((float) 30 / 10) );
+        ColoredPolygon tempA = new ColoredPolygon(SWorldObject.constructGenericTriangle((float) 30 / 10) );
 
         float rotationAngle =  ( ( (float) 8/6) * (float) Math.PI);
         float centerX = (float) hitRect.getCenterX();
@@ -128,7 +128,7 @@ public class Ship extends MovableEntity implements Visible, Collidable
     }
 
     /**
-     * Gives the entity a list of entities it has collided with, so that it can handle type-specific collision responses?
+     * Gives the world a list of entities it has collided with, so that it can handle type-specific collision responses?
      *
      * @param colliders
      */
@@ -158,10 +158,10 @@ public class Ship extends MovableEntity implements Visible, Collidable
     }
 
     /*
-        Must override move() and setLocation() so the hitbox can be moved with the entity!
+        Must override move() and setLocation() so the hitbox can be moved with the world!
      */
     @Override
-    public void move(int dX, int dY)
+    public void move(float dX, float dY)
     {
         super.move(dX, dY);
 
@@ -169,7 +169,7 @@ public class Ship extends MovableEntity implements Visible, Collidable
     }
 
     @Override
-    public void setLocation(int x, int y)
+    public void setLocation(float x, float y)
     {
 
         components.translate(
@@ -217,7 +217,7 @@ public class Ship extends MovableEntity implements Visible, Collidable
     }
 
     /**
-     * Indicates that the engine should delete the entity from it's list.
+     * Indicates that the engine should delete the world from it's list.
      * Note: sort of forces the engine to do garbage collection, but it's a well-encapsulated way of doing it? Keep? Y/n?
      */
     @Override

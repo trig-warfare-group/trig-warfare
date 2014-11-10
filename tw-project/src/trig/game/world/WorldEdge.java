@@ -1,9 +1,8 @@
-package trig.game.entity;
+package trig.game.world;
 
 import trig.utility.Constants;
 import trig.utility.geometry.Polygon;
 import trig.utility.math.vector.FloatCartesian;
-import trig.utility.math.vector.IntCartesian;
 
 /**
  * Dummy class to be
@@ -37,7 +36,7 @@ public class WorldEdge implements Collidable
     }
 
     /**
-     * Gives the entity a list of entities it has collided with, so that it can handle type-specific collision responses?
+     * Gives the world a list of entities it has collided with, so that it can handle type-specific collision responses?
      *
      * @param colliders
      */
@@ -49,25 +48,25 @@ public class WorldEdge implements Collidable
     }
 
     @Override
-    public int getX()
+    public float getX()
     {
         return 0;
     }
 
     @Override
-    public int getY()
+    public float getY()
     {
         return 0;
     }
 
     @Override
-    public IntCartesian getLocation()
+    public FloatCartesian getLocation()
     {
         return null;
     }
 
     /**
-     * Indicates that the engine should delete the entity from it's list.
+     * Indicates that the engine should delete the world from it's list.
      * Note: sort of forces the engine to do garbage collection, but it's a well-encapsulated way of doing it? Keep? Y/n?
      */
     @Override

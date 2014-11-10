@@ -1,15 +1,13 @@
-package trig.game.entity;
+package trig.game.world;
 
-import trig.utility.math.vector.IntCartesian;
-
-import java.awt.geom.Path2D;
+import trig.utility.math.vector.FloatCartesian;
 
 /**
  * Interface class for all entities, where entities are anything that can interact with other entities in the game.
  * @author marcos
  * Created by marcos on 8/07/2014.
  */
-public interface Entity
+public interface WorldObject
 {
     /*
     these would be made Public by the interface!, interfaces only define things that can be interfaced?
@@ -17,13 +15,13 @@ public interface Entity
     int x = 0;
     int y = 0;
     */
-    abstract public int getX();
-    abstract public int getY();
+    abstract public float getX();
+    abstract public float getY();
 
-    abstract public IntCartesian getLocation();
+    abstract public FloatCartesian getLocation();
 
     /**
-     * Indicates that the engine should delete the entity from it's list.
+     * Indicates that the engine should delete the world from it's list.
      * Note: sort of forces the engine to do garbage collection, but it's a well-encapsulated way of doing it? Keep? Y/n?
      */
     abstract public boolean isTrash();
