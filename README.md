@@ -4,7 +4,7 @@ trig-warfare
 NOTICE:
 Currently on hiatus due to university commitments.
 
-demo-01.jar is a JAR of the latest version for anyone interested.
+demo-01.jar is a JAR of the latest stable version for anyone interested.
 
 It's essentially just a single triangle-shaped "Ship":
 	that can be moved around the screen with the arrow-keys,
@@ -13,7 +13,9 @@ It's essentially just a single triangle-shaped "Ship":
 
 It's not very exciting, but it works.
 
-
+To-do:
+Try to do a simple JInput implementation.
+Improve engine structure a little (e.g. move certain functionality of of entities and into the engine itself, such as collision response.
 
 
 Current version: 0.1
