@@ -26,5 +26,5 @@ public interface Vector2D
 //
 //    abstract public void rotate(float theta);
 
-    //todo: add some other math functions? (as they become used?) such as the dot and cross product
+    //todo: sum some other math functions? (as they become used?) such as the dot and cross product
 }

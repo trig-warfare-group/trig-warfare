@@ -1,6 +1,7 @@
 package trig.game.engine;
 
 import trig.game.world.Collidable;
+import trig.utility.geometry.FloatVectorRectangle;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -201,11 +202,11 @@ public class QuadTree
         {
             boolean left, right, above, below;
 
-            Rectangle bounds = subject.getHitbox().getBounds();
-            left = ( bounds.x < center[0] ); //some part is left of center
-            right = ( bounds.x + bounds.width > center[0] ); //some part is right of center
-            above = ( bounds.y < center[1] ); //some part is above center
-            below = ( bounds.x + bounds.height > center[1] ); //some part is below center
+            FloatVectorRectangle bounds = subject.getHitbox().getFloatVectorBounds();
+            left = ( bounds.getMinX() < center[0] ); //some part is left of center
+            right = ( bounds.getMaxX() > center[0] ); //some part is right of center
+            above = ( bounds.getMinY() < center[1] ); //some part is above center
+            below = ( bounds.getMaxY() > center[1] ); //some part is below center
 
             //determine the size of the return array,
             int sections = 1; //can be either 1 2 or 4 depending on the number of overlaps

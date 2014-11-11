@@ -15,8 +15,8 @@ It's not very exciting, but it works.
 
 To-do:
 Try to do a simple JInput implementation.
-Improve engine structure a little (e.g. move certain functionality of of entities and into the engine itself, such as collision response.
-
+Improve engine structure a little (e.g. move certain functionality of of entities and into the engine itself, such as collision response, or projectile movement), tbh I may not bother with this if I decide to switch to c++ for the real game definitely, but I might anyway.
+Improve vector implementation or import one and refactor all relevant math everywhere to use the implimentation instead of leaving primitives lieing around, as above, may not end up doing this.
 
 Current version: 0.1
 

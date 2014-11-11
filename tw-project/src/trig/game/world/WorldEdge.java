@@ -48,18 +48,6 @@ public class WorldEdge implements Collidable
     }
 
     @Override
-    public float getX()
-    {
-        return 0;
-    }
-
-    @Override
-    public float getY()
-    {
-        return 0;
-    }
-
-    @Override
     public FloatCartesian getLocation()
     {
         return null;

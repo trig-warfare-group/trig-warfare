@@ -41,7 +41,7 @@ public interface Renderable
      */
     abstract public void render(Graphics2D g, AffineTransform aT);
 
-    abstract public void translate(float tX, float tY);
+//    abstract public void translate(float tX, float tY);
 
     abstract public void translate(FloatCartesian tVector);
 
@@ -57,13 +57,13 @@ public interface Renderable
     abstract public void rotate(float theta);
 
 
-    /**
-     * Rotates the object about the specified center, instead of it's normal origin
-     * @param theta the angle to rotate by, in radians.
-     * @param cX the x-coordinate of the center to rotate about.
-     * @param cY the y-coordinate of the center to rotate about.
-     */
-    abstract public void rotateAbout(float theta, float cX, float cY);
+//    /**
+//     * Rotates the object about the specified center, instead of it's normal origin
+//     * @param theta the angle to rotate by, in radians.
+//    * @param cX the x-coordinate of the center to rotate about.
+//    * @param cY the y-coordinate of the center to rotate about.
+//    */
+//    abstract public void rotateAbout(float theta, float cX, float cY);
 
     /**
      * Rotates the object about the specified center, instead of it's normal origin

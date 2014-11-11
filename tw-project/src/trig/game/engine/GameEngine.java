@@ -40,7 +40,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     /*
         note: perhaps we could implement destruction more often and generalise the process of world death a bit if we gave players a new craft each time they died?
-        player death kinda needs a animation, IMO
+        KeyInputTracker death kinda needs a animation, IMO
     */
 
     /**
@@ -79,9 +79,6 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     public void processCollisions(ArrayList<Collidable> collidables)
     {
-        Collidable each;
-        ArrayList<ArrayList<Collidable>> possibleCollisions = quadTree.processList(collidables);
-
         //second pass, closer precision test
         collisionPossible = new boolean[entities.size()];
         collisionOccurred = new boolean[entities.size()];
@@ -92,8 +89,23 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         Rectangle eachBounds;
 
         Collidable[] collisionArray;
-
+        Collidable each;
         int i;
+        for(i = 0; i < collidables.size(); i++)
+        {
+            each = collidables.get(i);
+            FloatCartesian pointOutside = each.getHitbox().getOverflow(worldBounds);
+
+            if (Math.abs(pointOutside.x) > 0 || Math.abs(pointOutside.y) > 0)
+            {
+                if (each instanceof Movable)
+                {
+                    FloatCartesian temp = FloatCartesian.mirror(pointOutside);
+                    ((Movable) each).move(temp); //this should move precisely be the required amount?
+                }
+            }
+        }
+        ArrayList<ArrayList<Collidable>> possibleCollisions = quadTree.processList(collidables);
         for (i = 0; i < possibleCollisions.size(); i++)
         {
             each = collidables.get(i);
@@ -114,34 +126,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 }
             }
 
-            FloatCartesian pointOutside = eachHitbox.getOverflowDistance(worldBounds);
 
-            if (Math.abs(pointOutside.x) > 0 || Math.abs(pointOutside.y) > 0)
-            {
-                actualCollisions.add(worldsEdge);
-                if (each instanceof Movable)
-                {
-                    int shiftX, shiftY;
-                    if(pointOutside.x < 0)
-                    {
-                        shiftX = (int) Math.floor(pointOutside.x);
-                    }
-                    else
-                    {
-                        shiftX = (int) Math.ceil(pointOutside.x);
-                    }
-
-                    if(pointOutside.y < 0)
-                    {
-                        shiftY = (int) Math.floor(pointOutside.y);
-                    }
-                    else
-                    {
-                        shiftY = (int) Math.ceil(pointOutside.y);
-                    }
-                   ((Movable) each).move(shiftX, shiftY);
-                }
-            }
 
             collisionArray = new Collidable[actualCollisions.size()];
             actualCollisions.toArray(collisionArray);
@@ -181,7 +166,7 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     {
         /*
             we'll possibly keep a drawable list in the entities list
-            (and handle this via the add/removeEntity functions) eventually?
+            (and handle this via the sum/removeEntity functions) eventually?
          */
         WorldObject e;
         for (int i = 0; i < entities.size(); i++)
@@ -193,11 +178,11 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                 ((Visible) e).render(g);
             }
 
-            if (e instanceof Collidable)
-            {
-                g.setColor(Color.RED);
-                g.draw(((Collidable) e).getHitbox().getBounds());
-            }
+//            if (e instanceof Collidable)
+//            {
+//                g.setColor(Color.RED);
+//                g.draw(((Collidable) e).getHitbox().getBounds());
+//            }
         }
     }
 

@@ -9,27 +9,30 @@ import java.util.Random;
 /**
  * Created by marcos on 25/07/2014.
  */
-public class Bullet extends Projectile implements Harmful, Collidable, Visible
+public class Bullet extends StandardWorldObject implements Projectile, Automaton
 {
-    public static final FloatCartesian BASE_VELOCITY = new FloatCartesian(4, 0); //velocity: 4 in whatever direction: (4,0) is right
-
-    protected int dmg = 1;
-    protected boolean spent = false;
+    public static final float speed = 20;
     protected Color color;
+    protected FloatCartesian velocity;
+    protected int timer = 60*5;
 
-    protected Polygon hitbox;
-    public Bullet(float x, float y, float direction)
+    protected boolean spent;
+
+    /**
+     *
+     * @param location
+     * @param unitVelocity a unit vector representing the direction in which to travel.
+     */
+    public Bullet(FloatCartesian location, FloatCartesian unitVelocity)
     {
-        super(x, y, BASE_VELOCITY);
+        super(location);
+        velocity = unitVelocity;
+        velocity.scale(speed);
+        hitbox = BasicWorldObject.constructGenericTriangle(5);
 
+        hitbox.rotate(unitVelocity.direction());
 
-        //rotate the velocity to the right direction.
-        velocity.rotate(direction);
-
-        hitbox = SWorldObject.constructGenericTriangle(5); //size: 50
-        hitbox.rotate(direction);
-        hitbox.translate(x, y);
-
+        hitbox.translate(location);
 
 
         Random r = new Random();
@@ -38,18 +41,8 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
                 r.nextInt((250 - 75) + 1) + 75,
                 r.nextInt((250 - 75) + 1) + 75
         );
-
-    }
-
-    public Bullet(FloatCartesian location, float direction)
-    {
-        this(location.x, location.y, direction);
-    }
-
-    @Override
-    public int getDmg()
-    {
-        return dmg;
+        super.setDmg(1);
+        spent = false;
     }
 
     /**
@@ -71,14 +64,14 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
     @Override
     public void onCollision(Collidable[] colliders)
     {
-        //other entities handle spending the bullet, but the world edge doesn't
-        if(colliders.length > 0){
-            for(Collidable each : colliders){
-                if(each instanceof WorldEdge){
-                    this.spent = true;
-                }
-            }
-        }
+//        //other entities handle spending the bullet, but the world edge doesn't
+//        if(colliders.length > 0){
+//            for(Collidable each : colliders){
+//                if(each instanceof WorldEdge){
+//                    this.spent = true;
+//                }
+//            }
+//        }
     }
 
     /**
@@ -110,28 +103,43 @@ public class Bullet extends Projectile implements Harmful, Collidable, Visible
         Must override move() and setLocation() so the hitbox can be moved with the world!
      */
     @Override
-    public void move(float dX, float dY)
+    public void move(FloatCartesian shift)
     {
-        super.move(dX, dY);
-
-        hitbox.translate(dX, dY);
+        super.move(shift);
+        hitbox.translate(shift);
     }
 
-    @Override
-    public void setLocation(float x, float y)
-    {
-        super.setLocation(x, y);
-
-        hitbox.translate(
-                x-this.x,
-                y-this.y
-        );
-    }
     @Override
     public void render(Graphics2D g)
     {
         g.setColor(color);
 
         hitbox.render(g);
+    }
+
+    @Override
+    public FloatCartesian getVelocity()
+    {
+        return velocity.clone();
+    }
+
+    @Override
+    public void setVelocity(FloatCartesian velocity)
+    {
+        this.velocity = velocity.clone();
+    }
+
+    @Override
+    public void update()
+    {
+        if(timer > 0)
+        {
+            timer--;
+            move(velocity);
+        }
+        else
+        {
+            spend();
+        }
     }
 }

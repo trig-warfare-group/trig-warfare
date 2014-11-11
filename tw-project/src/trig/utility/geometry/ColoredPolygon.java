@@ -78,6 +78,7 @@ public class ColoredPolygon extends Polygon implements Colored
     public void render(Graphics2D g)
     {
         g.setColor(color);
+
         super.render(g);
     }
 

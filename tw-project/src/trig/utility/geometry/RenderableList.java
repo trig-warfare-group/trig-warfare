@@ -112,12 +112,12 @@ public class RenderableList<T extends Renderable> extends ArrayList<T> implement
         }
     }
 
-    @Override
-    public void translate(float tX, float tY){
-        for(T each: this){
-            each.translate(tX, tY);
-        }
-    }
+//    @Override
+//    public void translate(float tX, float tY){
+//        for(T each: this){
+//            each.translate(tX, tY);
+//        }
+//    }
 
     public void translate(FloatCartesian tVector)
     {
@@ -133,12 +133,12 @@ public class RenderableList<T extends Renderable> extends ArrayList<T> implement
         }
     }
 
-    @Override
-    public void rotateAbout(float theta, float cX, float cY){
-        for(T each: this){
-            each.rotateAbout(theta, cX, cY);
-        }
-    }
+//    @Override
+//    public void rotateAbout(float theta, float cX, float cY){
+//        for(T each: this){
+//            each.rotateAbout(theta, cX, cY);
+//        }
+//    }
 
     /**
      * Rotates the object about the specified center, instead of it's normal origin

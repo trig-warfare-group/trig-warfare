@@ -9,12 +9,12 @@ import trig.utility.math.vector.FloatCartesian;
  */
 public interface Movable extends WorldObject //may not stay an interface, might though
 {
-    /**
-     * Moves an world by the provided amount
-     * @param dX the distance to travel along the x-axis
-     * @param dY the distance to travel along the y-axis.
-     */
-    abstract public void move(float dX, float dY);
+//    /**
+//     * Moves an world by the provided amount
+//     * @param dX the distance to travel along the x-axis
+//     * @param dY the distance to travel along the y-axis.
+//     */
+//    abstract public void move(float dX, float dY);
 
     /**
      * Moves an world by the provided amount
@@ -22,12 +22,12 @@ public interface Movable extends WorldObject //may not stay an interface, might 
      */
     abstract public void move(FloatCartesian vector);
 
-    /**
-     * Moves an world to the provided coordinates
-     * @param x the x-coordinate to travel to
-     * @param y the y-coordinate to travel to
-     */
-    abstract public void setLocation(float x, float y);
+//    /**
+//     * Moves an world to the provided coordinates
+//     * @param x the x-coordinate to travel to
+//     * @param y the y-coordinate to travel to
+//     */
+//    abstract public void setLocation(float x, float y);
 
     /**
      * Moves an world to the provided coordinates

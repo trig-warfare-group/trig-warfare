@@ -53,9 +53,9 @@ public class Polygon extends Path
 
     /**
      * Determines how far out the furthest point outside of the provided box is
-     * @return a FloatCartesian vector representing how far the polygon is out from the box at the furthest point.
+     * @return a FloatCartesian vector representing how far this polygon protudes from the target, and in which direction (- if left or above, etc)
      */
-    public FloatCartesian getOverflowDistance(Rectangle target){
+    public FloatCartesian getOverflow(Rectangle target){
         float furthestX, furthestY, furthestDistance, eachDistance;
         furthestX = 0;
         furthestY = 0;
@@ -65,33 +65,33 @@ public class Polygon extends Path
 
         for (FloatCartesian each : this)
         {
-            overX = target.getMaxX() - each.x;
-            if(overX > 0)
+            overX = each.x - target.getMaxX();
+            if(overX < 0)
             {
                 overX = 0;
             }
 
-            underX = target.getMinX() - each.x;
-            if(underX < 0)
+            underX = each.x - target.getMinX();
+            if(underX > 0)
             {
                 underX = 0;
             }
 
-            overY = target.getMaxY() - each.y;
-            if(overY > 0)
+            overY = each.y - target.getMaxY();
+            if(overY < 0)
             {
                 overY = 0;
             }
 
-            underY = target.getMinY() - each.y;
-            if(underY < 0)
+            underY = each.y - target.getMinY();
+            if(underY > 0)
             {
                 underY = 0;
             }
 
-            distX = underX > Math.abs(overX) ? underX : overX;
+            distX = Math.abs(underX) > overX ? underX : overX;
 
-            distY = underY > Math.abs(overY) ? underY : overY;
+            distY = Math.abs(underY) > overY ? underY : overY;
 
 
 

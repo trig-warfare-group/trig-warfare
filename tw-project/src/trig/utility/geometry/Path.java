@@ -54,7 +54,12 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
     @Override
     public Rectangle getBounds()
     {
+        FloatVectorRectangle temp = getFloatVectorBounds();
+        return new Rectangle( (int) Math.floor(temp.getMinX()), (int) Math.floor(temp.getMinY()), (int) Math.ceil(temp.getWidth()), (int) Math.ceil(temp.getHeight()) );
+    }
 
+    public FloatVectorRectangle getFloatVectorBounds()
+    {
         float lowX, highX, lowY, highY, width, height;
 
         FloatCartesian each = get(0);
@@ -86,13 +91,8 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
             }
         }
 
-        width = highX - lowX;
-        height = highY - lowY;
-
-        return new Rectangle( (int) Math.floor(lowX), (int) Math.floor(lowY), (int) Math.ceil(width), (int) Math.ceil(height) );
+        return new FloatVectorRectangle(new FloatCartesian(lowX, lowY), new FloatCartesian(highX, highY));
     }
-
-
     /**
      * Draws the path, with the rendered path transformed using the specified AffineTransform
      * @param g the canvas to draw on
@@ -117,19 +117,22 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
        g.draw(getPath2D());
     }
 
-    @Override
-    public void translate(float tX, float tY){
-        for(FloatCartesian each : this)
-        {
-            each.translate(tX, tY);
-        }
-        return;
-    }
+//    @Override
+//    public void translate(float tX, float tY){
+//        for(FloatCartesian each : this)
+//        {
+//            each.translate(tX, tY);
+//        }
+//        return;
+//    }
 
     @Override
     public void translate(FloatCartesian tVector)
     {
-        translate(tVector.x, tVector.y);
+        for(FloatCartesian each : this)
+        {
+            each.add(tVector);
+        }
     }
 
     @Override
@@ -140,18 +143,18 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
         }
     }
 
-    /**
-     * Rotates the path about the specified center, instead of it's normal origin
-     * @param theta the angle to rotate by, in radians.
-     * @param cX the x-coordinate of the center to rotate about.
-     * @param cY the y-coordinate of the center to rotate about.
-     */
-    @Override
-    public void rotateAbout(float theta, float cX, float cY){
-       translate(-cX, -cY);
-       rotate(theta);
-       translate(cX, cY);
-    }
+//    /**
+//     * Rotates the path about the specified center, instead of it's normal origin
+//     * @param theta the angle to rotate by, in radians.
+//     * @param cX the x-coordinate of the center to rotate about.
+//     * @param cY the y-coordinate of the center to rotate about.
+//     */
+//    @Override
+//    public void rotateAbout(float theta, float cX, float cY){
+//       translate(-cX, -cY);
+//       rotate(theta);
+//       translate(cX, cY);
+//    }
 
     /**
      * Rotates the object about the specified center, instead of it's normal origin
@@ -162,7 +165,9 @@ public class Path extends LinkedList<FloatCartesian> implements Renderable
     @Override
     public void rotateAbout(float theta, FloatCartesian tVector)
     {
-        rotateAbout(theta, tVector.x, tVector.y);
+        translate(FloatCartesian.mirror(tVector));
+        rotate(theta);
+        translate(tVector);
     }
 
     /*

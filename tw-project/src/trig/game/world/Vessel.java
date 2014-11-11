@@ -7,14 +7,15 @@
 package trig.game.world;
 import trig.utility.geometry.*;
 import trig.utility.geometry.Polygon;
+import trig.utility.math.vector.FloatCartesian;
 
 import java.awt.*;
 
 /**
- * Base class for an actor's (e.g. the player's) vessel in the world. (the WorldObject that represents them)
+ * Base class for an actor's (e.g. the KeyInputTracker's) vessel in the world. (the WorldObject that represents them)
  * @author marcos
  */
-public class Vessel extends MovableWorldObject implements Visible, Collidable
+public class Vessel extends StandardWorldObject
 {
 
     //vars
@@ -22,7 +23,12 @@ public class Vessel extends MovableWorldObject implements Visible, Collidable
     protected int hp;
     protected int maxHp;
     protected Color color;
-    protected Polygon hitbox;
+    protected Weapon weapon;
+
+    public Weapon getWeapon()
+    {
+        return weapon;
+    }
 
     /**
      * Contains both the hitbox and any other renderable paths etc,
@@ -51,7 +57,7 @@ public class Vessel extends MovableWorldObject implements Visible, Collidable
         return maxHp;
     }
 
-    public void setMaxHp(int maxHp)
+    protected void setMaxHp(int maxHp)
     {
         this.maxHp = maxHp;
     }
@@ -68,7 +74,7 @@ public class Vessel extends MovableWorldObject implements Visible, Collidable
 
     public Vessel(String name, Color color, int maxHp)
     {
-        super(0,0);
+        super(new FloatCartesian());
 
         this.name = name;
         this.color = color;
@@ -80,45 +86,21 @@ public class Vessel extends MovableWorldObject implements Visible, Collidable
             Construct the hitbox, etc
          */
 
-        hitbox = SWorldObject.constructGenericTriangle(30); //size: 50
+        hitbox = BasicWorldObject.constructGenericTriangle(30); //size: 50
         //translate it to the correct position;
-        Rectangle bounds = hitbox.getBounds();
-
-        hitbox.translate(x-(int) bounds.getMinX(), y-(int) bounds.getMinY());
 
         components.add(hitbox);
 
-        Rectangle hitRect = hitbox.getBounds();
+        hitbox.translate(FloatCartesian.difference(location, hitbox.getFloatVectorBounds().getMin()));
 
-        ColoredPolygon tempA = new ColoredPolygon(SWorldObject.constructGenericTriangle((float) 30 / 10) );
-
-        float rotationAngle =  ( ( (float) 8/6) * (float) Math.PI);
-        float centerX = (float) hitRect.getCenterX();
-         float centerY = (float) hitRect.getCenterY();
-
-        tempA.rotate((float) (24/18.0*Math.PI));
-
-        tempA.translate((float) 10.5, (float) 17.5);
-
-        ColoredPolygon tempB = tempA.clone();
-        tempB.rotateAbout(rotationAngle, centerX, centerY);
-
-        tempB.translate(-15, -9);
-
-        ColoredPolygon tempC = tempA.clone();
-        tempC.rotateAbout(-rotationAngle, centerX, centerY);
-
-        tempC.translate(-7, 10);
-
-        tempA.setColor(Color.CYAN);
-        tempB.setColor(Color.ORANGE);
-        tempC.setColor(Color.MAGENTA);
-
-
+        ColoredPolygon tempA = new ColoredPolygon(BasicWorldObject.constructGenericTriangle(5) );
+        tempA.setColor(Color.ORANGE);
+        FloatCartesian cannonLocation = FloatCartesian.sum(hitbox.get(0), new FloatCartesian(5, 0));
+        tempA.translate(cannonLocation);
 
         components.add(tempA);
-        components.add(tempB);
-        components.add(tempC);
+        weapon = new SCannonBETA(cannonLocation, new FloatCartesian(1, 0));
+
     }
 
     @Override
@@ -151,35 +133,21 @@ public class Vessel extends MovableWorldObject implements Visible, Collidable
     {
         g.setColor(color);
         components.render(g);
+        FloatCartesian tempLocation = getLocation();
+        g.drawString(name, tempLocation.x+12, tempLocation.y-28);
 
-        g.drawString(name, x+12, y-28);
-
-        g.drawString("HP: "+hp, x+3, y-12);
+        g.drawString("HP: " + hp, tempLocation.x + 3, tempLocation.y - 12);
     }
 
     /*
         Must override move() and setLocation() so the hitbox can be moved with the world!
      */
     @Override
-    public void move(float dX, float dY)
+    public void move(FloatCartesian shift)
     {
-        super.move(dX, dY);
-
-        components.translate(dX, dY);
-    }
-
-    @Override
-    public void setLocation(float x, float y)
-    {
-
-        components.translate(
-                x-this.x,
-                y-this.y
-        );
-
-        super.setLocation(x, y);
-
-        return;
+        super.move(shift);
+        weapon.move(shift);
+        components.translate(shift);
     }
 
     /**
@@ -187,12 +155,10 @@ public class Vessel extends MovableWorldObject implements Visible, Collidable
      * @param theta
      */
     public void rotate(float theta){
-        Rectangle hitRect = hitbox.getBounds();
-        components.rotateAbout( theta, (float) hitRect.getCenterX(), (float) hitRect.getCenterY() );
-
-        //get the new corner from the hitbox
-        hitRect = hitbox.getBounds();
-        super.setLocation(hitRect.x, hitRect.y);
+        FloatCartesian center = hitbox.getFloatVectorBounds().getCenter();
+        components.rotateAbout(theta, center);
+        weapon.rotateAbout(theta, center);
+        location = hitbox.getFloatVectorBounds().getMin();
     }
 
     public void kill(){

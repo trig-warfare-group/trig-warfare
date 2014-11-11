@@ -7,18 +7,18 @@ import trig.utility.math.vector.FloatCartesian;
  * @author marcos
  * Created by marcos on 8/07/2014.
  */
-public interface WorldObject
+public interface WorldObject //all things should probably extend movable.
 {
     /*
     these would be made Public by the interface!, interfaces only define things that can be interfaced?
     //cartesian coordinates
     int x = 0;
     int y = 0;
-    */
-    abstract public float getX();
-    abstract public float getY();
+//    */
+//    abstract public float getX();
+//    abstract public float getY();
 
-    abstract public FloatCartesian getLocation();
+    abstract public FloatCartesian getLocation(); //considering using object center for this as it would vastly more efficient due to the large likelihood of objects rotating?
 
     /**
      * Indicates that the engine should delete the world from it's list.

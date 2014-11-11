@@ -3,9 +3,7 @@ package trig.game.world;
 import trig.utility.geometry.Polygon;
 
 /**
- * Base class for entities that move around
- *
- * Created by marcos on 8/07/2014.
+ * Indicates that entities can collide with things and provides their hitbox for detecting these collisions.
  */
 public interface Collidable extends WorldObject //may not stay an interface, might though
 {
@@ -15,7 +13,7 @@ public interface Collidable extends WorldObject //may not stay an interface, mig
      */
     abstract public Polygon getHitbox(); //TODO: RESTRICT THE TYPE TO CONVEXPOLYGON WHEN ITS APPLICABLE, OR EVEN HITBOX
 
-
+    @Deprecated //TODO: IMPLIMENT THE REPLACEMENT FOR THIS IN THE GAME ENGINE?
     /**
      * Gives the world a list of entities it has collided with, so that it can handle type-specific collision responses?
      * @param colliders
