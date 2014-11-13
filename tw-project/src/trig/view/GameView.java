@@ -1,23 +1,20 @@
 package trig.view;
 
-import trig.game.GameClient;
 import trig.utility.Constants;
-import trig.view.login.LoginView;
+//import trig.view.login.LoginView;
 import java.awt.*;
 
 public class GameView
 {
 	private GameFrame frame;
 	private GamePanel panel;
-	private GameClient client;
 
-    public GameView(GameClient gameClient)
+    public GameView()
     {
         frame = new GameFrame();
-        frame.addModel(gameClient);
+        //frame.addModel();
         panel = new GamePanel();
-        panel.addModel(gameClient);
-        this.client = gameClient;
+       // panel.addModel();
     }
 
     /**
@@ -54,9 +51,9 @@ public class GameView
 		panel.repaint();
 	}
 	
-	public LoginView constructLoginView()
-	{
-		return new LoginView(panel, client);
-	}
+	//public LoginView constructLoginView()
+//	{
+//		return new LoginView(panel, client);
+//	}
 	
 }

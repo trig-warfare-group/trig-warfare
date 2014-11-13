@@ -24,6 +24,12 @@ public class Vessel extends StandardWorldObject
     protected int maxHp;
     protected Color color;
     protected Weapon weapon;
+    protected float facingDirection; //east is 0, like on a unit circle.
+    FloatCartesian tempMid;
+    public float getFacingDirection()
+    {
+        return facingDirection;
+    }
 
     public Weapon getWeapon()
     {
@@ -95,11 +101,14 @@ public class Vessel extends StandardWorldObject
 
         ColoredPolygon tempA = new ColoredPolygon(BasicWorldObject.constructGenericTriangle(5) );
         tempA.setColor(Color.ORANGE);
-        FloatCartesian cannonLocation = FloatCartesian.sum(hitbox.get(0), new FloatCartesian(5, 0));
+        FloatCartesian cannonLocation = FloatCartesian.sum(hitbox.get(0), new FloatCartesian(10, 0));
         tempA.translate(cannonLocation);
 
         components.add(tempA);
         weapon = new SCannonBETA(cannonLocation, new FloatCartesian(1, 0));
+        facingDirection = 0;
+
+        tempMid = hitbox.getFloatVectorBounds().getCenter();
 
     }
 
@@ -157,8 +166,16 @@ public class Vessel extends StandardWorldObject
     public void rotate(float theta){
         FloatCartesian center = hitbox.getFloatVectorBounds().getCenter();
         components.rotateAbout(theta, center);
+        tempMid = hitbox.getFloatVectorBounds().getCenter();
         weapon.rotateAbout(theta, center);
         location = hitbox.getFloatVectorBounds().getMin();
+        facingDirection += theta;
+    }
+
+    public void setFacingDirection(float theta)
+    {
+
+        rotate(theta - facingDirection);
     }
 
     public void kill(){
@@ -190,5 +207,12 @@ public class Vessel extends StandardWorldObject
     public boolean isTrash()
     {
         return !(hp > 0);
+    }
+
+    //note, remember to refactor this to account for multiple weapons?
+    //remember that this doesn't add the entity to the engine, that must be performed externally.
+    public Projectile fireWeapon()
+    {
+        return weapon.generateProjectile();
     }
 }

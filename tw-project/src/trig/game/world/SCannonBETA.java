@@ -7,7 +7,6 @@ import trig.utility.math.vector.FloatCartesian;
  */
 public class SCannonBETA extends Weapon
 {
-
     SCannonBETA(FloatCartesian location, FloatCartesian unitTrajectory)
     {
         super(location, unitTrajectory);
@@ -45,4 +44,9 @@ public class SCannonBETA extends Weapon
         this.location = location.clone();
     }
 
+    @Override
+    public Projectile generateProjectile()
+    {
+        return new Bullet(location, unitTrajectory);
+    }
 }

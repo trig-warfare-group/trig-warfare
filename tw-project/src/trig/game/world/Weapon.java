@@ -9,14 +9,18 @@ public abstract class Weapon
 {
     protected FloatCartesian location;
     protected FloatCartesian unitTrajectory;
-    Weapon(FloatCartesian location, FloatCartesian unitTrajectory){
+    float fireRate;
+
+    protected Weapon(FloatCartesian location, FloatCartesian unitTrajectory)
+    {
         this.location = location.clone();
         this.unitTrajectory = unitTrajectory.clone();
+        this.fireRate = fireRate;
     }
 
     public FloatCartesian getLocation()
     {
-        return location;
+        return location.clone();
     }
 
     public FloatCartesian getUnitTrajectory()
@@ -26,7 +30,7 @@ public abstract class Weapon
 
     protected void setUnitTrajectory(FloatCartesian unitTrajectory)
     {
-        this.unitTrajectory = unitTrajectory;
+        this.unitTrajectory = unitTrajectory.clone();
     }
 
     abstract public void setLocation(FloatCartesian location);
@@ -35,8 +39,22 @@ public abstract class Weapon
 
     /**
      * normally rotates on-the-spot.
+     *
      * @param theta
      */
     abstract public void rotate(float theta);
+
     abstract public void rotateAbout(float theta, FloatCartesian center);
+    abstract public Projectile generateProjectile(); //generates a projectile at the right location and facing direction velocity etc.
+
+    //bullets it can fire per second?
+    public float getFireRate() //used by controllers etc to control rate of fire, since the weapon doesn't actually fire itself, but is more of a projectile factory which tracks tjhe correct spawn location etc.
+    {
+        return fireRate;
+    }
+
+    protected void setFireRate(float fireRate)
+    {
+        this.fireRate = fireRate;
+    }
 }

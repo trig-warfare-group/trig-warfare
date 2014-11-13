@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Bullet extends StandardWorldObject implements Projectile, Automaton
 {
-    public static final float speed = 20;
+    public static final float speed = 15;
     protected Color color;
     protected FloatCartesian velocity;
     protected int timer = 60*5;
@@ -26,7 +26,7 @@ public class Bullet extends StandardWorldObject implements Projectile, Automaton
     public Bullet(FloatCartesian location, FloatCartesian unitVelocity)
     {
         super(location);
-        velocity = unitVelocity;
+        velocity = unitVelocity.clone();
         velocity.scale(speed);
         hitbox = BasicWorldObject.constructGenericTriangle(5);
 
@@ -43,6 +43,7 @@ public class Bullet extends StandardWorldObject implements Projectile, Automaton
         );
         super.setDmg(1);
         spent = false;
+        //move the entity ahead so we don't die?
     }
 
     /**

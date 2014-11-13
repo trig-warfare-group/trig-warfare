@@ -11,37 +11,37 @@ import trig.view.GameView;
  * @author brody
  *
  */
-public class StateManager 
-{
-	private GameView gameView;
-	private LoginMachine loginMachine;
-	//private GameMachine gameMachine;
-	private BasicStateMachine currentMachine;
-	
-	public StateManager(GameView view)
-	{
-		this.gameView = view;
-	}
-
-    public void init()
-    {
-        this.loginMachine = new LoginMachine(gameView.constructLoginView());
-        currentMachine = loginMachine;
-    }
-
-
-	public void login(String username) 
-	{
-		loginMachine.login(username, "");
-	}
-
-	public void update()
-	{
-		currentMachine.update();
-	}
-
-	public void render(Graphics2D g)
-	{
-		currentMachine.render(g);
-	}
-}
+//public class StateManager
+//{
+//	private GameView gameView;
+//	private LoginMachine loginMachine;
+//	//private GameMachine gameMachine;
+//	private BasicStateMachine currentMachine;
+//
+//	public StateManager(GameView view)
+//	{
+//		this.gameView = view;
+//	}
+//
+//    public void init()
+//    {
+//        this.loginMachine = new LoginMachine(gameView.constructLoginView());
+//        currentMachine = loginMachine;
+//    }
+//
+//
+//	public void login(String username)
+//	{
+//		loginMachine.login(username, "");
+//	}
+//
+//	public void update()
+//	{
+//		currentMachine.update();
+//	}
+//
+//	public void render(Graphics2D g)
+//	{
+//		currentMachine.render(g);
+//	}
+//}

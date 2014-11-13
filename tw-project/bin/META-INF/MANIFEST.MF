@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 Class-Path: jinput.jar
-Main-Class: trig.game.Main
+Main-Class: trig.client.Main
 

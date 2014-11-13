@@ -12,6 +12,7 @@ import java.util.Random;
  * Dummy/Demo/Draft engine for some testing, etc etc?
  * Created by marcos on 14/07/2014.
  */
+//NOTE: MORE LIKE A "MATCH" OR SOMETHING THAN AN ENGINE, THE HOLE CLIENT RUNS THROUGH THE ENGINE.
 public class GameEngine //may extend some GameState interface I think, not an exact name, but it's for the states that relate to rendering and updates and stuff.
 {
      /*
@@ -21,13 +22,13 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     */
 
-    private int entitiesCreated = 0;
+    private int objectsCreated = 0;
 
     private QuadTree quadTree;
-    private ArrayList<WorldObject> entities;
+    private ArrayList<WorldObject> worldObjects;
 
     /*
-        collisionPossible: whether or not the quadTree returned one or more entities with neighbours() for each world in each frame
+        collisionPossible: whether or not the quadTree returned one or more worldObjects with neighbours() for each world in each frame
         collisionOccurred: whether or not a collision actually occurred for each world in each frame
 
      */
@@ -55,33 +56,33 @@ public class GameEngine //may extend some GameState interface I think, not an ex
                         new float[]{0, 0}
                 );
 
-        entities = new ArrayList<WorldObject>();
+        worldObjects = new ArrayList<WorldObject>();
         bigFont = new Font(Font.SANS_SERIF, Font.BOLD, 45);
         lilFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     }
 
     /**
-     * Remove "trash" entities
+     * Remove "trash" worldObjects
      * Note: this only removes the reference to an world from it's list, nothing fancy.
-     * Seemed a "clean" way to remove entities, keeps encapsulation, etc.
+     * Seemed a "clean" way to remove worldObjects, keeps encapsulation, etc.
      */
-    public void clean()
+    private void clean()
     {
-        for(int i = 0; i < entities.size(); i++)
+        for(int i = 0; i < worldObjects.size(); i++)
         {
-            if( entities.get(i).isTrash() )
+            if( worldObjects.get(i).isTrash() )
             {
-                removeEntity(i);
-                i--; //decrement i since entities got re-indexed
+                remove(i);
+                i--; //decrement i since worldObjects got re-indexed
             }
         }
     }
 
-    public void processCollisions(ArrayList<Collidable> collidables)
+    private void processCollisions(ArrayList<Collidable> collidables)
     {
         //second pass, closer precision test
-        collisionPossible = new boolean[entities.size()];
-        collisionOccurred = new boolean[entities.size()];
+        collisionPossible = new boolean[worldObjects.size()];
+        collisionOccurred = new boolean[worldObjects.size()];
 
         ArrayList<Collidable> actualCollisions;
         ArrayList<Collidable> neighboursOfEach;
@@ -143,9 +144,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
         ArrayList<Collidable> collidables = new ArrayList<Collidable>();
 
-        for (int i = 0; i < entities.size(); i++)
+        for (int i = 0; i < worldObjects.size(); i++)
         {
-            e = entities.get(i);
+            e = worldObjects.get(i);
             if (e instanceof Automaton)
             {
                 ((Automaton) e).update();
@@ -162,16 +163,16 @@ public class GameEngine //may extend some GameState interface I think, not an ex
     }
 
 
-    public void renderEntities(Graphics2D g)
+    private void renderObjects(Graphics2D g)
     {
         /*
-            we'll possibly keep a drawable list in the entities list
-            (and handle this via the sum/removeEntity functions) eventually?
+            we'll possibly keep a drawable list in the worldObjects list
+            (and handle this via the sum/removeObject functions) eventually?
          */
         WorldObject e;
-        for (int i = 0; i < entities.size(); i++)
+        for (int i = 0; i < worldObjects.size(); i++)
         {
-            e = entities.get(i);
+            e = worldObjects.get(i);
 
             if (e instanceof Visible)
             {
@@ -198,9 +199,9 @@ public class GameEngine //may extend some GameState interface I think, not an ex
         g.setColor(Color.YELLOW);
         quadTree.render(g);
 
-        renderEntities(g);
+        renderObjects(g);
         Random r = new Random();
-        //important: we must always render entities first, then the HUD over the top
+        //important: we must always render worldObjects first, then the HUD over the top
         g.setFont(bigFont);
         g.setColor(Color.DARK_GRAY);
 
@@ -211,8 +212,8 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
         g.drawString
         (
-                "Entities Created: "+entitiesCreated
-                        + " Entities living: "+Long.toString(entities.size()),
+                "Objects Created: "+ objectsCreated
+                        + " Objects living: "+Long.toString(worldObjects.size()),
                 5, Constants.WINDOW_DIMENSION.height - 10
         );
 
@@ -226,8 +227,8 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
         /*
             TODO: FIGURE OUT HOW THE DEBUG VIEW FITS INTO THIS:
-                IT NEEDS TO ADD TO ADD TO THE RENDERING OF BOTH ENTITIES AND THE HUD
-                SO PART OF IT MUST BE DONE AFTER renderEntities AND PART OF IT AFTER renderHUD
+                IT NEEDS TO ADD TO ADD TO THE RENDERING OF BOTH Objects AND THE HUD
+                SO PART OF IT MUST BE DONE AFTER renderObjects AND PART OF IT AFTER renderHUD
         */
 
         //renderHUD(g); //may not keep this hud rendering as a separate function, haven't decided.
@@ -240,11 +241,11 @@ public class GameEngine //may extend some GameState interface I think, not an ex
      */
     public void debugRender(Graphics2D g)
     {
-//        //render entities normally
-//        renderEntities(g);
+//        //render worldObjects normally
+//        renderObjects(g);
 //
-//        //all entities should have debug stuff maybe?
-//        for (Entity e : entities)
+//        //all worldObjects should have debug stuff maybe?
+//        for (Object e : worldObjects)
 //        {
 //            if (e instanceof Visible)
 //            {
@@ -255,31 +256,31 @@ public class GameEngine //may extend some GameState interface I think, not an ex
 
     }
 
-    public synchronized void addEntity(WorldObject e)
+    public synchronized void add(WorldObject e)
     {
-        entities.add(e);
-        entitiesCreated++;
+        worldObjects.add(e);
+        objectsCreated++;
     }
 
-    public synchronized void removeEntity(WorldObject e){
-        entities.remove(e);
+    public synchronized void remove(WorldObject e){
+        worldObjects.remove(e);
     }
 
-    public synchronized void removeEntity(int i){
-        entities.remove(i);
+    public synchronized void remove(int i){
+        worldObjects.remove(i);
     }
 
-    public synchronized int indexOfEntity(WorldObject e)
+    public synchronized int indexOf(WorldObject e)
     {
-        return entities.indexOf(e);
+        return worldObjects.indexOf(e);
     }
 
-    public synchronized WorldObject getEntity(int i)
+    public synchronized WorldObject get(int i)
     {
-        return entities.get(i);
+        return worldObjects.get(i);
     }
 
-    public boolean containsEntity(WorldObject e){
-        return entities.contains(e);
+    public boolean contains(WorldObject e){
+        return worldObjects.contains(e);
     }
 }

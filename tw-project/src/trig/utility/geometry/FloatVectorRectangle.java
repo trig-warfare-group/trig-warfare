@@ -11,18 +11,18 @@ public class FloatVectorRectangle
 
     public FloatVectorRectangle(FloatCartesian min, FloatCartesian max)
     {
-        this.min = min;
-        this.max = max;
+        this.min = min.clone();
+        this.max = max.clone();
     }
 
     public FloatCartesian getMin()
     {
-        return min;
+        return min.clone();
     }
 
     public FloatCartesian getMax()
     {
-        return max;
+        return max.clone();
     }
 
     public FloatCartesian getCenter()

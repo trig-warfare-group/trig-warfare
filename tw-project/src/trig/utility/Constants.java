@@ -34,5 +34,5 @@ public class Constants
 
 
 	
-	public static int FPS = 1000/30;
+	public static int FrameDelay = 1000/60;
 }
