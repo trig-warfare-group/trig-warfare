@@ -14,7 +14,7 @@ public class Constants
 
     //16:9 is the current standard aspect ratio? map should also be in this ratio I guess? How big? could start with a medium size..
 
-    public static Dimension WORLD_DIM = new Dimension(960,540);
+    public static Dimension WORLD_DIM = new Dimension(1500,800);
 
     //The boundary of movement is a little smaller than the actual viewport, which will be based on WORLD_DIM
     //we only really need to know how far inwards it is?, since we'd need to shift our 0,0 by that amount if we wanted to go to the trouble of mapping ourself in this space anyway, it saves no time?

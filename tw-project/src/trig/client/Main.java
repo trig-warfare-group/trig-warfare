@@ -49,6 +49,7 @@ public class Main
         playerManager = new PlayerManager(ControllerEnvironment.getDefaultEnvironment(), keyboardController);
         addKeyListener(playerManager.debugListener);
         playerManager.addNewPlayer();
+        playerManager.addNewPlayer();
         match = new Match(playerManager);
 
         gameRunning = false;
